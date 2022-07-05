@@ -1,3 +1,7 @@
+:root {
+  --main-color: rgb(97, 174, 157);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +9,43 @@
   font-family: sans-serif;
 }
 
+body {
+  background-color: rgb(196, 196, 196);
+}
+
+header {
+  height: 70px;
+  background-color: var(--main-color);
+}
+
+.container {
+  margin: 20px auto;
+  border: 1px solid rgb(180, 180, 180);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 95%;
+}
+
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .pixel, .color {
+  background-color: white;
   height: 40px;
   width: 40px;
   border: 1px solid black;
+}
+
+.color {
+  border-radius: 10px;
+}
+
+#color-palette {
+  gap: 5px;
+}
+
+#pixel-board {
 }
