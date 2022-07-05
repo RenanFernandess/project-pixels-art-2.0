@@ -43,6 +43,12 @@ header {
   border-radius: 10px;
 }
 
+.selected {
+  width: 41px;
+  height: 41px;
+  box-shadow: 2px 2px 8px rgb(26, 26, 26);
+}
+
 #color-palette {
   gap: 4px;
 }
