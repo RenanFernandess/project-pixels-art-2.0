@@ -21,7 +21,7 @@ header {
 .container {
   margin: 20px auto;
   border: 1px solid rgb(180, 180, 180);
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   max-width: 95%;
 }
