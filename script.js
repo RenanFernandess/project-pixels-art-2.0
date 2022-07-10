@@ -5,6 +5,7 @@ const pixels = document.getElementsByClassName('pixel');
 const buttonClear = document.getElementById('clear-board');
 const colorSelector = document.getElementById('box-new-color');
 const inputColor = document.getElementById('new-color');
+const buttonSave = document.getElementById('save-board');
 
 const selected = () => document.querySelector('.selected');
 
@@ -45,13 +46,26 @@ const selectNewColor = ({ target: { value } }) => {
   selectedAddNewColor(value);
 }
 
+const saveBoard = () => {
+  const board = pixelBoard.innerHTML;
+  localStorage.setItem('board', (JSON.stringify(board)))
+}
+
+const chargeBoard = () => {
+  const board = JSON.parse(localStorage.getItem('board'));
+  if (board) pixelBoard.innerHTML = board;
+}
+
 const events = () => {
-  colorPalette.addEventListener('click', selectColor)
+  colorPalette.addEventListener('click', selectColor);
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
-  inputColor.addEventListener('input', selectNewColor)
+  inputColor.addEventListener('input', selectNewColor);
+  buttonSave.addEventListener('click', saveBoard);
 };
 
 // chama functions
 colorAdd();
 events();
+
+window.onload = chargeBoard;
