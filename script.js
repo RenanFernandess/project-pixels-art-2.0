@@ -3,6 +3,8 @@ const colors = document.getElementsByClassName('color');
 const pixelBoard = document.getElementById('pixel-board');
 const pixels = document.getElementsByClassName('pixel');
 const buttonClear = document.getElementById('clear-board');
+const colorSelector = document.getElementById('box-new-color');
+const inputColor = document.getElementById('new-color');
 
 const selected = () => document.querySelector('.selected');
 
@@ -31,10 +33,23 @@ const colored = ({ target: { classList, style } }) => {
 
 const clearBoard = () => [...pixels].map(({ style }) => { style.backgroundColor = 'white'; });
 
+const colorSelectorAddcolor = (value) => colorSelector.style.background = value;
+
+const selectedAddNewColor = (value) => {
+  const { style } = selected();
+  if (style.backgroundColor !== 'black') style.backgroundColor = value;
+}
+
+const selectNewColor = ({ target: { value } }) => {
+  colorSelectorAddcolor(value);
+  selectedAddNewColor(value);
+}
+
 const events = () => {
   colorPalette.addEventListener('click', selectColor)
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
+  inputColor.addEventListener('input', selectNewColor)
 };
 
 // chama functions

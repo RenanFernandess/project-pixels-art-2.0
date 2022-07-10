@@ -11,6 +11,7 @@
 
 body {
   background-color: rgb(196, 196, 196);
+  color: rgb(35, 35, 35);
 }
 
 header {
@@ -32,6 +33,21 @@ header {
   justify-content: center;
 }
 
+.buttons {
+  height: 30px;
+  min-width: 100px;
+  max-width: 150px;
+  border-radius: 8px;
+  font-weight: 900;
+
+}
+
+#clear-board {
+  background-color: red;
+  border: 1px solid rgb(221, 0, 0);
+  color: white;
+}
+
 .pixel, .color {
   background-color: white;
   height: 40px;
@@ -51,6 +67,28 @@ header {
 
 #color-palette {
   gap: 4px;
+}
+
+#box-new-color {
+  background-color: black;
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: relative;
+}
+
+#new-color {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+  opacity: 0;
+}
+
+#palette-container {
+  flex-flow: row wrap;
+  gap: 20px;
 }
 
 #pixel-board {
