@@ -36,24 +36,10 @@ header {
 .buttons {
   height: 30px;
   min-width: 100px;
-  max-width: 150px;
+  max-width: 120px;
   border-radius: 8px;
   font-weight: 900;
 
-}
-
-#clear-board {
-  flex: 1 1 auto;
-  background-color: red;
-  border: 1px solid rgb(221, 0, 0);
-  color: white;
-}
-
-#save-board {
-  flex: 1 1 auto;
-  background-color: rgb(0, 219, 0);
-  border: 1px solid rgb(0, 200, 0);
-  color: white;
 }
 
 .pixel, .color {
@@ -97,6 +83,24 @@ header {
 #palette-container {
   flex-flow: row wrap;
   gap: 20px;
+}
+
+#options {
+  gap: 10px;
+}
+
+#clear-board {
+  flex: 1 1 auto;
+  background-color: red;
+  border: 1px solid rgb(221, 0, 0);
+  color: white;
+}
+
+#save-board {
+  flex: 1 1 auto;
+  background-color: rgb(0, 219, 0);
+  border: 1px solid rgb(0, 200, 0);
+  color: white;
 }
 
 #pixel-board {

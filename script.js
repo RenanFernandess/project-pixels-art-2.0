@@ -10,9 +10,7 @@ const buttonSave = document.getElementById('save-board');
 const selected = () => document.querySelector('.selected');
 
 const colorGenerator = () => {
-  const r = Math.round(Math.random() * 250);
-  const g = Math.round(Math.random() * 250);
-  const b = Math.round(Math.random() * 250);
+  const [r, g, b] = ['r', 'g', 'b'].map((value) => value = Math.round(Math.random() * 250));
   return `rgb(${r}, ${g}, ${b})`;
 };
 

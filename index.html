@@ -2,10 +2,10 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
   <title>Pixels Artis</title>
 </head>
 
@@ -17,24 +17,24 @@
     <section class="container">
       <div id="palette-container" class="display">
         <div class="display" id="color-palette">
-          <div class="color selected" style="background-color: black;"></div>
+          <div class="color selected" style="background-color: black"></div>
           <div class="color"></div>
           <div class="color"></div>
           <div class="color"></div>
           <div class="color"></div>
         </div>
         <div id="box-new-color">
-          <input type="color" name="color-selector" id="new-color">
+          <input type="color" name="color-selector" id="new-color" />
         </div>
       </div>
-      <div>
-        <!-- <div>
-          <input type="number" name="board-size" id="board-size">
+    </section>
+    <section id="options" class="container display">
+        <div class="display">
+          <input type="number" max="50" min="5" placeholder="5" name="board-size" id="board-size">
           <button id="generate-board">VQV</button>
-        </div> -->
+        </div>
         <button class="buttons" id="clear-board">LIMPAR</button>
-        <button class="buttons" id="save-board" >SALVAR</button>
-      </div>
+        <button class="buttons" id="save-board">SALVAR</button>
     </section>
     <section class="container">
       <div id="pixel-board">
@@ -74,6 +74,9 @@
           <div class="pixel"></div>
         </div>
       </div>
+    </section>
+    <section class="container">
+
     </section>
   </main>
   <footer></footer>
