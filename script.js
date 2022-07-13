@@ -16,7 +16,7 @@ const colorGenerator = () => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-const colorAdd = () => [...colors].forEach(({ style }) => {
+const colorAdd = () => [...colors].map(({ style }) => {
   if (style.backgroundColor !== 'black') style.backgroundColor = colorGenerator();
 });
 
