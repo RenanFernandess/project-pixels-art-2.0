@@ -6,6 +6,8 @@ const buttonClear = document.getElementById('clear-board');
 const colorSelector = document.getElementById('box-new-color');
 const inputColor = document.getElementById('new-color');
 const buttonSave = document.getElementById('save-board');
+const inputBoardSize = document.getElementById('board-size');
+const setBoard = document.getElementById('generate-board');
 
 const selected = () => document.querySelector('.selected');
 
@@ -54,12 +56,29 @@ const chargeBoard = () => {
   if (board) pixelBoard.innerHTML = board;
 }
 
+const createPixelDiv = async (value) => {
+  const element = document.createElement('div');
+  element.classList.add('display');
+  element.innerHTML = Array(value).fill('<div class="pixel"></div>')
+    .reduce((HTML, element) => HTML += element);
+  pixelBoard.appendChild(element);
+};
+
+const createPixelBoard = () => {
+  pixelBoard.innerHTML = '';
+  const value = Number(inputBoardSize.value);
+  for (let index = 1; index <= value; index += 1) {
+    createPixelDiv(value);
+  }
+};
+
 const events = () => {
   colorPalette.addEventListener('click', selectColor);
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveBoard);
+  setBoard.addEventListener('click', createPixelBoard);
 };
 
 // chama functions
