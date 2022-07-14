@@ -8,6 +8,8 @@ const inputColor = document.getElementById('new-color');
 const buttonSave = document.getElementById('save-board');
 const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
+const buttonSaveAs = document.getElementById('save-board-as');
+const inputBoardName = document.getElementById('board-name');
 
 const selected = () => document.querySelector('.selected');
 
@@ -46,15 +48,19 @@ const selectNewColor = ({ target: { value } }) => {
   selectedAddNewColor(value);
 }
 
+const saveItem = (name, item) => localStorage.setItem(name, (JSON.stringify(item)));
+
+const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
+
 const saveBoard = () => {
   const board = pixelBoard.innerHTML;
-  localStorage.setItem('board', (JSON.stringify(board)))
-}
+  saveItem('board', board);
+};
 
 const chargeBoard = () => {
-  const board = JSON.parse(localStorage.getItem('board'));
+  const board = getSavedItem('board');
   if (board) pixelBoard.innerHTML = board;
-}
+};
 
 const createPixelDiv = async (value) => {
   const element = document.createElement('div');
@@ -72,6 +78,41 @@ const createPixelBoard = () => {
   }
 };
 
+const getTheBoardSize = () => `${pixelBoard.childNodes.length} / ${pixelBoard.childNodes.length}`;
+
+const checksThatTheNameIsNotRepeated = (boardName) => {
+  const itemsSavedList = getSavedItem('itemsSavedList');
+  if (itemsSavedList) {
+    const result = itemsSavedList.some(({ name }) => name === boardName);
+    if (result) throw new Error(`${boardName} já está sendo usado!`);
+  }
+};
+
+const takeTheName = () => {
+  const { value } = inputBoardName;
+  if (value === ''|| /^(\s+)$/g.test(value)) throw new Error('Digite o nome do quadro para proceguir!');
+  checksThatTheNameIsNotRepeated(value);
+  inputBoardName.value = '';
+  return value;
+};
+
+const addTheBoardInformationToTheList = (array) => {
+  const board = {
+    name: takeTheName(),
+    size: getTheBoardSize(),
+    item: pixelBoard.innerHTML,
+  };
+  array.push(board);
+  return array;
+};
+
+const addsTheBoardToTheSavedItemsList = () => {
+  let itemsSavedList = (!getSavedItem('itemsSavedList')) ? [] : getSavedItem('itemsSavedList');
+  itemsSavedList = addTheBoardInformationToTheList(itemsSavedList);
+  console.log(itemsSavedList);
+  saveItem('itemsSavedList', itemsSavedList);
+};
+
 const events = () => {
   colorPalette.addEventListener('click', selectColor);
   pixelBoard.addEventListener('click', colored);
@@ -79,10 +120,13 @@ const events = () => {
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveBoard);
   setBoard.addEventListener('click', createPixelBoard);
+  buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedItemsList);
 };
 
 // chama functions
-colorAdd();
 events();
 
-window.onload = chargeBoard;
+window.onload = () => {
+  chargeBoard();
+  colorAdd();
+};
