@@ -10,6 +10,7 @@ const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
 const inputBoardName = document.getElementById('board-name');
+const boardsList = document.getElementById('boards-list');
 
 const selected = () => document.querySelector('.selected');
 
@@ -81,9 +82,9 @@ const createPixelBoard = () => {
 const getTheBoardSize = () => `${pixelBoard.childNodes.length} / ${pixelBoard.childNodes.length}`;
 
 const checksThatTheNameIsNotRepeated = (boardName) => {
-  const itemsSavedList = getSavedItem('itemsSavedList');
-  if (itemsSavedList) {
-    const result = itemsSavedList.some(({ name }) => name === boardName);
+  const boardSavedList = getSavedItem('boardSavedList');
+  if (boardSavedList) {
+    const result = boardSavedList.some(({ name }) => name === boardName);
     if (result) throw new Error(`${boardName} já está sendo usado!`);
   }
 };
@@ -100,17 +101,44 @@ const addTheBoardInformationToTheList = (array) => {
   const board = {
     name: takeTheName(),
     size: getTheBoardSize(),
-    item: pixelBoard.innerHTML,
+    board: pixelBoard.innerHTML,
   };
   array.push(board);
   return array;
 };
 
-const addsTheBoardToTheSavedItemsList = () => {
-  let itemsSavedList = (!getSavedItem('itemsSavedList')) ? [] : getSavedItem('itemsSavedList');
-  itemsSavedList = addTheBoardInformationToTheList(itemsSavedList);
-  console.log(itemsSavedList);
-  saveItem('itemsSavedList', itemsSavedList);
+const addsTheBoardToTheSavedBoardsList = () => {
+  let boardSavedList = (!getSavedItem('boardSavedList')) ? [] : getSavedItem('boardSavedList');
+  boardSavedList = addTheBoardInformationToTheList(boardSavedList);
+  console.log(boardSavedList);
+  saveItem('boardSavedList', boardSavedList);
+};
+
+const classChange = (item) => item.replace(/pixel/g, 'min-pixel');
+
+const AddPixelBoard = (board) => { pixelBoard.innerHTML = board };
+
+const CreateButton = (board) => {
+  const element = document.createElement('button');
+  element.className = 'buttons primary-button';
+  element.innerText = 'EDITAR';
+  element.addEventListener('click', () => { AddPixelBoard(board) });
+  return element;
+};
+
+const createPreview = ({ name, size, board }) => {
+  const element = document.createElement('section');
+  element.className = 'preview display';
+  element.innerHTML = `<div>${classChange(board)}</div> <p>${name}</p> <p>${size}</p>`;
+  element.appendChild(CreateButton(board));
+  boardsList.appendChild(element);
+}
+
+const listBoard = async () => {
+  const boardSavedList = getSavedItem('boardSavedList');
+  if(boardSavedList) {
+    boardSavedList.map((item) => createPreview(item));
+  }
 };
 
 const events = () => {
@@ -120,7 +148,7 @@ const events = () => {
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveBoard);
   setBoard.addEventListener('click', createPixelBoard);
-  buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedItemsList);
+  buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
 };
 
 // chama functions
@@ -129,4 +157,5 @@ events();
 window.onload = () => {
   chargeBoard();
   colorAdd();
+  listBoard();
 };
