@@ -91,7 +91,7 @@ const checksThatTheNameIsNotRepeated = (boardName) => {
 
 const takeTheName = () => {
   const { value } = inputBoardName;
-  if (value === ''|| /^(\s+)$/g.test(value)) throw new Error('Digite o nome do quadro para proceguir!');
+  if (value === '' || /^(\s+)$/g.test(value)) throw new Error('Digite o nome do quadro para proceguir!');
   checksThatTheNameIsNotRepeated(value);
   inputBoardName.value = '';
   return value;
@@ -102,23 +102,22 @@ const addTheBoardInformationToTheList = (array) => {
     name: takeTheName(),
     size: getTheBoardSize(),
     board: pixelBoard.innerHTML,
-  };
+  }
   array.push(board);
-  return array;
+  return array
 };
 
-const addsTheBoardToTheSavedBoardsList = () => {
-  let boardSavedList = (!getSavedItem('boardSavedList')) ? [] : getSavedItem('boardSavedList');
-  boardSavedList = addTheBoardInformationToTheList(boardSavedList);
-  console.log(boardSavedList);
-  saveItem('boardSavedList', boardSavedList);
-};
+// aqui
+
+const convertNameToId = (name) => name.replace(/\s+/g, '-');
 
 const classChange = (item) => item.replace(/pixel/g, 'min-pixel');
 
 const AddPixelBoard = (board) => { pixelBoard.innerHTML = board };
 
-const removePreviewBoard = (id) => { document.getElementById(id).remove(); };
+const removePreviewBoard = (id) => {
+  document.getElementById(convertNameToId(id)).remove();
+};
 
 const removeSavedBoard = (nameBoard) => {
   let boardSavedList = getSavedItem('boardSavedList');
@@ -144,9 +143,7 @@ const createButtonsArea = (board, name) => {
   return div;
 };
 
-const convertNameToId = (name) => name.replace(/\s+/g, '-');
-
-const createPreview = ({ name, size, board }) => {
+const createPreview = async ({ name, size, board }) => {
   const element = document.createElement('section');
   element.id = convertNameToId(name);
   element.className = 'preview display';
@@ -155,11 +152,20 @@ const createPreview = ({ name, size, board }) => {
   boardsList.appendChild(element);
 }
 
-const listBoard = async () => {
+const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
-  if(boardSavedList) {
-    boardSavedList.map((item) => createPreview(item));
+  if (boardSavedList) {
+    if (!boolean) boardSavedList.map((item) => createPreview(item));
+    if (boolean) createPreview(boardSavedList[boardSavedList.length -1]);
   }
+};
+
+const addsTheBoardToTheSavedBoardsList = () => {
+  let boardSavedList = (!getSavedItem('boardSavedList')) ? [] : getSavedItem('boardSavedList');
+  boardSavedList = addTheBoardInformationToTheList(boardSavedList);
+  console.log(boardSavedList);
+  saveItem('boardSavedList', boardSavedList);
+  listBoard(true);
 };
 
 const events = () => {

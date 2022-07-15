@@ -154,6 +154,8 @@ header {
 }
 
 #boards-list {
+  justify-content: start;
+  padding: 15px;
   max-width: 100%;
   gap: 10px;
   overflow-x: auto;
