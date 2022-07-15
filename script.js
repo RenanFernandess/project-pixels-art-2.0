@@ -118,19 +118,40 @@ const classChange = (item) => item.replace(/pixel/g, 'min-pixel');
 
 const AddPixelBoard = (board) => { pixelBoard.innerHTML = board };
 
-const CreateButton = (board) => {
+const removePreviewBoard = (id) => { document.getElementById(id).remove(); };
+
+const removeSavedBoard = (nameBoard) => {
+  let boardSavedList = getSavedItem('boardSavedList');
+  boardSavedList = boardSavedList.filter(({ name }) => nameBoard !== name);
+  console.log(boardSavedList);
+  saveItem('boardSavedList', boardSavedList);
+  removePreviewBoard(nameBoard);
+};
+
+const CreateButton = (callback, value, text, clas) => {
   const element = document.createElement('button');
-  element.className = 'buttons primary-button';
-  element.innerText = 'EDITAR';
-  element.addEventListener('click', () => { AddPixelBoard(board) });
+  element.className = `buttons ${clas}`;
+  element.innerText = text;
+  element.addEventListener('click', () => { callback(value) });
   return element;
 };
 
+const createButtonsArea = (board, name) => {
+  const div = document.createElement('div');
+  div.className = 'display options'
+  div.appendChild(CreateButton(AddPixelBoard, board, 'EDITAR', 'primary-button'));
+  div.appendChild(CreateButton(removeSavedBoard, name, 'REMOVER', 'danger-button'));
+  return div;
+};
+
+const convertNameToId = (name) => name.replace(/\s+/g, '-');
+
 const createPreview = ({ name, size, board }) => {
   const element = document.createElement('section');
+  element.id = convertNameToId(name);
   element.className = 'preview display';
   element.innerHTML = `<div>${classChange(board)}</div> <p>${name}</p> <p>${size}</p>`;
-  element.appendChild(CreateButton(board));
+  element.appendChild(createButtonsArea(board, name));
   boardsList.appendChild(element);
 }
 

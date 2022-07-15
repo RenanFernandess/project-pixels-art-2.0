@@ -7,6 +7,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+  position: relative;
 }
 
 body {
@@ -36,12 +37,17 @@ header {
 .buttons {
   flex: 1 1 auto;
   height: 30px;
-  min-width: 100px;
+  min-width: 80px;
   max-width: 130px;
   border-radius: 8px;
   font-weight: 900;
   color: white;
   transition: 2ms;
+  padding: 0 10px;
+}
+
+.options {
+  gap: 5px;
 }
 
 .danger-button {
@@ -101,7 +107,7 @@ header {
   gap: 10px;
   background-color: rgb(218, 218, 218);
   box-shadow: 2px 2px 5px rgb(133, 133, 133);
-  min-width: 150px;
+  min-width: 200px;
   max-width: 260px;
   min-height: 200px;
   max-height: 260px;
@@ -148,6 +154,7 @@ header {
 }
 
 #boards-list {
+  max-width: 100%;
   gap: 10px;
   overflow-x: auto;
 }
