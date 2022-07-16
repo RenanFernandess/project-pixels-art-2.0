@@ -11,8 +11,8 @@
 }
 
 body {
-  background-color: rgb(196, 196, 196);
-  color: rgb(35, 35, 35);
+  background-color: rgb(84, 84, 84);
+  color: rgb(200, 200, 200);
 }
 
 header {
@@ -22,7 +22,7 @@ header {
 
 .container {
   margin: 20px auto;
-  border: 1px solid rgb(180, 180, 180);
+  border: 1px solid rgb(62, 62, 62);
   padding: 10px;
   border-radius: 10px;
   max-width: 95%;
@@ -32,6 +32,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.display-grid {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .buttons {
@@ -64,6 +70,10 @@ header {
   border: 1px solid rgb(0, 200, 0);
 }
 
+.success-button:hover {
+  background-color: rgb(76, 225, 76);
+}
+
 .primary-button {
   background-color: rgb(0, 102, 255);
   border: 1px solid rgb(0, 94, 255);
@@ -71,10 +81,6 @@ header {
 
 .primary-button:hover {
   background-color: rgb(0, 149, 255);
-}
-
-.success-button:hover {
-  background-color: rgb(76, 225, 76);
 }
 
 .pixel, .color {
@@ -105,23 +111,28 @@ header {
 .preview {
   flex-flow: column;
   gap: 10px;
-  background-color: rgb(218, 218, 218);
-  box-shadow: 2px 2px 5px rgb(133, 133, 133);
+  background-color: rgb(60, 60, 60);
+  box-shadow: 2px 2px 5px rgb(35, 35, 35);
   min-width: 200px;
   max-width: 260px;
   min-height: 200px;
   max-height: 260px;
   padding: 10px;
-  border: 1px solid rgb(152, 152, 152);
+  border: 1px solid rgb(40, 40, 40);
   border-radius: 10px;
+  transition: 2ms;
 }
 
 .preview:hover {
-  background-color: rgb(226, 226, 226);
+  background-color: rgb(75, 75, 75);
 }
 
 #color-palette {
   gap: 4px;
+  background-color: rgb(118, 118, 118);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(73, 73, 73);
 }
 
 #box-new-color {

@@ -11,6 +11,7 @@ const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
 const inputBoardName = document.getElementById('board-name');
 const boardsList = document.getElementById('boards-list');
+const newsColorsButton = document.getElementById('news-colors')
 
 const selected = () => document.querySelector('.selected');
 
@@ -147,7 +148,7 @@ const createPreview = async ({ name, size, board }) => {
   const element = document.createElement('section');
   element.id = convertNameToId(name);
   element.className = 'preview display';
-  element.innerHTML = `<div>${classChange(board)}</div> <p>${name}</p> <p>${size}</p>`;
+  element.innerHTML = `<div>${classChange(board)}</div> <p>Nome: ${name}</p> <p>Tamanho: ${size}</p>`;
   element.appendChild(createButtonsArea(board, name));
   boardsList.appendChild(element);
 }
@@ -176,13 +177,12 @@ const events = () => {
   buttonSave.addEventListener('click', saveBoard);
   setBoard.addEventListener('click', createPixelBoard);
   buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
+  newsColorsButton.addEventListener('click', colorAdd);
 };
-
-// chama functions
-events();
 
 window.onload = () => {
   chargeBoard();
   colorAdd();
   listBoard();
+  events();
 };

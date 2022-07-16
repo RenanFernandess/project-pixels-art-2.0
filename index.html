@@ -16,13 +16,21 @@
   <main class="">
     <section class="container">
       <div id="palette-container" class="display">
-        <div class="display" id="color-palette">
+        <div class="display-grid" id="color-palette">
           <div class="color selected" style="background-color: black"></div>
           <div class="color"></div>
           <div class="color"></div>
           <div class="color"></div>
           <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
         </div>
+        <button class="buttons primary-button" id="news-colors">NOVAS CORES</button>
         <div id="box-new-color">
           <input type="color" name="color-selector" id="new-color" />
         </div>
@@ -30,13 +38,13 @@
     </section>
     <section id="options" class="container display">
         <div class="display">
-          <input type="number" max="50" min="5" placeholder="5" name="board-size" id="board-size">
+          <input type="number" max="50" min="5" maxlength="2" value="5" name="board-size" id="board-size">
           <button id="generate-board">VQV</button>
         </div>
         <button class="buttons danger-button" id="clear-board">LIMPAR</button>
         <button class="buttons success-button" id="save-board">SALVAR</button>
         <div>
-          <input type="text" name="board Name" placeholder="Digite o nome do quadro" id="board-name">
+          <input type="text" name="board Name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro" id="board-name">
           <button class="buttons success-button" id="save-board-as">SALVAR COMO</button>
         </div>
     </section>
