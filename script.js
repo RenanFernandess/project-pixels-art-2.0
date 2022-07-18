@@ -108,8 +108,6 @@ const addTheBoardInformationToTheList = (array) => {
   return array
 };
 
-// aqui
-
 const convertNameToId = (name) => name.replace(/\s+/g, '-');
 
 const classChange = (item) => item.replace(/pixel/g, 'min-pixel');
@@ -157,16 +155,20 @@ const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
     if (!boolean) boardSavedList.map((item) => createPreview(item));
-    if (boolean) createPreview(boardSavedList[boardSavedList.length -1]);
+    if (boolean) createPreview(boardSavedList[boardSavedList.length - 1]);
   }
 };
 
 const addsTheBoardToTheSavedBoardsList = () => {
-  let boardSavedList = (!getSavedItem('boardSavedList')) ? [] : getSavedItem('boardSavedList');
-  boardSavedList = addTheBoardInformationToTheList(boardSavedList);
-  console.log(boardSavedList);
-  saveItem('boardSavedList', boardSavedList);
-  listBoard(true);
+  try {
+    let boardSavedList = (!getSavedItem('boardSavedList')) ? [] : getSavedItem('boardSavedList');
+    boardSavedList = addTheBoardInformationToTheList(boardSavedList);
+    console.log(boardSavedList);
+    saveItem('boardSavedList', boardSavedList);
+    listBoard(true);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const events = () => {
