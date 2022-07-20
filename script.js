@@ -1,3 +1,4 @@
+const paletteContainer = document.getElementById('palette-container');
 const colorPalette = document.getElementById('color-palette');
 const colors = document.getElementsByClassName('color');
 const pixelBoard = document.getElementById('pixel-board');
@@ -25,7 +26,7 @@ const colorAdd = () => [...colors].map(({ style }) => {
 });
 
 const selectColor = ({ target: { classList } }) => {
-  if (classList.contains('color')) {
+  if (classList.contains('color') || classList.contains('color-input')) {
     selected().classList.remove('selected');
     classList.add('selected');
   };
@@ -42,7 +43,7 @@ const colorSelectorAddcolor = (value) => colorSelector.style.background = value;
 
 const selectedAddNewColor = (value) => {
   const { style } = selected();
-  if (style.backgroundColor !== 'black') style.backgroundColor = value;
+  style.backgroundColor = value;
 }
 
 const selectNewColor = ({ target: { value } }) => {
@@ -86,7 +87,7 @@ const checksThatTheNameIsNotRepeated = (boardName) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
     const result = boardSavedList.some(({ name }) => name === boardName);
-    if (result) throw new Error(`${boardName} já está sendo usado!`);
+    if (result) throw new Error(`'${boardName}' já está sendo usado!`);
   }
 };
 
@@ -172,7 +173,7 @@ const addsTheBoardToTheSavedBoardsList = () => {
 };
 
 const events = () => {
-  colorPalette.addEventListener('click', selectColor);
+  paletteContainer.addEventListener('click', selectColor);
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
   inputColor.addEventListener('input', selectNewColor);
