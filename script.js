@@ -12,7 +12,6 @@ const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
 const inputBoardName = document.getElementById('board-name');
 const boardsList = document.getElementById('boards-list');
-const newsColorsButton = document.getElementById('news-colors')
 
 const selected = () => document.querySelector('.selected');
 
@@ -25,12 +24,17 @@ const colorAdd = () => [...colors].map(({ style }) => {
   if (style.backgroundColor !== 'black') style.backgroundColor = colorGenerator();
 });
 
-const selectColor = ({ target: { classList } }) => {
-  if (classList.contains('color') || classList.contains('color-input')) {
-    selected().classList.remove('selected');
-    classList.add('selected');
-  };
+const selectColor = (classList) => {
+  selected().classList.remove('selected');
+  classList.add('selected');
 };
+
+const paletteContainerEvents = ({ target: { classList, id } }) => {
+  const classLosses = ['color', 'color-input'].some((clas) => classList.contains(clas));
+
+  if (classLosses) selectColor(classList);
+  if (id === 'news-colors') colorAdd();
+}
 
 const colored = ({ target: { classList, style } }) => {
   if (classList.contains('pixel')) style
@@ -173,14 +177,13 @@ const addsTheBoardToTheSavedBoardsList = () => {
 };
 
 const events = () => {
-  paletteContainer.addEventListener('click', selectColor);
+  paletteContainer.addEventListener('click', paletteContainerEvents);
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveBoard);
   setBoard.addEventListener('click', createPixelBoard);
   buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
-  newsColorsButton.addEventListener('click', colorAdd);
 };
 
 window.onload = () => {
