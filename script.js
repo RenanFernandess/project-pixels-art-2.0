@@ -12,6 +12,7 @@ const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
 const inputBoardName = document.getElementById('board-name');
 const boardsList = document.getElementById('boards-list');
+const navOpitions = document.getElementById('nav-opitions');
 
 const selected = () => document.querySelector('.selected');
 
@@ -25,16 +26,11 @@ const colorAdd = () => [...colors].map(({ style }) => {
 });
 
 const selectColor = (classList) => {
-  selected().classList.remove('selected');
-  classList.add('selected');
+  if (classList.contains('color') || classList.contains('color-input')) {
+    selected().classList.remove('selected');
+    classList.add('selected');
+  }
 };
-
-const paletteContainerEvents = ({ target: { classList, id } }) => {
-  const classLosses = ['color', 'color-input'].some((clas) => classList.contains(clas));
-
-  if (classLosses) selectColor(classList);
-  if (id === 'news-colors') colorAdd();
-}
 
 const colored = ({ target: { classList, style } }) => {
   if (classList.contains('pixel')) style
@@ -58,6 +54,10 @@ const selectNewColor = ({ target: { value } }) => {
 const saveItem = (name, item) => localStorage.setItem(name, (JSON.stringify(item)));
 
 const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
+
+const saveItemSessionStorage = (name, item) => sessionStorage.setItem(name, JSON.stringify(item));
+
+const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
 
 const saveBoard = () => {
   const board = pixelBoard.innerHTML;
@@ -115,52 +115,69 @@ const addTheBoardInformationToTheList = (array) => {
 
 const convertNameToId = (name) => name.replace(/\s+/g, '-');
 
-const classChange = (item) => item.replace(/pixel/g, 'min-pixel');
-
-const AddPixelBoard = (board) => { pixelBoard.innerHTML = board };
+const AddPixelBoard = ({ attributes }) => {
+  const id = attributes['data-id'].value;
+  const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
+  pixelBoard.innerHTML = board;
+};
 
 const removePreviewBoard = (id) => {
   document.getElementById(convertNameToId(id)).remove();
 };
 
-const removeSavedBoard = (nameBoard) => {
+const moveToTrash = (board) => {
+  const trash = (!getItemSessionStorage('trash')) ? [] : getItemSessionStorage('trash');
+  trash.push(board);
+  saveItemSessionStorage('trash', trash);
+}
+
+const removeSavedBoard = ({ attributes }) => {
+  const nameBoard = attributes['data-name'].value;
   let boardSavedList = getSavedItem('boardSavedList');
+  moveToTrash(boardSavedList.find(({ name }) => name === nameBoard));
   boardSavedList = boardSavedList.filter(({ name }) => nameBoard !== name);
-  console.log(boardSavedList);
   saveItem('boardSavedList', boardSavedList);
   removePreviewBoard(nameBoard);
 };
 
-const CreateButton = (callback, value, text, clas) => {
-  const element = document.createElement('button');
-  element.className = `buttons ${clas}`;
-  element.innerText = text;
-  element.addEventListener('click', () => { callback(value) });
-  return element;
-};
+const deleteTrashItem = ({ attributes }) => {
+  const nameBoard = attributes['data-name'].value;
+  let trash = getItemSessionStorage('trash');
+  trash = trash.filter(({ name }) => nameBoard !== name);
+  saveItemSessionStorage('trash', trash);
+  removePreviewBoard(nameBoard);
+  console.log(trash);
+}
 
-const createButtonsArea = (board, name) => {
-  const div = document.createElement('div');
-  div.className = 'display options'
-  div.appendChild(CreateButton(AddPixelBoard, board, 'EDITAR', 'primary-button'));
-  div.appendChild(CreateButton(removeSavedBoard, name, 'REMOVER', 'danger-button'));
-  return div;
-};
+const trashButtons = (name) => (
+  `<button class="buttons primary-button" data-id="${name}" name="restore-board" >Restaurar</button>
+  <button class="buttons danger-button" data-name="${name}" name="delete-preview" >Apagar</button>`
+);
 
-const createPreview = async ({ name, size, board }) => {
-  const element = document.createElement('section');
-  element.id = convertNameToId(name);
-  element.className = 'preview display';
-  element.innerHTML = `<div>${classChange(board)}</div> <p>Nome: ${name}</p> <p>Tamanho: ${size}</p>`;
-  element.appendChild(createButtonsArea(board, name));
-  boardsList.appendChild(element);
+const libraryButtons = (name) => (
+  `<button class="buttons primary-button" data-id="${convertNameToId(name)}" name="edit-board" >EDITAR</button>
+  <button class="buttons danger-button" data-name="${name}" name="remove-preview" >REMOVER</button>`
+);
+
+const createPreview = async ({ name, size, board }, callback) => {
+  const preview = (
+    `<section id=${convertNameToId(name)} class="preview display" >
+      <div class="thumbnail">${board}</div>
+      <p><strong>${name}</strong></p>
+      <p>Tamanho: ${size}</p>
+      <div class="display options">
+        ${callback(name)}
+      </div>
+    </section>`
+  )
+  boardsList.innerHTML += preview;
 }
 
 const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
-    if (!boolean) boardSavedList.map((item) => createPreview(item));
-    if (boolean) createPreview(boardSavedList[boardSavedList.length - 1]);
+    if (!boolean) boardSavedList.map((item) => createPreview(item, libraryButtons));
+    if (boolean) createPreview(boardSavedList[boardSavedList.length - 1], libraryButtons);
   }
 };
 
@@ -176,6 +193,43 @@ const addsTheBoardToTheSavedBoardsList = () => {
   }
 };
 
+const showTrash = () => {
+  const { attributes: { name, name: { value } } } = boardsList;
+  if (value !== 'trash') {
+    name.value = 'trash';
+    const trash = getItemSessionStorage('trash');
+    if (trash) {
+      boardsList.innerHTML = '';
+      trash.map((item) => createPreview(item, trashButtons));
+    }
+  }
+}
+
+const showLibrary = () => {
+  const { attributes: { name, name: { value } } } = boardsList;
+  if (!value !== 'library') {
+    name.value = 'library';
+    boardsList.innerHTML = '';
+    listBoard()
+  }
+}
+
+const paletteContainerEvents = ({ target: { classList, id } }) => {
+  selectColor(classList);
+  if (id === 'news-colors') colorAdd();
+};
+
+const boardsListEvent = ({ target }) => {
+  if (target.name === 'remove-preview') removeSavedBoard(target);
+  if (target.name === 'edit-board') AddPixelBoard(target);
+  if (target.name === 'delete-preview') deleteTrashItem(target);
+};
+
+const navOpitionsEvents = ({ target }) => {
+  if (target.id === 'trash') showTrash();
+  if (target.id === 'library') showLibrary();
+};
+
 const events = () => {
   paletteContainer.addEventListener('click', paletteContainerEvents);
   pixelBoard.addEventListener('click', colored);
@@ -184,6 +238,8 @@ const events = () => {
   buttonSave.addEventListener('click', saveBoard);
   setBoard.addEventListener('click', createPixelBoard);
   buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
+  boardsList.addEventListener('click', boardsListEvent);
+  navOpitions.addEventListener('click', navOpitionsEvents);
 };
 
 window.onload = () => {

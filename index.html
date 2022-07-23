@@ -37,16 +37,17 @@
       </div>
     </section>
     <section id="options" class="container display">
-        <div class="display">
-          <input type="number" max="50" min="5" maxlength="2" value="5" name="board-size" id="board-size">
-          <button id="generate-board">VQV</button>
-        </div>
-        <button class="buttons danger-button" id="clear-board">LIMPAR</button>
-        <button class="buttons success-button" id="save-board">SALVAR</button>
-        <div>
-          <input type="text" name="board Name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro" id="board-name">
-          <button class="buttons success-button" id="save-board-as">SALVAR COMO</button>
-        </div>
+      <div class="display">
+        <input type="number" max="50" min="5" maxlength="2" value="5" name="board-size" id="board-size">
+        <button id="generate-board">VQV</button>
+      </div>
+      <button class="buttons danger-button" id="clear-board">LIMPAR</button>
+      <button class="buttons success-button" id="save-board">SALVAR</button>
+      <div>
+        <input type="text" name="board Name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro"
+          id="board-name">
+        <button class="buttons success-button" id="save-board-as">SALVAR COMO</button>
+      </div>
     </section>
     <section class="container">
       <div id="pixel-board">
@@ -88,11 +89,14 @@
       </div>
     </section>
     <section class="container">
-      <div>
-        <button></button>
-        <button></button>
-      </div>
-      <div class="display" id="boards-list">
+      <nav id="nav-opitions" class="nav">
+        <ul class="nav-list">
+          <li id="library">Biblioteca</li>
+          <hr>
+          <li id="trash">Lixeira</li>
+        </ul>
+      </nav>
+      <div class="display" name="library" id="boards-list">
 
       </div>
     </section>

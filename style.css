@@ -1,5 +1,7 @@
 :root {
   --main-color: rgb(97, 174, 157);
+  --main-border-color: rgb(62, 62, 62);
+  --nav-attributes-color: rgb(69, 69, 69);
 }
 
 * {
@@ -20,9 +22,19 @@ header {
   background-color: var(--main-color);
 }
 
+header h1 {
+  color: rgb(23, 23, 23);
+  font-size: 40px;
+}
+
+.thumbnail div > div.pixel {
+  height: 15px;
+  width: 15px;
+}
+
 .container {
   margin: 20px auto;
-  border: 1px solid rgb(62, 62, 62);
+  border: 1px solid var(--main-border-color);
   padding: 10px;
   border-radius: 10px;
   max-width: 95%;
@@ -37,6 +49,35 @@ header {
 .display-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.nav {
+  border-bottom: 1px solid var(--nav-attributes-color);
+  padding: 0 20px;
+  margin: 0 20px;
+}
+
+.nav-list {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: start;
+  list-style: none;
+}
+
+.nav-list hr {
+  width: 1px;
+  height: 25px;
+  border: 1px solid var(--nav-attributes-color);
+}
+
+.nav-list li {
+  padding: 10px 5px;
+  transition: 7ms;
+}
+
+.nav-list li:hover {
+  color: rgb(21, 21, 21);
 }
 
 .buttons {
@@ -100,21 +141,15 @@ header {
   box-shadow: 2px 2px 8px rgb(26, 26, 26);
 }
 
-.min-pixel {
-  background-color: white;
-  height: 15px;
-  width: 15px;
-  border: 0.1px solid black;
-}
-
 .preview {
+  flex: 1 1 200px;
   flex-flow: column;
   gap: 10px;
   background-color: rgb(60, 60, 60);
   box-shadow: 2px 2px 5px rgb(35, 35, 35);
   min-width: 200px;
-  max-width: 260px;
-  min-height: 200px;
+  max-width: 300px;
+  min-height: 250px;
   max-height: 260px;
   padding: 10px;
   border: 1px solid rgb(40, 40, 40);
@@ -158,9 +193,6 @@ header {
 
 #options {
   gap: 10px;
-}
-
-#pixel-board {
 }
 
 #boards-list {
