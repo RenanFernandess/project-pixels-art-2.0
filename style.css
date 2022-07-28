@@ -1,30 +1,43 @@
 :root {
   --main-color: rgb(97, 174, 157);
+
+  --main-background-color: rgb(35, 38, 41);
+
+  --containers-background-color: rgb(60, 64, 68);
+
+  --items-background-color: rgb(46, 50, 54);
+
   --main-border-color: rgb(62, 62, 62);
-  --nav-attributes-color: rgb(69, 69, 69);
+
+  --nav-attributes-color: rgb(35, 38, 41);
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
-  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background-color: rgb(84, 84, 84);
+  background-color: var(--main-background-color);
   color: rgb(200, 200, 200);
 }
 
 header {
-  height: 70px;
   background-color: var(--main-color);
+  height: 70px;
 }
 
 header h1 {
   color: rgb(23, 23, 23);
   font-size: 40px;
+}
+
+main {
+  display: grid;
+  gap: 20px;
+  padding: 40px;
 }
 
 .thumbnail div > div.pixel {
@@ -33,11 +46,12 @@ header h1 {
 }
 
 .container {
-  margin: 20px auto;
+  background-color: var(--containers-background-color);
   border: 1px solid var(--main-border-color);
   padding: 10px;
-  border-radius: 10px;
-  max-width: 95%;
+  border-radius: 5px;
+  max-width: 100vw;
+  min-width: 200px;
 }
 
 .display {
@@ -81,15 +95,15 @@ header h1 {
 }
 
 .buttons {
+  border-radius: 5px;
+  color: black;
+  font-weight: 900;
   flex: 1 1 auto;
   height: 30px;
   min-width: 80px;
   max-width: 130px;
-  border-radius: 8px;
-  font-weight: 900;
-  color: white;
-  transition: 2ms;
   padding: 0 10px;
+  transition: 2ms;
 }
 
 .options {
@@ -125,35 +139,35 @@ header h1 {
 
 .pixel, .color {
   background-color: white;
+  border: 1px solid black;
   height: 40px;
   width: 40px;
-  border: 1px solid black;
 }
 
 .color {
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 
 .selected {
-  width: 41px;
-  height: 41px;
   box-shadow: 2px 2px 8px rgb(26, 26, 26);
+  height: 41px;
+  width: 41px;
 }
 
 .preview {
+  background-color: var(--items-background-color);
+  box-shadow: 2px 2px 5px rgb(35, 35, 35);
+  border: 1px solid rgb(40, 40, 40);
+  border-radius: 5px;
   flex: 1 1 200px;
   flex-flow: column;
   gap: 10px;
-  background-color: rgb(60, 60, 60);
-  box-shadow: 2px 2px 5px rgb(35, 35, 35);
-  min-width: 200px;
+  max-height: 260px;
   max-width: 300px;
   min-height: 250px;
-  max-height: 260px;
+  min-width: 200px;
   padding: 10px;
-  border: 1px solid rgb(40, 40, 40);
-  border-radius: 10px;
   transition: 2ms;
 }
 
@@ -162,28 +176,28 @@ header h1 {
 }
 
 #color-palette {
-  gap: 4px;
-  background-color: rgb(118, 118, 118);
-  padding: 10px;
+  background-color: rgb(132, 132, 132);
   border-radius: 10px;
   border: 1px solid rgb(73, 73, 73);
+  gap: 4px;
+  padding: 10px;
 }
 
 #box-new-color {
   background-color: black;
-  width: 40px;
-  height: 40px;
   border: 1px solid black;
   border-radius: 10px;
+  height: 40px;
+  width: 40px;
   position: relative;
 }
 
 #new-color {
-  width: 100%;
-  height: 100%;
   border: none;
   border-radius: 10px;
+  height: 100%;
   opacity: 0;
+  width: 100%;
 }
 
 #palette-container {
@@ -196,9 +210,15 @@ header h1 {
 }
 
 #boards-list {
-  justify-content: start;
-  padding: 15px;
-  max-width: 100%;
   gap: 10px;
+  justify-content: start;
   overflow-x: auto;
+  max-width: 100%;
+  padding: 15px;
+}
+
+@media screen and ( min-width: 1000px ) {
+  .container {
+    padding: 20px;
+  }
 }
