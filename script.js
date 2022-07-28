@@ -2,7 +2,6 @@ const paletteContainer = document.getElementById('palette-container');
 const colorPalette = document.getElementById('color-palette');
 const colors = document.getElementsByClassName('color');
 const pixelBoard = document.getElementById('pixel-board');
-const pixels = document.getElementsByClassName('pixel');
 const buttonClear = document.getElementById('clear-board');
 const colorSelector = document.getElementById('box-new-color');
 const inputColor = document.getElementById('new-color');
@@ -37,7 +36,10 @@ const colored = ({ target: { classList, style } }) => {
     .backgroundColor = selected().style.backgroundColor;
 };
 
-const clearBoard = () => [...pixels].map(({ style }) => { style.backgroundColor = 'white'; });
+const clearBoard = () => {
+  const pixels = document.querySelectorAll('div#pixel-board .pixel');
+  [...pixels].map(({ style }) => { style.backgroundColor = 'white'; });
+};
 
 const colorSelectorAddcolor = (value) => colorSelector.style.background = value;
 
