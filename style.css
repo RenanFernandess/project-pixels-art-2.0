@@ -12,6 +12,18 @@
   --nav-attributes-color: rgb(35, 38, 41);
 }
 
+::-webkit-scrollbar {
+  background-color: unset;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--items-background-color);
+  border-radius: 5px;
+}
+
+
 * {
   box-sizing: border-box;
   font-family: sans-serif;
