@@ -124,8 +124,8 @@ const AddPixelBoard = ({ attributes }) => {
   pixelBoard.innerHTML = board;
 };
 
-const removePreviewBoard = (id) => {
-  document.getElementById(convertNameToId(id)).remove();
+const removePreviewBoard = (name) => {
+  document.getElementById(convertNameToId(name)).remove();
 };
 
 const moveToTrash = (board) => {
@@ -152,8 +152,19 @@ const deleteTrashItem = ({ attributes }) => {
   console.log(trash);
 }
 
+const restoreTrashBoard = ({ attributes }) => {
+  const nameBoard = attributes['data-name'].value;
+  const trash = getItemSessionStorage('trash');
+  const boardSavedList = getSavedItem('boardSavedList');
+  const newBoardList = [...boardSavedList, trash.find(({ name }) => name === nameBoard)];
+  const newTrash = trash.filter(({ name }) => nameBoard !== name);
+  saveItemSessionStorage('trash', newTrash);
+  saveItem('boardSavedList', newBoardList);
+  removePreviewBoard(nameBoard)
+}
+
 const trashButtons = (name) => (
-  `<button class="buttons primary-button" data-id="${name}" name="restore-board" >Restaurar</button>
+  `<button class="buttons primary-button" data-name="${name}" name="restore-board" >Restaurar</button>
   <button class="buttons danger-button" data-name="${name}" name="delete-preview" >Apagar</button>`
 );
 
@@ -175,7 +186,7 @@ const createPreview = async ({ name, size, board }, callback) => {
   )
   boardsList.innerHTML += preview;
 }
-
+// boardSavedList.slice(0, 7).map((item) => createPreview(item, libraryButtons));
 const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
@@ -226,6 +237,7 @@ const boardsListEvent = ({ target }) => {
   if (target.name === 'remove-preview') removeSavedBoard(target);
   if (target.name === 'edit-board') AddPixelBoard(target);
   if (target.name === 'delete-preview') deleteTrashItem(target);
+  if (target.name === 'restore-board') restoreTrashBoard(target);
 };
 
 const navOpitionsEvents = ({ target }) => {
