@@ -16,9 +16,10 @@ const navOpitions = document.getElementById('nav-opitions');
 const selected = () => document.querySelector('.selected');
 
 const colorGenerator = () => {
-  const [r, g, b] = ['r', 'g', 'b'].map((value) => value = Math.round(Math.random() * 250));
+  const [r, g, b] = Array(3).fill(0).map(() => Math.round(Math.random() * 250));
   return `rgb(${r}, ${g}, ${b})`;
 };
+
 
 const colorAdd = () => [...colors].map(({ style }) => {
   if (style.backgroundColor !== 'black') style.backgroundColor = colorGenerator();

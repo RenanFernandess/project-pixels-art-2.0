@@ -103,7 +103,8 @@ main {
   min-width: 80px;
   max-width: 130px;
   padding: 0 10px;
-  transition: 2ms;
+  cursor: pointer;
+  transition: 5ms;
 }
 
 .options {
@@ -144,8 +145,13 @@ main {
   width: 40px;
 }
 
+#pixel-board .pixel, .color, .color-input {
+  cursor: pointer;
+}
+
 .color {
   border-radius: 5px;
+  transition: 5ms;
 }
 
 
@@ -168,15 +174,15 @@ main {
   min-height: 250px;
   min-width: 200px;
   padding: 10px;
-  transition: 2ms;
+  transition: 5ms;
 }
 
 .preview:hover {
-  background-color: rgb(75, 75, 75);
+  background-color: rgb(56, 61, 65);
 }
 
 #color-palette {
-  background-color: rgb(132, 132, 132);
+  background-color: rgb(127, 128, 129);
   border-radius: 10px;
   border: 1px solid rgb(73, 73, 73);
   gap: 4px;
