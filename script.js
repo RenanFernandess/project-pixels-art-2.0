@@ -11,6 +11,7 @@ const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
 const inputBoardName = document.getElementById('board-name');
 const boardsList = document.getElementById('boards-list');
+const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
 
 const selected = () => document.querySelector('.selected');
@@ -186,11 +187,21 @@ const createPreview = async ({ name, size, board }, callback) => {
   )
   boardsList.innerHTML += preview;
 }
-// boardSavedList.slice(0, 7).map((item) => createPreview(item, libraryButtons));
+
+const numberOfBoardThatWillBeListed = () => {
+  const number = (Math.floor(boardsList.offsetWidth / 200) - 1);
+  const boardSavedList = getSavedItem('boardSavedList');
+  if (number <= 0) return 1;
+  if (boardSavedList) {
+    if (number > boardSavedList.length) return boardsList.length;
+  }
+  return number;
+};
+
 const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
-    if (!boolean) boardSavedList.map((item) => createPreview(item, libraryButtons));
+    if (!boolean) boardSavedList.slice(0, numberOfBoardThatWillBeListed()).map((item) => createPreview(item, libraryButtons));
     if (boolean) createPreview(boardSavedList[boardSavedList.length - 1], libraryButtons);
   }
 };
@@ -228,16 +239,73 @@ const showLibrary = () => {
   }
 }
 
+const calculateNextIndex = () => {
+  const boardListedNumber = numberOfBoardThatWillBeListed();
+  const boardSavedList = getSavedItem('boardSavedList');
+  let indexes = getItemSessionStorage('boardListedNumber')
+  indexes = (indexes) ? indexes : Array(2).fill(boardListedNumber);
+  let lastIndex = indexes[1];
+  lastIndex = lastIndex + boardListedNumber;
+  lastIndex = (lastIndex > boardSavedList.length) ? boardSavedList.length : lastIndex;
+  indexes = [Math.abs(lastIndex - boardListedNumber), lastIndex];
+
+  saveItemSessionStorage('boardListedNumber', indexes);
+  return indexes;
+}
+
+const calculatePreviousIndex = () => {
+  const boardListedNumber = numberOfBoardThatWillBeListed();
+  let indexes = getItemSessionStorage('boardListedNumber')
+  indexes = (indexes) ? indexes : Array(2).fill(boardListedNumber);
+  let lastIndex = indexes[1];
+  lastIndex = lastIndex - boardListedNumber;
+  lastIndex = (lastIndex < boardListedNumber) ? boardListedNumber : lastIndex;
+  indexes = [Math.abs(lastIndex - boardListedNumber), lastIndex];
+
+  saveItemSessionStorage('boardListedNumber', indexes);
+  return indexes;
+}
+
+const nextListOfBoard = () => {
+  const lastCurrentIndex = getItemSessionStorage('boardListedNumber')[1];
+  const boardSavedList = getSavedItem('boardSavedList');
+
+  if (lastCurrentIndex !== boardSavedList.length) {
+    const [firstIndex, lastIndex] = calculateNextIndex();
+    if (boardSavedList) {
+      boardsList.innerHTML = '';
+      boardSavedList.slice(firstIndex, lastIndex)
+        .map((item) => createPreview(item, libraryButtons));
+    }
+  }
+}
+
+const previousListOfBoard = () => {
+  const [ firstCurrentIndex ] = getItemSessionStorage('boardListedNumber');
+  const boardSavedList = getSavedItem('boardSavedList');
+  
+  if (firstCurrentIndex) {
+    const [firstIndex, lastIndex] = calculatePreviousIndex();
+    if (boardSavedList) {
+      boardsList.innerHTML = '';
+      boardSavedList.slice(firstIndex, lastIndex)
+        .map((item) => createPreview(item, libraryButtons));
+    }
+  }
+}
+
 const paletteContainerEvents = ({ target: { classList, id } }) => {
   selectColor(classList);
   if (id === 'news-colors') colorAdd();
 };
 
-const boardsListEvent = ({ target }) => {
-  if (target.name === 'remove-preview') removeSavedBoard(target);
-  if (target.name === 'edit-board') AddPixelBoard(target);
-  if (target.name === 'delete-preview') deleteTrashItem(target);
-  if (target.name === 'restore-board') restoreTrashBoard(target);
+const libraryContainerEvent = ({ target, target: { name, id } }) => {
+  if (name === 'remove-preview') removeSavedBoard(target);
+  if (name === 'edit-board') AddPixelBoard(target);
+  if (name === 'delete-preview') deleteTrashItem(target);
+  if (name === 'restore-board') restoreTrashBoard(target);
+  if (id === 'next-list') nextListOfBoard();
+  if (id === 'previous-list') previousListOfBoard();
 };
 
 const navOpitionsEvents = ({ target }) => {
@@ -253,7 +321,7 @@ const events = () => {
   buttonSave.addEventListener('click', saveBoard);
   setBoard.addEventListener('click', createPixelBoard);
   buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
-  boardsList.addEventListener('click', boardsListEvent);
+  libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
 };
 
