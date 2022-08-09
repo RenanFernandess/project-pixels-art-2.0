@@ -3,6 +3,8 @@
 
   --main-background-color: rgb(35, 38, 41);
 
+  --main-text-color: rgb(200, 200, 200);
+
   --containers-background-color: rgb(60, 64, 68);
 
   --items-background-color: rgb(46, 50, 54);
@@ -12,6 +14,7 @@
   --main-border-color: rgb(62, 62, 62);
 
   --nav-attributes-color: rgb(35, 38, 41);
+
 }
 
 ::-webkit-scrollbar {
@@ -38,7 +41,7 @@
 
 body {
   background-color: var(--main-background-color);
-  color: rgb(200, 200, 200);
+  color: var(--main-text-color);
 }
 
 header {
@@ -130,8 +133,25 @@ main {
   border: none;
   cursor: pointer;
   height: 250px;
-  width: 30px;
+  position: relative;
   transition: 8ms;
+  width: 30px;
+}
+
+.rigthArrow::after, .rigthArrow::before{
+  border-right: 2px solid var(--main-text-color);
+  content: '';
+  display: block;
+  height: 40px;
+  width: 1px;
+}
+
+.rigthArrow::after {
+  transform: rotate(25deg);
+}
+
+.rigthArrow::before {
+  transform: rotate(155deg) translateX();
 }
 
 .long-button:hover {

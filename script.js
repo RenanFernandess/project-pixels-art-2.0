@@ -16,11 +16,41 @@ const navOpitions = document.getElementById('nav-opitions');
 
 const selected = () => document.querySelector('.selected');
 
+const saveItem = (name, item) => localStorage.setItem(name, (JSON.stringify(item)));
+
+const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
+
+const saveItemSessionStorage = (name, item) => sessionStorage.setItem(name, JSON.stringify(item));
+
+const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
+
+const numberOfBoardThatWillBeListed = () => {
+  const number = (Math.floor(boardsList.offsetWidth / 200) - 1);
+  const boardSavedList = getSavedItem('boardSavedList');
+  if (number <= 0) return 1;
+  if (boardSavedList) {
+    if (number > boardSavedList.length) return boardsList.length;
+  }
+  return number;
+};
+
+const createState = () => {
+  const state = {
+    boardListedNumber: [0, numberOfBoardThatWillBeListed()],
+  };
+  saveItemSessionStorage('state', state);
+}
+
+const setState = (object) => {
+  const state = getItemSessionStorage('state');
+  const newState = Object.assign(state, object);
+  saveItemSessionStorage('state', newState);
+}
+
 const colorGenerator = () => {
   const [r, g, b] = Array(3).fill(0).map(() => Math.round(Math.random() * 250));
   return `rgb(${r}, ${g}, ${b})`;
 };
-
 
 const colorAdd = () => [...colors].map(({ style }) => {
   if (style.backgroundColor !== 'black') style.backgroundColor = colorGenerator();
@@ -54,14 +84,6 @@ const selectNewColor = ({ target: { value } }) => {
   colorSelectorAddcolor(value);
   selectedAddNewColor(value);
 }
-
-const saveItem = (name, item) => localStorage.setItem(name, (JSON.stringify(item)));
-
-const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
-
-const saveItemSessionStorage = (name, item) => sessionStorage.setItem(name, JSON.stringify(item));
-
-const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
 
 const saveBoard = () => {
   const board = pixelBoard.innerHTML;
@@ -188,21 +210,15 @@ const createPreview = async ({ name, size, board }, callback) => {
   boardsList.innerHTML += preview;
 }
 
-const numberOfBoardThatWillBeListed = () => {
-  const number = (Math.floor(boardsList.offsetWidth / 200) - 1);
-  const boardSavedList = getSavedItem('boardSavedList');
-  if (number <= 0) return 1;
-  if (boardSavedList) {
-    if (number > boardSavedList.length) return boardsList.length;
-  }
-  return number;
-};
-
 const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
-    if (!boolean) boardSavedList.slice(0, numberOfBoardThatWillBeListed()).map((item) => createPreview(item, libraryButtons));
-    if (boolean) createPreview(boardSavedList[boardSavedList.length - 1], libraryButtons);
+    const { boardListedNumber } = getItemSessionStorage('state');
+    const numberOfBoard = boardListedNumber[1];
+    if (!boolean) boardSavedList.slice(0, numberOfBoard).map((item) => createPreview(item, libraryButtons));
+    if (boardsList.childElementCount < numberOfBoard) {
+      if (boolean) createPreview(boardSavedList[boardSavedList.length - 1], libraryButtons);
+    }
   }
 };
 
@@ -228,7 +244,7 @@ const showTrash = () => {
       trash.map((item) => createPreview(item, trashButtons));
     }
   }
-}
+};
 
 const showLibrary = () => {
   const { attributes: { name, name: { value } } } = boardsList;
@@ -237,37 +253,35 @@ const showLibrary = () => {
     boardsList.innerHTML = '';
     listBoard()
   }
-}
+};
 
 const calculateNextIndex = () => {
-  const boardListedNumber = numberOfBoardThatWillBeListed();
+  const { boardListedNumber } = getItemSessionStorage('state');
   const boardSavedList = getSavedItem('boardSavedList');
-  let indexes = getItemSessionStorage('boardListedNumber')
-  indexes = (indexes) ? indexes : Array(2).fill(boardListedNumber);
-  let lastIndex = indexes[1];
-  lastIndex = lastIndex + boardListedNumber;
+  let [firstIndex, lastIndex] = boardListedNumber;
+  const numberOfBoard = (Math.abs(firstIndex - lastIndex));
+  lastIndex = lastIndex + numberOfBoard;
   lastIndex = (lastIndex > boardSavedList.length) ? boardSavedList.length : lastIndex;
-  indexes = [Math.abs(lastIndex - boardListedNumber), lastIndex];
+  const indexes = [Math.abs(lastIndex - numberOfBoard), lastIndex];
 
-  saveItemSessionStorage('boardListedNumber', indexes);
+  setState({ boardListedNumber: indexes });
   return indexes;
-}
+};
 
 const calculatePreviousIndex = () => {
-  const boardListedNumber = numberOfBoardThatWillBeListed();
-  let indexes = getItemSessionStorage('boardListedNumber')
-  indexes = (indexes) ? indexes : Array(2).fill(boardListedNumber);
-  let lastIndex = indexes[1];
-  lastIndex = lastIndex - boardListedNumber;
-  lastIndex = (lastIndex < boardListedNumber) ? boardListedNumber : lastIndex;
-  indexes = [Math.abs(lastIndex - boardListedNumber), lastIndex];
+  const { boardListedNumber } = getItemSessionStorage('state');
+  let [firstIndex, lastIndex] = boardListedNumber;
+  const numberOfBoard = (Math.abs(firstIndex - lastIndex));
+  lastIndex = lastIndex - numberOfBoard;
+  lastIndex = (lastIndex < numberOfBoard) ? numberOfBoard : lastIndex;
+  const indexes = [Math.abs(lastIndex - numberOfBoard), lastIndex];
 
-  saveItemSessionStorage('boardListedNumber', indexes);
+  setState({ boardListedNumber: indexes });
   return indexes;
-}
+};
 
 const nextListOfBoard = () => {
-  const lastCurrentIndex = getItemSessionStorage('boardListedNumber')[1];
+  const { boardListedNumber: [_, lastCurrentIndex ] } = getItemSessionStorage('state');
   const boardSavedList = getSavedItem('boardSavedList');
 
   if (lastCurrentIndex !== boardSavedList.length) {
@@ -278,10 +292,10 @@ const nextListOfBoard = () => {
         .map((item) => createPreview(item, libraryButtons));
     }
   }
-}
+};
 
 const previousListOfBoard = () => {
-  const [ firstCurrentIndex ] = getItemSessionStorage('boardListedNumber');
+  const { boardListedNumber: [ firstCurrentIndex ] } = getItemSessionStorage('state');
   const boardSavedList = getSavedItem('boardSavedList');
   
   if (firstCurrentIndex) {
@@ -292,7 +306,7 @@ const previousListOfBoard = () => {
         .map((item) => createPreview(item, libraryButtons));
     }
   }
-}
+};
 
 const paletteContainerEvents = ({ target: { classList, id } }) => {
   selectColor(classList);
@@ -328,6 +342,7 @@ const events = () => {
 window.onload = () => {
   chargeBoard();
   colorAdd();
+  createState();
   listBoard();
   events();
 };
