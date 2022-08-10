@@ -86,9 +86,7 @@ main {
 }
 
 .nav {
-  border-bottom: 1px solid var(--nav-attributes-color);
   padding: 0 20px;
-  margin: 0 20px;
 }
 
 .nav-list {
@@ -266,6 +264,17 @@ main {
   gap: 10px;
 }
 
+#library-header {
+  align-items: center;
+  border-bottom: 1px solid var(--nav-attributes-color);
+  justify-content:flex-start;
+  gap: 100px;
+  margin: 0 20px;
+}
+
+/* #library-container {
+} */
+
 #boards-list {
   flex: 1 800px;
   gap: 10px;
@@ -274,9 +283,6 @@ main {
   max-width: 95%;
   padding: 15px;
 }
-
-/* #library-container {
-} */
 
 @media screen and ( min-width: 1000px ) {
   .container {
