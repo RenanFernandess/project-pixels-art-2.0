@@ -15,22 +15,6 @@ const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
 
 // -------------------------------------------------------------------------------------------------------------------------
-// generic functions
-
-const selected = () => document.querySelector('.selected');
-
-const saveItem = (name, item) => localStorage.setItem(name, (JSON.stringify(item)));
-
-const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
-
-const saveItemSessionStorage = (name, item) => sessionStorage.setItem(name, JSON.stringify(item));
-
-const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
-
-const convertNameToId = (name) => name.replace(/\s+/g, '-');
-
-// generic functions
-// --------------------------------------------------------------------------------------------------------------------------
 // state
 
 const numberOfBoardThatWillBeListed = () => {
@@ -40,7 +24,7 @@ const numberOfBoardThatWillBeListed = () => {
   number = (number <= 0) ? 1 : number;
   number = (number > numberOfBoard) ? numberOfBoard : number ;
 
-  return [number , numberOfBoard];
+  return [number , numberOfBoard, (Math.round(numberOfBoard / number))];
 };
 
 function createState() {
@@ -67,8 +51,43 @@ const setState = (object) => {
   console.log('state: ', state);
 }
 
+const orUpgradeStorage = (name) => {
+  if (name === 'boardSavedList') {
+    const { boardListedNumber: { firstIndex, lastIndex }} = getItemSessionStorage('state');
+    const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
+    setState({
+      boardListedNumber: {
+        firstIndex,
+        lastIndex: ((lastIndex > number) ? lastIndex : number),
+        number,
+        pageNumber: pages,
+      },
+      numberOfBoard,
+    })
+  }
+}
+
 // state
 // ------------------------------------------------------------------------------------------------------------------------------
+// generic functions
+
+const selected = () => document.querySelector('.selected');
+
+const saveItem = (name, item) => {
+  localStorage.setItem(name, (JSON.stringify(item)));
+  orUpgradeStorage(name);
+};
+
+const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
+
+const saveItemSessionStorage = (name, item) => sessionStorage.setItem(name, JSON.stringify(item));
+
+const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
+
+const convertNameToId = (name) => name.replace(/\s+/g, '-');
+
+// generic functions
+// --------------------------------------------------------------------------------------------------------------------------
 // color palet
 
 const colorGenerator = () => {
@@ -239,9 +258,9 @@ const createPreview = async ({ name, size, board }, callback) => {
 const listBoard = (boolean) => {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
-    const { boardListedNumber: { firstIndex, lastIndex } } = getItemSessionStorage('state');
+    const { boardListedNumber: { firstIndex, lastIndex, number } } = getItemSessionStorage('state');
     if (!boolean) boardSavedList.slice(firstIndex, lastIndex).map((item) => createPreview(item, libraryButtons));
-    if (boardsList.childElementCount < lastIndex) {
+    if (boardsList.childElementCount < number) {
       if (boolean) createPreview(boardSavedList[boardSavedList.length - 1], libraryButtons);
     }
   }
@@ -250,26 +269,31 @@ const listBoard = (boolean) => {
 const addsTheBoardToTheSavedBoardsList = () => {
   try {
     let boardSavedList = getSavedItem('boardSavedList');
-    const [_, numberOfBoard ] = numberOfBoardThatWillBeListed();
     boardSavedList = (boardSavedList) ? addTheBoardInformationToTheList(boardSavedList) : [];
     console.log(boardSavedList);
     saveItem('boardSavedList', boardSavedList);
-    setState({ numberOfBoard });
     listBoard(true);
   } catch (error) {
     console.log(error);
   }
 };
 
+const clearAndListBoard = () => {
+  boardsList.innerHTML = '';
+  listBoard()
+}
+
+const renderTrash = () => {
+  const { trash } = getItemSessionStorage('state');
+  boardsList.innerHTML = '';
+  trash.map((item) => createPreview(item, trashButtons));
+}
+
 const showTrash = () => {
   const { attributes: { name, name: { value } } } = boardsList;
   if (value !== 'trash') {
     name.value = 'trash';
-    const { trash } = getItemSessionStorage('state');
-    if (trash.length) {
-      boardsList.innerHTML = '';
-      trash.map((item) => createPreview(item, trashButtons));
-    }
+    renderTrash();
   }
 };
 
@@ -277,8 +301,7 @@ const showLibrary = () => {
   const { attributes: { name, name: { value } } } = boardsList;
   if (!value !== 'library') {
     name.value = 'library';
-    boardsList.innerHTML = '';
-    listBoard()
+    clearAndListBoard();
   }
 };
 
@@ -287,47 +310,42 @@ const showLibrary = () => {
 // library listing
 
 const calculateNextIndex = () => {
-  const { boardListedNumber: { lastIndex, number }, numberOfBoard } = getItemSessionStorage('state');
+  const { boardListedNumber: { lastIndex, number, pageNumber }, numberOfBoard } = getItemSessionStorage('state');
   const newlastIndex = lastIndex + number;
   const boardListedNumber = {
     firstIndex: lastIndex,
     lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
     number,
+    pageNumber,
   };
   setState({ boardListedNumber });
-  console.log(boardListedNumber);
 };
 
 const calculatePreviousIndex = () => {
-  const { boardListedNumber: { firstIndex, number } } = getItemSessionStorage('state');
+  const { boardListedNumber: { firstIndex, number, pageNumber } } = getItemSessionStorage('state');
   const newFirstIndex = firstIndex - number;
   const boardListedNumber = {
     firstIndex: ((newFirstIndex < 0) ? 0 : newFirstIndex),
     lastIndex: firstIndex,
     number,
+    pageNumber,
   };
   setState({ boardListedNumber });
 };
 
 const nextListOfBoard = () => {
   const { boardListedNumber: { lastIndex }, numberOfBoard } = getItemSessionStorage('state');
-  const boardSavedList = getSavedItem('boardSavedList');
-
   if (lastIndex !== numberOfBoard) {
     calculateNextIndex();
-    boardsList.innerHTML = '';
-    listBoard();
+    clearAndListBoard();
   }
 };
 
 const previousListOfBoard = () => {
   const { boardListedNumber: { firstIndex: firstCurrentIndex } } = getItemSessionStorage('state');
-  const boardSavedList = getSavedItem('boardSavedList');
-
   if (firstCurrentIndex) {
     calculatePreviousIndex();
-    boardsList.innerHTML = '';
-    listBoard();
+    clearAndListBoard();
   }
 };
 
@@ -355,36 +373,21 @@ const navOpitionsEvents = ({ target }) => {
 };
 
 const adjustList = () => {
-  const state = getItemSessionStorage('state');
-  if (state) {
-    const [number , numberOfBoard] = numberOfBoardThatWillBeListed();
+  const { boardListedNumber: { pageNumber } } = getItemSessionStorage('state');
+  const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
+  if (pages !== pageNumber) {
     const newState = {
       boardListedNumber: {
         firstIndex: 0,
         lastIndex: number,
-        pageNumber: (Math.round(numberOfBoard / number)),
         number,
+        pageNumber: pages,
       },
       numberOfBoard,
     };
     setState(newState);
-    boardsList.innerHTML = '';
-    listBoard();
+    clearAndListBoard();
   }
-}
-
-const storageEvent = (event) => {
-  console.log(event);
-  console.log('ok');
-  const [number , numberOfBoard] = numberOfBoardThatWillBeListed();
-  setState({
-    boardListedNumber: {
-      firstIndex: 0,
-      lastIndex: number,
-      number,
-    },
-    numberOfBoard,
-  })
 }
 
 const events = () => {
@@ -397,8 +400,7 @@ const events = () => {
   buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
   libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
-  window.addEventListener('resize', adjustList)
-  // window.addEventListener('storage', storageEvent);
+  window.addEventListener('resize', adjustList);
 }
 
 window.onload = () => {

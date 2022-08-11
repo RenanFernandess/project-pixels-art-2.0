@@ -279,8 +279,9 @@ main {
   flex: 1 800px;
   gap: 10px;
   justify-content: center;
-  overflow-x: auto;
   max-width: 95%;
+  min-height: 280px;
+  overflow-x: auto;
   padding: 15px;
 }
 
