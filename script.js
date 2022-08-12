@@ -363,17 +363,11 @@ const adjustList = () => {
   const { boardListedNumber: { firstIndex, pageNumber } } = getItemSessionStorage('state');
   const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
   if (pages !== pageNumber) {
-    // test
-    const currentPage = Array(pages).fill(number).reduce((acc, number) => {
-      if (acc < firstIndex) {
-        return acc + number;
-      };
-      return acc;
-    }, 0);
+    const currentPage = Math.round((firstIndex + 1) / number);
     const newlastIndex = firstIndex + number;
     const newState = {
       boardListedNumber: {
-        currentPage,
+        currentPage: (currentPage < 1) ? 1 : currentPage,
         firstIndex,
         lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
         number,
