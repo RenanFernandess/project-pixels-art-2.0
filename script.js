@@ -32,6 +32,7 @@ function createState() {
   const [number , numberOfBoard] = numberOfBoardThatWillBeListed();
   state = ((state) ? state : {
     boardListedNumber: {
+      currentPage: 1,
       firstIndex: 0,
       lastIndex: number,
       pageNumber: (Math.round(numberOfBoard / number)),
@@ -53,10 +54,11 @@ const setState = (object) => {
 
 const orUpgradeStorage = (name) => {
   if (name === 'boardSavedList') {
-    const { boardListedNumber: { firstIndex, lastIndex }} = getItemSessionStorage('state');
+    const { boardListedNumber: { currentPage, firstIndex, lastIndex }} = getItemSessionStorage('state');
     const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
     setState({
       boardListedNumber: {
+        currentPage,
         firstIndex,
         lastIndex: ((lastIndex > number) ? lastIndex : number),
         number,
@@ -310,11 +312,16 @@ const showLibrary = () => {
 // library listing
 
 const calculateNextIndex = () => {
-  const { boardListedNumber: { lastIndex, number, pageNumber }, numberOfBoard } = getItemSessionStorage('state');
-  const newlastIndex = lastIndex + number;
+  const { boardListedNumber: { currentPage, lastIndex }} = getItemSessionStorage('state');
+  const [number , numberOfBoard, pageNumber] = numberOfBoardThatWillBeListed();
+  const nextPage = currentPage + 1;
+  let newlastIndex = (nextPage === pageNumber) ? numberOfBoard : lastIndex + number;
+  newlastIndex = (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex
+  const firstIndex = (newlastIndex - number);
   const boardListedNumber = {
-    firstIndex: lastIndex,
-    lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
+    currentPage: nextPage,
+    firstIndex: (firstIndex < 0) ? 0 : firstIndex,
+    lastIndex: newlastIndex,
     number,
     pageNumber,
   };
@@ -322,11 +329,14 @@ const calculateNextIndex = () => {
 };
 
 const calculatePreviousIndex = () => {
-  const { boardListedNumber: { firstIndex, number, pageNumber } } = getItemSessionStorage('state');
-  const newFirstIndex = firstIndex - number;
+  const { boardListedNumber: { currentPage, firstIndex, number, pageNumber } } = getItemSessionStorage('state');
+  const previousPage = (firstIndex - number > 0) ? currentPage - 1 : 1;
+  console.log(previousPage);
+  const nextFirstIndex = (previousPage === 1) ? 0 : firstIndex - number;
   const boardListedNumber = {
-    firstIndex: ((newFirstIndex < 0) ? 0 : newFirstIndex),
-    lastIndex: firstIndex,
+    currentPage: previousPage,
+    firstIndex: ((nextFirstIndex < 0) ? 0 : nextFirstIndex),
+    lastIndex: (previousPage === 1) ? number : firstIndex,
     number,
     pageNumber,
   };
@@ -348,6 +358,32 @@ const previousListOfBoard = () => {
     clearAndListBoard();
   }
 };
+
+const adjustList = () => {
+  const { boardListedNumber: { firstIndex, pageNumber } } = getItemSessionStorage('state');
+  const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
+  if (pages !== pageNumber) {
+    const currentPage = Array(pages).fill(number).reduce((acc, number) => {
+      if (acc < firstIndex) {
+        return acc + number;
+      };
+      return acc;
+    }, 0);
+    const newlastIndex = firstIndex + number;
+    const newState = {
+      boardListedNumber: {
+        currentPage,
+        firstIndex,
+        lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
+        number,
+        pageNumber: pages,
+      },
+      numberOfBoard,
+    };
+    setState(newState);
+    clearAndListBoard();
+  }
+}
 
 // library listing
 // -------------------------------------------------------------------------------------------------------------------------------
@@ -371,24 +407,6 @@ const navOpitionsEvents = ({ target }) => {
   if (target.id === 'trash') showTrash();
   if (target.id === 'library') showLibrary();
 };
-
-const adjustList = () => {
-  const { boardListedNumber: { pageNumber } } = getItemSessionStorage('state');
-  const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
-  if (pages !== pageNumber) {
-    const newState = {
-      boardListedNumber: {
-        firstIndex: 0,
-        lastIndex: number,
-        number,
-        pageNumber: pages,
-      },
-      numberOfBoard,
-    };
-    setState(newState);
-    clearAndListBoard();
-  }
-}
 
 const events = () => {
   paletteContainer.addEventListener('click', paletteContainerEvents);
