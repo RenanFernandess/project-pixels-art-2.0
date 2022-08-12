@@ -360,11 +360,13 @@ const previousListOfBoard = () => {
 };
 
 const adjustList = () => {
-  const { boardListedNumber: { firstIndex, pageNumber } } = getItemSessionStorage('state');
+  let { boardListedNumber: { firstIndex, lastIndex, pageNumber } } = getItemSessionStorage('state');
   const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
   if (pages !== pageNumber) {
+    let newlastIndex = lastIndex; 
     const currentPage = Math.round((firstIndex + 1) / number);
-    const newlastIndex = firstIndex + number;
+    if (lastIndex === numberOfBoard) firstIndex = lastIndex - number;
+    else newlastIndex = firstIndex + number;
     const newState = {
       boardListedNumber: {
         currentPage: (currentPage < 1) ? 1 : currentPage,
