@@ -17,7 +17,7 @@ const navOpitions = document.getElementById('nav-opitions');
 // -------------------------------------------------------------------------------------------------------------------------
 // state
 
-const numberOfBoardThatWillBeListed = () => {
+function numberOfBoardThatWillBeListed() {
   let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
   const boardSavedList = getSavedItem('boardSavedList');
   const numberOfBoard = (boardSavedList) ? boardSavedList.length : 0;
@@ -31,7 +31,7 @@ function createState() {
   let state = getItemSessionStorage('state');
   const [number , numberOfBoard] = numberOfBoardThatWillBeListed();
   state = ((state) ? state : {
-    boardListedNumber: {
+    libraryState: {
       currentPage: 1,
       firstIndex: 0,
       lastIndex: number,
@@ -45,19 +45,19 @@ function createState() {
   saveItemSessionStorage('state', state);
 }
 
-const setState = (object) => {
+function setState(object) {
   const state = getItemSessionStorage('state');
   const newState = Object.assign(state, object);
   saveItemSessionStorage('state', newState);
   console.log('state: ', state);
 }
 
-const orUpgradeStorage = (name) => {
+function orUpgradeStorage(name) {
   if (name === 'boardSavedList') {
-    const { boardListedNumber: { currentPage, firstIndex, lastIndex }} = getItemSessionStorage('state');
+    const { libraryState: { currentPage, firstIndex, lastIndex }} = getItemSessionStorage('state');
     const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
     setState({
-      boardListedNumber: {
+      libraryState: {
         currentPage,
         firstIndex,
         lastIndex: ((lastIndex > number) ? lastIndex : number),
@@ -66,6 +66,7 @@ const orUpgradeStorage = (name) => {
       },
       numberOfBoard,
     })
+    // listBoard(true);
   }
 }
 
@@ -75,14 +76,14 @@ const orUpgradeStorage = (name) => {
 
 const selected = () => document.querySelector('.selected');
 
-const saveItem = (name, item) => {
+function saveItem(name, item) {
   localStorage.setItem(name, (JSON.stringify(item)));
   orUpgradeStorage(name);
 };
 
 const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
 
-const saveItemSessionStorage = (name, item) => sessionStorage.setItem(name, JSON.stringify(item));
+function saveItemSessionStorage(name, item) { sessionStorage.setItem(name, JSON.stringify(item)); };
 
 const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
 
@@ -257,13 +258,13 @@ const createPreview = async ({ name, size, board }, callback) => {
   boardsList.innerHTML += preview;
 }
 
-const listBoard = (boolean) => {
+function listBoard(boolean) {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
-    const { boardListedNumber: { firstIndex, lastIndex, number } } = getItemSessionStorage('state');
+    const { libraryState: { firstIndex, lastIndex, number } } = getItemSessionStorage('state');
     if (!boolean) boardSavedList.slice(firstIndex, lastIndex).map((item) => createPreview(item, libraryButtons));
     if (boardsList.childElementCount < number) {
-      if (boolean) createPreview(boardSavedList[boardSavedList.length - 1], libraryButtons);
+      if (boolean) createPreview(boardSavedList[lastIndex], libraryButtons);
     }
   }
 };
@@ -271,7 +272,8 @@ const listBoard = (boolean) => {
 const addsTheBoardToTheSavedBoardsList = () => {
   try {
     let boardSavedList = getSavedItem('boardSavedList');
-    boardSavedList = (boardSavedList) ? addTheBoardInformationToTheList(boardSavedList) : [];
+    boardSavedList = (boardSavedList) ? boardSavedList : [];
+    boardSavedList = addTheBoardInformationToTheList(boardSavedList);
     console.log(boardSavedList);
     saveItem('boardSavedList', boardSavedList);
     listBoard(true);
@@ -280,7 +282,7 @@ const addsTheBoardToTheSavedBoardsList = () => {
   }
 };
 
-const clearAndListBoard = () => {
+function clearAndListBoard() {
   boardsList.innerHTML = '';
   listBoard()
 }
@@ -311,74 +313,76 @@ const showLibrary = () => {
 // --------------------------------------------------------------------------------------------------------------------------
 // library listing
 
-const calculateNextIndex = () => {
-  const { boardListedNumber: { currentPage, lastIndex }} = getItemSessionStorage('state');
-  const [number , numberOfBoard, pageNumber] = numberOfBoardThatWillBeListed();
+const calculateNextIndex = ({ libraryState, numberOfBoard }) => {
+  const { currentPage, lastIndex, number, pageNumber } = libraryState;
   const nextPage = currentPage + 1;
   let newlastIndex = (nextPage === pageNumber) ? numberOfBoard : lastIndex + number;
   newlastIndex = (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex
   const firstIndex = (newlastIndex - number);
-  const boardListedNumber = {
+  const boardListed = {
     currentPage: nextPage,
     firstIndex: (firstIndex < 0) ? 0 : firstIndex,
     lastIndex: newlastIndex,
     number,
     pageNumber,
   };
-  setState({ boardListedNumber });
+  setState({ libraryState: boardListed });
 };
 
-const calculatePreviousIndex = () => {
-  const { boardListedNumber: { currentPage, firstIndex, number, pageNumber } } = getItemSessionStorage('state');
+const calculatePreviousIndex = ({ libraryState: { currentPage, firstIndex, number, pageNumber } }) => {
   const previousPage = (firstIndex - number > 0) ? currentPage - 1 : 1;
   console.log(previousPage);
   const nextFirstIndex = (previousPage === 1) ? 0 : firstIndex - number;
-  const boardListedNumber = {
+  const boardListed = {
     currentPage: previousPage,
     firstIndex: ((nextFirstIndex < 0) ? 0 : nextFirstIndex),
     lastIndex: (previousPage === 1) ? number : firstIndex,
     number,
     pageNumber,
   };
-  setState({ boardListedNumber });
+  setState({ libraryState: boardListed });
 };
 
 const nextListOfBoard = () => {
-  const { boardListedNumber: { lastIndex }, numberOfBoard } = getItemSessionStorage('state');
+  const state = getItemSessionStorage('state');
+  const { libraryState: { lastIndex }, numberOfBoard } = state;
   if (lastIndex !== numberOfBoard) {
-    calculateNextIndex();
+    calculateNextIndex(state);
     clearAndListBoard();
   }
 };
 
 const previousListOfBoard = () => {
-  const { boardListedNumber: { firstIndex: firstCurrentIndex } } = getItemSessionStorage('state');
-  if (firstCurrentIndex) {
-    calculatePreviousIndex();
+  const state = getItemSessionStorage('state');
+  const { libraryState: { firstIndex } } = state;
+  if (firstIndex) {
+    calculatePreviousIndex(state);
     clearAndListBoard();
   }
 };
 
 const adjustList = () => {
-  let { boardListedNumber: { firstIndex, lastIndex, pageNumber } } = getItemSessionStorage('state');
+  let { libraryState: { firstIndex, lastIndex, pageNumber } } = getItemSessionStorage('state');
   const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
-  if (pages !== pageNumber) {
-    let newlastIndex = lastIndex; 
-    const currentPage = Math.round((firstIndex + 1) / number);
-    if (lastIndex === numberOfBoard) firstIndex = lastIndex - number;
-    else newlastIndex = firstIndex + number;
-    const newState = {
-      boardListedNumber: {
-        currentPage: (currentPage < 1) ? 1 : currentPage,
-        firstIndex,
-        lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
-        number,
-        pageNumber: pages,
-      },
-      numberOfBoard,
-    };
-    setState(newState);
-    clearAndListBoard();
+  if (numberOfBoard) {
+    if (pages !== pageNumber) {
+      let newlastIndex = lastIndex;
+      const currentPage = Math.round((firstIndex + 1) / number);
+      if (lastIndex === numberOfBoard) firstIndex = lastIndex - number;
+      else newlastIndex = firstIndex + number;
+      const newState = {
+        libraryState: {
+          currentPage: (currentPage < 1) ? 1 : currentPage,
+          firstIndex,
+          lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
+          number,
+          pageNumber: pages,
+        },
+        numberOfBoard,
+      };
+      setState(newState);
+      clearAndListBoard();
+    }
   }
 }
 
