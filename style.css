@@ -42,6 +42,7 @@
 body {
   background-color: var(--main-background-color);
   color: var(--main-text-color);
+  font-size: 16px;
 }
 
 header {
@@ -80,6 +81,11 @@ main {
   justify-content: center;
 }
 
+.column {
+  flex-direction: column;
+  gap: 5px;
+}
+
 .display-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -110,6 +116,17 @@ main {
 
 .nav-list li:hover {
   color: rgb(21, 21, 21);
+}
+
+.input-text {
+  border: none;
+  border-radius: 5px;
+  color: var(--main-text-color);
+  font-size: 1rem;
+  font-weight: 600;
+  outline: 0;
+  padding: 6px 10px;
+  width: 30vw;
 }
 
 .buttons {
@@ -255,6 +272,23 @@ main {
   width: 100%;
 }
 
+#board-title {
+  height: 80px;
+  width: 100%;
+}
+
+#board-name {
+  background-color: var(--containers-background-color);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#error-mesage {
+  color: rgb(255, 89, 89);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 #palette-container {
   flex-flow: row wrap;
   gap: 20px;
@@ -270,6 +304,11 @@ main {
   justify-content:flex-start;
   gap: 100px;
   margin: 0 20px;
+}
+
+#search-board {
+  background-color: var(--items-background-color);
+  color: var(--main-text-color);
 }
 
 /* #library-container {

@@ -44,12 +44,15 @@
       <button class="buttons danger-button" id="clear-board">LIMPAR</button>
       <button class="buttons success-button" id="save-board">SALVAR</button>
       <div>
-        <input type="text" name="board Name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro"
-          id="board-name">
         <button class="buttons success-button" id="save-board-as">SALVAR COMO</button>
       </div>
     </section>
-    <section class="container">
+    <section class="container display column">
+      <div class="display column" id="board-title">
+        <input class="input-text" type="text" name="board Name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro"
+        id="board-name">
+        <p id="error-mesage"></p>
+      </div>
       <div id="pixel-board">
         <div class="display">
           <div class="pixel"></div>
@@ -98,7 +101,7 @@
           </ul>
         </nav>
         <div>
-          <input type="text" id="search-board" placeholder="Pesquisar">
+          <input class="input-text" type="text" id="search-board" placeholder="Pesquisar quadro">
         </div>
       </div>
       <div class="display" id="library-container">
