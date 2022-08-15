@@ -15,62 +15,6 @@ const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
 const paragraphMessage = document.getElementById('error-mesage');
 
-// -------------------------------------------------------------------------------------------------------------------------
-// state
-
-function numberOfBoardThatWillBeListed() {
-  let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
-  const boardSavedList = getSavedItem('boardSavedList');
-  const numberOfBoard = (boardSavedList) ? boardSavedList.length : 0;
-  number = (number <= 0) ? 1 : number;
-  number = (number > numberOfBoard) ? numberOfBoard : number ;
-
-  return [number , numberOfBoard, (Math.round(numberOfBoard / number))];
-};
-
-function createState() {
-  let state = getItemSessionStorage('state');
-  const [number , numberOfBoard] = numberOfBoardThatWillBeListed();
-  state = ((state) ? state : {
-    libraryState: {
-      currentPage: 1,
-      firstIndex: 0,
-      lastIndex: number,
-      pageNumber: (Math.round(numberOfBoard / number)),
-      number,
-    },
-    trash: [],
-    numberOfBoard,
-  });
-  console.log('state: ', state);
-  saveItemSessionStorage('state', state);
-}
-
-function setState(object) {
-  const state = getItemSessionStorage('state');
-  const newState = Object.assign(state, object);
-  saveItemSessionStorage('state', newState);
-  console.log('state: ', state);
-}
-
-function orUpgradeStorage(name) {
-  if (name === 'boardSavedList') {
-    const { libraryState: { currentPage, firstIndex, lastIndex }} = getItemSessionStorage('state');
-    const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
-    setState({
-      libraryState: {
-        currentPage,
-        firstIndex,
-        lastIndex: ((lastIndex > number) ? lastIndex : number),
-        number,
-        pageNumber: pages,
-      },
-      numberOfBoard,
-    })
-  }
-}
-
-// state
 // ------------------------------------------------------------------------------------------------------------------------------
 // generic functions
 
@@ -88,6 +32,64 @@ function saveItemSessionStorage(name, item) { sessionStorage.setItem(name, JSON.
 const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
 
 // generic functions
+// -------------------------------------------------------------------------------------------------------------------------
+// state
+
+function numberOfBoardThatWillBeListed() {
+  let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
+  const boardSavedList = getSavedItem('boardSavedList');
+  const numberOfBoard = (boardSavedList) ? boardSavedList.length : 0;
+  number = (number <= 0) ? 1 : number;
+  number = (number > numberOfBoard) ? numberOfBoard : number ;
+
+  return [number , numberOfBoard, (Math.round(numberOfBoard / number))];
+};
+
+const getState = () => getItemSessionStorage('state');
+
+function createState() {
+  let state = getState();
+  const [number , numberOfBoard] = numberOfBoardThatWillBeListed();
+  state = ((state) ? state : {
+    libraryState: {
+      currentPage: 1,
+      firstIndex: 0,
+      lastIndex: number,
+      pageNumber: (Math.round(numberOfBoard / number)),
+      number,
+    },
+    trash: [],
+    numberOfBoard,
+  });
+  console.log('state: ', state);
+  saveItemSessionStorage('state', state);
+}
+
+function setState(object) {
+  const state = getState();
+  const newState = Object.assign(state, object);
+  saveItemSessionStorage('state', newState);
+  console.log('state: ', state);
+}
+
+function orUpgradeStorage(name) {
+  if (name === 'boardSavedList') {
+    const { libraryState: { currentPage, firstIndex, lastIndex }} = getState();
+    const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
+    setState({
+      libraryState: {
+        currentPage,
+        firstIndex,
+        lastIndex: ((lastIndex > number) ? lastIndex : number),
+        number,
+        pageNumber: pages,
+      },
+      numberOfBoard,
+    })
+  }
+}
+
+// state
 // --------------------------------------------------------------------------------------------------------------------------
 // color palet
 
@@ -199,6 +201,8 @@ function addTheBoardInformationToTheList(array) {
   const id = generateId(name, size, boardNumber);
   
   const board = {
+    author: '',
+    date: '',
     name,
     size,
     boardNumber,
@@ -219,7 +223,7 @@ const removePreviewBoard = (id) => {
 };
 
 const moveToTrash = (board) => {
-  const { trash } = getItemSessionStorage('state');
+  const { trash } = getState();
   setState({ trash: [...trash, board] });
 }
 
@@ -234,14 +238,14 @@ const removeSavedBoard = ({ attributes }) => {
 
 const deleteTrashItem = ({ attributes }) => {
   const boardId = attributes['data-id'].value;
-  const { trash } = getItemSessionStorage('state');
+  const { trash } = getState();
   setState({ trash: trash.filter(({ id }) => boardId !== id) });
   removePreviewBoard(boardId);
 }
 
 const restoreTrashBoard = ({ attributes }) => {
   const boardId = attributes['data-id'].value;
-  const { trash } = getItemSessionStorage('state');
+  const { trash } = getState();
   const boardSavedList = getSavedItem('boardSavedList');
   const newBoardList = [...boardSavedList, trash.find(({ id }) => id === boardId)];
   setState({ trash: trash.filter(({ id }) => boardId !== id) });
@@ -276,7 +280,7 @@ const createPreview = ({ name, size, board, id }, callback) => {
 function listBoard(boolean) {
   const boardSavedList = getSavedItem('boardSavedList');
   if (boardSavedList) {
-    const { libraryState: { firstIndex, lastIndex, number } } = getItemSessionStorage('state');
+    const { libraryState: { firstIndex, lastIndex, number } } = getState();
     if (!boolean) boardSavedList.slice(firstIndex, lastIndex).map((item) => createPreview(item, libraryButtons));
     if (boardsList.childElementCount < number) {
       if (boolean) createPreview(boardSavedList[lastIndex - 1], libraryButtons);
@@ -304,7 +308,7 @@ function clearAndListBoard() {
 }
 
 const renderTrash = () => {
-  const { trash } = getItemSessionStorage('state');
+  const { trash } = getState();
   boardsList.innerHTML = '';
   trash.map((item) => createPreview(item, trashButtons));
 }
@@ -360,7 +364,7 @@ const calculatePreviousIndex = ({ libraryState: { currentPage, firstIndex, numbe
 };
 
 const nextListOfBoard = () => {
-  const state = getItemSessionStorage('state');
+  const state = getState();
   const { libraryState: { lastIndex }, numberOfBoard } = state;
   if (lastIndex !== numberOfBoard) {
     calculateNextIndex(state);
@@ -369,7 +373,7 @@ const nextListOfBoard = () => {
 };
 
 const previousListOfBoard = () => {
-  const state = getItemSessionStorage('state');
+  const state = getState();
   const { libraryState: { firstIndex } } = state;
   if (firstIndex) {
     calculatePreviousIndex(state);
@@ -378,7 +382,7 @@ const previousListOfBoard = () => {
 };
 
 const adjustList = () => {
-  let { libraryState: { firstIndex, lastIndex, pageNumber } } = getItemSessionStorage('state');
+  let { libraryState: { firstIndex, lastIndex, pageNumber } } = getState();
   const [number , numberOfBoard, pages] = numberOfBoardThatWillBeListed();
   if (numberOfBoard) {
     if (pages !== pageNumber) {
