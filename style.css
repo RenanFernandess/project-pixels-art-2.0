@@ -142,6 +142,10 @@ main {
   transition: 5ms;
 }
 
+.buttons:active {
+  transform: scale(1.04);
+}
+
 .long-button {
   background-color: unset;
   border-radius: 5px;
@@ -223,8 +227,7 @@ main {
 
 .selected {
   box-shadow: 2px 2px 8px rgb(26, 26, 26);
-  height: 41px;
-  width: 41px;
+  transform: scale(1.03);
 }
 
 .preview {
