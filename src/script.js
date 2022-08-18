@@ -21,17 +21,6 @@ const searchBoardInput = document.getElementById('search-board');
 
 const selected = () => document.querySelector('.selected');
 
-function saveItem(name, item) {
-  localStorage.setItem(name, (JSON.stringify(item)));
-  orUpgradeStorage(name);
-}
-
-const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
-
-function saveItemSessionStorage(name, item) { sessionStorage.setItem(name, JSON.stringify(item)); }
-
-const getItemSessionStorage = (name) => JSON.parse(sessionStorage.getItem(name));
-
 // generic functions
 // -------------------------------------------------------------------------------------------------------------------------
 // state
