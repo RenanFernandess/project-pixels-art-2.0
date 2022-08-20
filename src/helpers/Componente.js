@@ -1,4 +1,4 @@
-class StateControl {
+class Componente {
   constructor() {
     this.state = {};
   }
@@ -10,9 +10,10 @@ class StateControl {
     console.log('state: ', this.state);
     saveItemSessionStorage('state', this.state);
     callback();
+    this.render();
   }
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { StateControl };
+  module.exports = { Componente };
 }
