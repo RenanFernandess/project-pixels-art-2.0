@@ -1,3 +1,4 @@
+const boardsList = document.getElementById('boards-list');
 class Componente {
   constructor() {
     this.state = {};
@@ -22,6 +23,18 @@ class Componente {
       pagesNumber: 0,
       currentPage: 1,
     };
+    this.numberOfBoardThatWillBeListed();
+  }
+
+  numberOfBoardThatWillBeListed() {
+    let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
+    const numberOfBoard = (this.boardSavedList) ? this.boardSavedList.length : 0;
+    number = (number <= 0) ? 1 : number;
+    this.setState({
+      number: (number > numberOfBoard) ? numberOfBoard : number,
+      numberOfBoard,
+      pagesNumber: (Math.round(numberOfBoard / number)),
+    });
   }
 
   calculateNextIndex() {

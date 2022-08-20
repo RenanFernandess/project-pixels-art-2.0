@@ -1,31 +1,35 @@
-class RenderLibrary extends StateControl {
+class RenderLibrary extends Componente {
   constructor() {
     super();
 
     this.state = {};
-    this.itsTrash = false;
-    this.trash = [];
     this.libraryState = {};
     this.currentBoard = {};
     this.saveBoard = new SaveBoard();
     this.boardSavedList = this.saveBoard.getBoardSavedList();
-
+    this.createListingState();
     this.getSavedState();
   }
 
-  test() {
-    this.setState({ nome: 'test' });
-  }
-
-  testando() {
-    console.log(this.state);
-  }
-
-  renderList() {
-    this.boardSavedList.forEach((board) => {
-      boardsList.innerHTML += new CreatePreview(board);
+  numberOfBoardThatWillBeListed() {
+    let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
+    const numberOfBoard = (this.boardSavedList) ? this.boardSavedList.length : 0;
+    number = (number <= 0) ? 1 : number;
+    this.setState({
+      number: (number > numberOfBoard) ? numberOfBoard : number,
+      numberOfBoard,
+      pagesNumber: (Math.round(numberOfBoard / number)),
     });
   }
+  // renderList() {
+  //   this.boardSavedList.forEach((board) => {
+  //     boardsList.innerHTML += new CreatePreview(board);
+  //   });
+  // }
+
+  // render() {
+
+  // }
 }
 
 if (typeof module !== 'undefined') {
