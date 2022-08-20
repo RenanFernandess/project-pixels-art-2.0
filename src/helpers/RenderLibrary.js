@@ -11,9 +11,9 @@ class RenderLibrary extends Componente {
     this.getSavedState();
   }
 
-  numberOfBoardThatWillBeListed() {
-    let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
-    const numberOfBoard = (this.boardSavedList) ? this.boardSavedList.length : 0;
+  numberOfBoardThatWillBeListed(element, list) {
+    let number = (Math.floor(element.offsetWidth / 200) - 1);
+    const numberOfBoard = list.length;
     number = (number <= 0) ? 1 : number;
     this.setState({
       number: (number > numberOfBoard) ? numberOfBoard : number,
