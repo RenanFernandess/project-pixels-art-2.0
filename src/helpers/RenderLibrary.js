@@ -9,17 +9,16 @@ class RenderLibrary extends Componente {
     this.boardSavedList = this.saveBoard.getBoardSavedList();
     this.createListingState();
     this.getSavedState();
+    this.numberOfBoardThatWillBeListed(boardsList, this.boardSavedList);
   }
 
-  // renderList() {
-  //   this.boardSavedList.forEach((board) => {
-  //     boardsList.innerHTML += new CreatePreview(board);
-  //   });
-  // }
+  render() {
+    const { firstIndex, lastIndex } = this.state;
 
-  // render() {
-
-  // }
+    this.boardSavedList.slice(firstIndex, lastIndex).forEach((board) => {
+      boardsList.innerHTML += new CreatePreview(board);
+    });
+  }
 }
 
 if (typeof module !== 'undefined') {
