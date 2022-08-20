@@ -1,7 +1,7 @@
 const paletteContainer = document.getElementById('palette-container');
-const colorPalette = document.getElementById('color-palette');
+// const colorPalette = document.getElementById('color-palette');
 const colors = document.getElementsByClassName('color');
-const pixelBoard = document.getElementById('pixel-board');
+// const pixelBoard = document.getElementById('pixel-board');
 const buttonClear = document.getElementById('clear-board');
 const colorSelector = document.getElementById('box-new-color');
 const inputColor = document.getElementById('new-color');
@@ -9,12 +9,12 @@ const buttonSave = document.getElementById('save-board');
 const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
-const inputBoardName = document.getElementById('board-name');
-const boardsList = document.getElementById('boards-list');
+// const inputBoardName = document.getElementById('board-name');
+// const boardsList = document.getElementById('boards-list');
 const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
-const paragraphMessage = document.getElementById('error-mesage');
-const searchBoardInput = document.getElementById('search-board');
+// const paragraphMessage = document.getElementById('error-mesage');
+// const searchBoardInput = document.getElementById('search-board');
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // generic functions
@@ -62,7 +62,7 @@ function setState(object) {
   console.log('state: ', state);
 }
 
-export default function orUpgradeStorage(name) {
+function orUpgradeStorage(name) {
   if (name === 'boardSavedList') {
     const { libraryState: { currentPage, firstIndex, lastIndex } } = getState();
     const [number, numberOfBoard, pages] = numberOfBoardThatWillBeListed();
@@ -100,7 +100,7 @@ const selectColor = (classList) => {
   }
 };
 
-const colorSelectorAddcolor = (value) => colorSelector.style.background = value;
+const colorSelectorAddcolor = (value) => { colorSelector.style.background = value; };
 
 const selectedAddNewColor = (value) => {
   const { style } = selected();
@@ -124,10 +124,10 @@ const colored = ({ target: { classList, style } }) => {
 
 const clearBoard = () => {
   const pixels = document.querySelectorAll('div#pixel-board .pixel');
-  [...pixels].map(({ style }) => { style.backgroundColor = 'white'; });
+  [...pixels].forEach(({ style }) => { style.backgroundColor = 'white'; });
 };
 
-const saveBoard = () => {
+const saveCurrentBoard = () => {
   const board = pixelBoard.innerHTML;
   saveItem('board', board);
 };
@@ -157,7 +157,8 @@ const createPixelBoard = () => {
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
 
-// const board = new Board();
+// const saveBoard = new SaveBoard();
+const renderLibrary = new RenderLibrary();
 
 // const generateId = (name, size, boardNumber) => {
 //   const number = Math.round(Math.random() * 999);
@@ -205,81 +206,81 @@ const createPixelBoard = () => {
 //   return [...array, board];
 // };
 
-const AddPixelBoard = ({ attributes }) => {
-  const id = attributes['data-id'].value;
-  const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
-  pixelBoard.innerHTML = board;
-};
+// const AddPixelBoard = ({ attributes }) => {
+//   const id = attributes['data-id'].value;
+//   const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
+//   pixelBoard.innerHTML = board;
+// };
 
-const removePreviewBoard = (id) => {
-  document.getElementById(id).remove();
-};
+// const removePreviewBoard = (id) => {
+//   document.getElementById(id).remove();
+// };
 
-const moveToTrash = (board) => {
-  const { trash } = getState();
-  setState({ trash: [...trash, board] });
-};
+// const moveToTrash = (board) => {
+//   const { trash } = getState();
+//   setState({ trash: [...trash, board] });
+// };
 
-const removeSavedBoard = ({ attributes }) => {
-  const boardId = attributes['data-id'].value;
-  let boardSavedList = getSavedItem('boardSavedList');
-  moveToTrash(boardSavedList.find(({ id }) => id === boardId));
-  boardSavedList = boardSavedList.filter(({ id }) => boardId !== id);
-  saveItem('boardSavedList', boardSavedList);
-  removePreviewBoard(boardId);
-};
+// const removeSavedBoard = ({ attributes }) => {
+//   const boardId = attributes['data-id'].value;
+//   let boardSavedList = getSavedItem('boardSavedList');
+//   moveToTrash(boardSavedList.find(({ id }) => id === boardId));
+//   boardSavedList = boardSavedList.filter(({ id }) => boardId !== id);
+//   saveItem('boardSavedList', boardSavedList);
+//   removePreviewBoard(boardId);
+// };
 
-const deleteTrashItem = ({ attributes }) => {
-  const boardId = attributes['data-id'].value;
-  const { trash } = getState();
-  setState({ trash: trash.filter(({ id }) => boardId !== id) });
-  removePreviewBoard(boardId);
-};
+// const deleteTrashItem = ({ attributes }) => {
+//   const boardId = attributes['data-id'].value;
+//   const { trash } = getState();
+//   setState({ trash: trash.filter(({ id }) => boardId !== id) });
+//   removePreviewBoard(boardId);
+// };
 
-const restoreTrashBoard = ({ attributes }) => {
-  const boardId = attributes['data-id'].value;
-  const { trash } = getState();
-  const boardSavedList = getSavedItem('boardSavedList');
-  const newBoardList = [...boardSavedList, trash.find(({ id }) => id === boardId)];
-  setState({ trash: trash.filter(({ id }) => boardId !== id) });
-  saveItem('boardSavedList', newBoardList);
-  removePreviewBoard(boardId);
-};
+// const restoreTrashBoard = ({ attributes }) => {
+//   const boardId = attributes['data-id'].value;
+//   const { trash } = getState();
+//   const boardSavedList = getSavedItem('boardSavedList');
+//   const newBoardList = [...boardSavedList, trash.find(({ id }) => id === boardId)];
+//   setState({ trash: trash.filter(({ id }) => boardId !== id) });
+//   saveItem('boardSavedList', newBoardList);
+//   removePreviewBoard(boardId);
+// };
 
-const trashButtons = (id) => (
-  `<button class="buttons primary-button" data-id="${id}" name="restore-board" >Restaurar</button>
-  <button class="buttons danger-button" data-id="${id}" name="delete-preview" >Apagar</button>`
-);
+// const trashButtons = (id) => (
+//   `<button class="buttons primary-button" data-id="${id}" name="restore-board" >Restaurar</button>
+//   <button class="buttons danger-button" data-id="${id}" name="delete-preview" >Apagar</button>`
+// );
 
-const libraryButtons = (id) => (
-  `<button class="buttons primary-button" data-id="${id}" name="edit-board" >EDITAR</button>
-  <button class="buttons danger-button" data-id="${id}" name="remove-preview" >REMOVER</button>`
-);
+// const libraryButtons = (id) => (
+//   `<button class="buttons primary-button" data-id="${id}" name="edit-board" >EDITAR</button>
+//   <button class="buttons danger-button" data-id="${id}" name="remove-preview" >REMOVER</button>`
+// );
 
-const createPreview = ({ name, size, board, id }, callback) => {
-  const preview = (
-    `<section id=${id} class="preview display" >
-      <div class="thumbnail">${board}</div>
-      <p><strong>${name}</strong></p>
-      <p>Tamanho: ${size}</p>
-      <div class="display options">
-        ${callback(id)}
-      </div>
-    </section>`
-  );
-  boardsList.innerHTML += preview;
-};
+// const createPreview = ({ name, size, board, id }, callback) => {
+//   const preview = (
+//     `<section id=${id} class="preview display" >
+//       <div class="thumbnail">${board}</div>
+//       <p><strong>${name}</strong></p>
+//       <p>Tamanho: ${size}</p>
+//       <div class="display options">
+//         ${callback(id)}
+//       </div>
+//     </section>`
+//   );
+//   boardsList.innerHTML += preview;
+// };
 
-function listBoard(boolean) {
-  const boardSavedList = getSavedItem('boardSavedList');
-  if (boardSavedList) {
-    const { libraryState: { firstIndex, lastIndex, number } } = getState();
-    if (!boolean) boardSavedList.slice(firstIndex, lastIndex).map((item) => createPreview(item, libraryButtons));
-    if (boardsList.childElementCount < number) {
-      if (boolean) createPreview(boardSavedList[lastIndex - 1], libraryButtons);
-    }
-  }
-}
+// function listBoard(boolean) {
+//   const boardSavedList = getSavedItem('boardSavedList');
+//   if (boardSavedList) {
+//     const { libraryState: { firstIndex, lastIndex, number } } = getState();
+//     if (!boolean) boardSavedList.slice(firstIndex, lastIndex).map((item) => createPreview(item, libraryButtons));
+//     if (boardsList.childElementCount < number) {
+//       if (boolean) createPreview(boardSavedList[lastIndex - 1], libraryButtons);
+//     }
+//   }
+// }
 
 // const addsTheBoardToTheSavedBoardsList = () => {
 //   try {
@@ -297,7 +298,7 @@ function listBoard(boolean) {
 
 function clearAndListBoard() {
   boardsList.innerHTML = '';
-  listBoard();
+  // listBoard();
 }
 
 const renderTrash = () => {
@@ -428,10 +429,10 @@ const exchangeBoardInLibrary = ({ id }) => {
 };
 
 const libraryContainerEvent = ({ target, target: { name } }) => {
-  if (name === 'remove-preview') removeSavedBoard(target);
-  if (name === 'edit-board') AddPixelBoard(target);
-  if (name === 'delete-preview') deleteTrashItem(target);
-  if (name === 'restore-board') restoreTrashBoard(target);
+  // if (name === 'remove-preview') removeSavedBoard(target);
+  // if (name === 'edit-board') AddPixelBoard(target);
+  // if (name === 'delete-preview') deleteTrashItem(target);
+  // if (name === 'restore-board') restoreTrashBoard(target);
   exchangeBoardInLibrary(target);
 };
 
@@ -445,9 +446,10 @@ const events = () => {
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
   inputColor.addEventListener('input', selectNewColor);
-  buttonSave.addEventListener('click', saveBoard);
+  buttonSave.addEventListener('click', saveCurrentBoard);
   setBoard.addEventListener('click', createPixelBoard);
   // buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
+  buttonSaveAs.addEventListener('click', () => { saveBoard.saveframe(); });
   libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
   window.addEventListener('resize', adjustList);
@@ -458,6 +460,8 @@ window.onload = () => {
   chargeBoard();
   colorAdd();
   createState();
-  listBoard();
+  // listBoard();
   events();
 };
+
+renderLibrary.renderList();
