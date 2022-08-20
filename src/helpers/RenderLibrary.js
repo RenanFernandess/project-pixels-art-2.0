@@ -19,6 +19,13 @@ class RenderLibrary extends Componente {
     }
   }
 
+  previousListOfBoard() {
+    const { firstIndex } = this.state;
+    if (firstIndex) {
+      this.calculatePreviousIndex();
+    }
+  }
+
   render() {
     const { firstIndex, lastIndex } = this.state;
 
