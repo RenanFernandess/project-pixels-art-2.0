@@ -1,5 +1,3 @@
-import saveItem, { getSavedItem } from './service/storage';
-
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
 const paragraphMessage = document.getElementById('error-mesage');
@@ -7,16 +5,21 @@ const boardsList = document.getElementById('boards-list');
 
 class SaveBoard {
   constructor() {
-    this.name = '';
-    this.size = '';
-    this.board = pixelBoard.innerHTML;
     this.boardSavedList = getSavedItem('boardSavedList') || [];
-    this.boardNumber = this.boardSavedList.length;
+    this.trash = [];
+    this.currentBoard = {
+      author: '',
+      name: '',
+      date: {},
+      size: '',
+      board: '',
+      boardNumber: this.boardSavedList.length,
+    };
   }
 
   getTheBoardSize() {
     const size = pixelBoard.childNodes.length;
-    this.size = `${size} / ${size}`;
+    this.currentBoard.size = `${size} / ${size}`;
   }
 
   takeTheName() {
@@ -26,7 +29,7 @@ class SaveBoard {
     }
     this.checksThatTheNameIsNotRepeated(value);
     paragraphMessage.innerText = '';
-    this.name = value;
+    this.currentBoard.name = value;
   }
 
   checksThatTheNameIsNotRepeated(boardName) {
@@ -35,56 +38,48 @@ class SaveBoard {
   }
 
   generateId() {
+    const { size, name, boardNumber } = this.currentBoard;
     const number = Math.round(Math.random() * 999);
-    const string = this.name.replace(/\s+/g, '').substr(0, 4).toUpperCase();
-    const boardSize = this.size[0];
-    return `BOARD${number}${string}S${boardSize}Z${this.boardNumber}`;
-  }
-
-  getInfoFromBoard() {
-    return {
-      author: '',
-      name: this.name,
-      size: this.size,
-      id: this.generateId(),
-      date: {},
-      board: this.board,
-      boardNumber: this.boardNumber,
-    };
+    const string = name.replace(/\s+/g, '').substr(0, 4).toUpperCase();
+    this.currentBoard.id = `BOARD${number}${string}S${size[0]}Z${boardNumber}`;
   }
 
   saveframe() {
     try {
+      this.currentBoard.board = pixelBoard.innerHTML;
       this.takeTheName();
       this.getTheBoardSize();
-      this.boardNumber += 1;
-      const board = this.getInfoFromBoard();
-      this.boardSavedList.push(board);
-      // saveItem('boardSavedList', this.boardSavedList);
-      this.createPreview();
+      this.currentBoard.boardNumber += 1;
+      this.generateId();
+      this.boardSavedList.push(this.currentBoard);
       console.log(this.boardSavedList);
+      // saveItem('boardSavedList', this.boardSavedList);
     } catch (error) {
       paragraphMessage.innerText = error.message;
       console.log(error);
     }
   }
 
-  createPreview() {
-    const preview = (
-      `<section id=${this.id} class="preview display">
-        <div class="thumbnail">${this.board}</div>
-        <p><strong>${this.name}</strong></p>
-        <p>Tamanho: ${this.size}</p>
-        <div class="display options">
-        </div>
-      </section>`
-    );
-    boardsList.innerHTML += preview;
+  removeSavedBoard(boardId) {
+    this.trash = this.boardSavedList.find(({ id }) => id === boardId);
+    this.boardSavedList = this.boardSavedList.filter(({ id }) => boardId !== id);
+    // saveItem('boardSavedList', this.boardSavedList);
+    boardsList.getElementById(boardId).remove();
+  }
+
+  getBoardSavedList() {
+    return this.boardSavedList;
+  }
+
+  getTrash() {
+    return this.trash;
+  }
+
+  getCurrentBoard() {
+    return this.currentBoard;
   }
 }
 
-// if (typeof module !== 'undefined') {
-//   module.exports = { SaveBoard };
-// }
-
-export default SaveBoard;
+if (typeof module !== 'undefined') {
+  module.exports = { SaveBoard };
+}
