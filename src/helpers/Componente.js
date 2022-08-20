@@ -5,11 +5,10 @@ class Componente {
 
   getSavedState() { this.state = getItemSessionStorage('state') || this.state; }
 
-  setState(object, callback) {
+  setState(object) {
     this.state = Object.assign(this.state, object);
     console.log('state: ', this.state);
     saveItemSessionStorage('state', this.state);
-    callback();
     this.render();
   }
 
@@ -24,15 +23,38 @@ class Componente {
     };
   }
 
-  numberOfBoardThatWillBeListed(element, list) {
-    let number = (Math.floor(element.offsetWidth / 200) - 1);
+  numberOfBoardThatWillBeListed(container, list) {
+    let number = (Math.floor(container.offsetWidth / 200) - 1);
     const numberOfBoard = list.length;
     number = (number <= 0) ? 1 : number;
+    number = (number > numberOfBoard) ? numberOfBoard : number;
     this.setState({
-      number: (number > numberOfBoard) ? numberOfBoard : number,
+      number,
       numberOfBoard,
       pagesNumber: (Math.round(numberOfBoard / number)),
     });
+  }
+
+  stateRecalculator() {
+    const { firstIndex, lastIndex, number, numberOfBoard } = this.state;
+    const currentPage = Math.round((firstIndex + 1) / number);
+    let newlastIndex = lastIndex;
+    let newFirstIndex = firstIndex;
+    if (lastIndex === numberOfBoard) newFirstIndex = lastIndex - number;
+    else newlastIndex = firstIndex + number;
+
+    this.setState({
+      currentPage: (currentPage < 1) ? 1 : currentPage,
+      lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
+      firstIndex: newFirstIndex,
+    });
+  }
+
+  checkIfChanged(container, list) {
+    const { pageNumber: previousPages } = this.state;
+    this.numberOfBoardThatWillBeListed(container, list);
+    const { pageNumber, numberOfBoard } = this.state;
+      if (previousPages !== pageNumber && numberOfBoard) this.stateRecalculator();
   }
 
   calculateNextIndex() {
