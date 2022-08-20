@@ -13,16 +13,16 @@ class Componente {
     this.render();
   }
 
-  // createListingState() {
-  //   this.state = {
-  //     number: 0,
-  //     lastIndex: 0,
-  //     firstIndex: 0,
-  //     numberOfBoard: 0,
-  //     pagesNumber: 0,
-  //     currentPage: 1,
-  //   };
-  // }
+  createListingState() {
+    this.state = {
+      number: 0,
+      lastIndex: 0,
+      firstIndex: 0,
+      numberOfBoard: 0,
+      pagesNumber: 0,
+      currentPage: 1,
+    };
+  }
 
   calculateNextIndex() {
     const { currentPage, lastIndex, number, pageNumber, numberOfBoard } = this.state;
