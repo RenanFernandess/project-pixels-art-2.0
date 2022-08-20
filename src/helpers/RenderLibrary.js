@@ -2,13 +2,14 @@ class RenderLibrary extends Componente {
   constructor() {
     super();
 
+    this.resetList = this.resetList.bind(this);
+
     this.state = {};
     this.libraryState = {};
     this.currentBoard = {};
     this.saveBoard = new SaveBoard();
     this.boardSavedList = this.saveBoard.getBoardSavedList();
     this.createListingState();
-    this.getSavedState();
     this.numberOfBoardThatWillBeListed(boardsList, this.boardSavedList);
   }
 
@@ -24,6 +25,10 @@ class RenderLibrary extends Componente {
     if (firstIndex) {
       this.calculatePreviousIndex();
     }
+  }
+
+  resetList() {
+    this.checkIfChanged(boardsList, this.boardSavedList);
   }
 
   render() {
