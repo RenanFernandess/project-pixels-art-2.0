@@ -3,16 +3,19 @@ Um projeto que realizei na Trybe que decidir ir alem do que foi pedido para me a
 
 #### Ferramentas que utilizei:
  1. **HTML5**
-    - input
+    - Input
+    - Semantic HTML
  2. **CSS**
     - Display Flax and Grid
     - Media queries
     - Custom properties (Variables)
+    - etc...
  3. **JavaScript**
     - Class
     - Function
-    - HOFS
+    - Higher Order Functions 
     - Destructuring
+    - Conditional (ternary) operator
     - etc...
  4. **DOM**
     - LocalStorage
