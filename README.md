@@ -2,7 +2,8 @@
 Um projeto que realizei na Trybe que decidir ir alem do que foi pedido para me aprofunda no conteudo.
 
 #### Ferramentas que utilizei:
-  1. **HTML5**
+ 1. **HTML5**
+    - input
  2. **CSS**
     - Display Flax and Grid
     - Media queries
@@ -13,7 +14,7 @@ Um projeto que realizei na Trybe que decidir ir alem do que foi pedido para me a
     - HOFS
     - Destructuring
     - etc...
- 3. **DOM**
+ 4. **DOM**
     - LocalStorage
     - SessionStorage
     - addEventListener
