@@ -4,7 +4,7 @@ Um projeto que realizei na Trybe que decidir ir alem do que foi pedido para me a
 #### Aprendizados:
   1. Class javaScript
   2. Salvar objetos e arrays no local storage
-  3. Unidade de medidas mordenas CSS
+  3. Unidade de medidas modernas CSS (Ex: rem, em, vw)
   4. Transform CSS
   5. Custom properties (Variables)
   6. SessionStorage
