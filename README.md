@@ -22,7 +22,8 @@ Um projeto que realizei na Trybe que decidir ir alem do que foi pedido para me a
  3. **JavaScript**
     - Class
     - Function
-    - Higher Order Functions 
+    - Higher Order Functions
+    - Regular expressions
     - Destructuring
     - Conditional (ternary) operator
     - etc...
