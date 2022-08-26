@@ -1,3 +1,5 @@
+const boardsList = document.getElementById('boards-list');
+
 class RenderLibrary extends Componente {
   constructor() {
     super();
@@ -29,6 +31,13 @@ class RenderLibrary extends Componente {
 
   resetList() {
     this.checkIfChanged(boardsList, this.boardSavedList);
+  }
+
+  removeBoard(boardId) {
+    this.saveBoard.removeSavedBoard(boardId);
+    boardsList.querySelector(`#${boardId}`).remove();
+    this.boardSavedList = this.saveBoard.getBoardSavedList();
+    this.render();
   }
 
   render() {
