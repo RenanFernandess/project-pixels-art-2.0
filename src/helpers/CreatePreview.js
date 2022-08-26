@@ -1,52 +1,72 @@
 class CreatePreview {
-  constructor({ id, name, size, board }, itsTrash = false) {
+  constructor(
+    { id, name, size, board },
+    callbackPrinary,
+    callbackDanger,
+    itsTrash = false,
+    ) {
     this.itsTrash = itsTrash;
     this.id = id;
     this.name = name;
     this.size = size;
     this.board = board;
-
-    CreatePreview.prototype.toString = function () {
-      return this.createPreview();
-    };
+    this.dangerButtonClass = 'buttons danger-button';
+    this.primaryButtonClass = 'buttons primary-button';
+    this.callbackDanger = callbackDanger;
+    this.callbackPrinary = callbackPrinary;
   }
 
-  createPreview() {
-    const preview = (
-      `<section id=${this.id} class="preview display">
-        <div class="thumbnail">${this.board}</div>
-        <p><strong>${this.name}</strong></p>
-        <p>Tamanho: ${this.size}</p>
-        <div class="display options">
-          ${
-            this.itsTrash ? this.trashButtons() : this.libraryButtons()
-          }
-        </div>
-      </section>`
-    );
-    return preview;
+  renderPreview() {
+    const section = document.createElement('section');
+    section.id = this.id;
+    section.className = 'preview display';
+    section.innerHTML = this.elements();
+    return section;
   }
 
-  libraryButtons() {
-    return (
-      `<button class="buttons primary-button" data-id="${this.id}" name="edit-board">
-        EDITAR
-      </button>
-      <button class="buttons danger-button" data-id="${this.id}" name="remove-preview">
-        REMOVER
-      </button>`
-    );
+  elements() {
+    return (`
+      <div class="thumbnail">${this.board}</div>
+      <p><strong>${this.name}</strong></p>
+      <p>Tamanho: ${this.size}</p>
+    `);
   }
 
-  trashButtons() {
-    return (
-      `<button class="buttons primary-button" data-id="${this.id}" name="restore-board">
-        Restaurar
-      </button>
-      <button class="buttons danger-button" data-id="${this.id}" name="delete-preview">
-        Apagar
-      </button>`
-    );
+  createButtonsArea() {
+    const div = document.createElement('div');
+    div.className = 'display options';
+    div.appendChild(this.primaryButtons());
+    div.appendChild(this.dangerButtons());
+    return div;
+  }
+
+  dangerButtons() {
+    const button = document.createElement('button');
+    button.className = this.dangerButtonClass;
+    button.name = this.itsTrash ? 'delete-preview' : 'remove-preview';
+    button.innerText = this.itsTrash ? 'Apagar' : 'REMOVER';
+    button.addEventListener('click', () => { this.callbackDanger(this.id); });
+    return button;
+  }
+
+  primaryButtons() {
+    const button = document.createElement('button');
+    button.className = this.primaryButtonClass;
+    button.name = this.itsTrash ? 'restore-board' : 'edit-board';
+    button.innerText = this.itsTrash ? 'Restaurar' : 'EDITAR';
+    button.addEventListener('click', this.filterParameter());
+    return button;
+  }
+
+  filterParameter() {
+      const boardInfo = {
+        id: this.id,
+        name: this.name,
+        board: this.board,
+      };
+    return this.itsTrash
+      ? () => { this.callbackDanger(this.id); }
+      : () => { this.callbackDanger(boardInfo); };
   }
 }
 
