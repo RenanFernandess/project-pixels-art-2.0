@@ -21,6 +21,7 @@ class CreatePreview {
     section.id = this.id;
     section.className = 'preview display';
     section.innerHTML = this.elements();
+    section.appendChild(this.createButtonsArea());
     return section;
   }
 
