@@ -25,42 +25,42 @@ const selected = () => document.querySelector('.selected');
 // -------------------------------------------------------------------------------------------------------------------------
 // state
 
-function numberOfBoardThatWillBeListed() {
-  let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
-  const boardSavedList = getSavedItem('boardSavedList');
-  const numberOfBoard = (boardSavedList) ? boardSavedList.length : 0;
-  number = (number <= 0) ? 1 : number;
-  number = (number > numberOfBoard) ? numberOfBoard : number;
+// function numberOfBoardThatWillBeListed() {
+//   let number = (Math.floor(boardsList.offsetWidth / 200) - 1);
+//   const boardSavedList = getSavedItem('boardSavedList');
+//   const numberOfBoard = (boardSavedList) ? boardSavedList.length : 0;
+//   number = (number <= 0) ? 1 : number;
+//   number = (number > numberOfBoard) ? numberOfBoard : number;
 
-  return [number, numberOfBoard, (Math.round(numberOfBoard / number))];
-}
+//   return [number, numberOfBoard, (Math.round(numberOfBoard / number))];
+// }
 
-const getState = () => getItemSessionStorage('state');
+// const getState = () => getItemSessionStorage('state');
 
-function createState() {
-  let state = getState();
-  const [number, numberOfBoard] = numberOfBoardThatWillBeListed();
-  state = ((state) || {
-    libraryState: {
-      currentPage: 1,
-      firstIndex: 0,
-      lastIndex: number,
-      pageNumber: (Math.round(numberOfBoard / number)),
-      number,
-    },
-    trash: [],
-    numberOfBoard,
-  });
-  console.log('state: ', state);
-  saveItemSessionStorage('state', state);
-}
+// function createState() {
+//   let state = getState();
+//   const [number, numberOfBoard] = numberOfBoardThatWillBeListed();
+//   state = ((state) || {
+//     libraryState: {
+//       currentPage: 1,
+//       firstIndex: 0,
+//       lastIndex: number,
+//       pageNumber: (Math.round(numberOfBoard / number)),
+//       number,
+//     },
+//     trash: [],
+//     numberOfBoard,
+//   });
+//   console.log('state: ', state);
+//   saveItemSessionStorage('state', state);
+// }
 
-function setState(object) {
-  const state = getState();
-  const newState = Object.assign(state, object);
-  saveItemSessionStorage('state', newState);
-  console.log('state: ', state);
-}
+// function setState(object) {
+//   const state = getState();
+//   const newState = Object.assign(state, object);
+//   saveItemSessionStorage('state', newState);
+//   console.log('state: ', state);
+// }
 
 function orUpgradeStorage(name) {
   if (name === 'boardSavedList') {
@@ -206,20 +206,29 @@ const renderLibrary = new RenderLibrary();
 //   return [...array, board];
 // };
 
-// const AddPixelBoard = ({ attributes }) => {
-//   const id = attributes['data-id'].value;
-//   const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
-//   pixelBoard.innerHTML = board;
-// };
+const addPixelBoard = ({ attributes }) => {
+  const id = attributes['data-id'].value;
+  const name = attributes['data-name'].value;
+  const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
+  pixelBoard.innerHTML = board;
+  inputBoardName.value = name;
+};
 
 // const removePreviewBoard = (id) => {
 //   document.getElementById(id).remove();
 // };
 
+// removeBoard(boardId)
+
 // const moveToTrash = (board) => {
 //   const { trash } = getState();
 //   setState({ trash: [...trash, board] });
 // };
+
+const removeSavedBoard = ({ attributes }) => {
+  const boardId = attributes['data-id'].value;
+  renderLibrary.removeBoard(boardId);
+};
 
 // const removeSavedBoard = ({ attributes }) => {
 //   const boardId = attributes['data-id'].value;
@@ -296,22 +305,17 @@ const renderLibrary = new RenderLibrary();
 //   }
 // };
 
-function clearAndListBoard() {
-  boardsList.innerHTML = '';
-  // listBoard();
-}
-
-const renderTrash = () => {
-  const { trash } = getState();
-  boardsList.innerHTML = '';
-  trash.map((item) => createPreview(item, trashButtons));
-};
+// const renderTrash = () => {
+//   const { trash } = getState();
+//   boardsList.innerHTML = '';
+//   trash.map((item) => createPreview(item, trashButtons));
+// };
 
 const showTrash = () => {
   const { attributes: { name, name: { value } } } = boardsList;
   if (value !== 'trash') {
     name.value = 'trash';
-    renderTrash();
+    boardsList.innerHTML = '';
   }
 };
 
@@ -319,89 +323,11 @@ const showLibrary = () => {
   const { attributes: { name, name: { value } } } = boardsList;
   if (!value !== 'library') {
     name.value = 'library';
-    clearAndListBoard();
+    renderLibrary.render();
   }
 };
 
 // library render
-// --------------------------------------------------------------------------------------------------------------------------
-// library listing
-
-const calculateNextIndex = (state, key) => {
-  const { [key]: { currentPage, lastIndex, number, pageNumber }, numberOfBoard } = state;
-  const nextPage = currentPage + 1;
-  let newlastIndex = (nextPage === pageNumber) ? numberOfBoard : lastIndex + number;
-  newlastIndex = (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex;
-  const firstIndex = (newlastIndex - number);
-  const boardListed = {
-    currentPage: nextPage,
-    firstIndex: (firstIndex < 0) ? 0 : firstIndex,
-    lastIndex: newlastIndex,
-    number,
-    pageNumber,
-  };
-  setState({ libraryState: boardListed });
-};
-
-const calculatePreviousIndex = (state, key) => {
-  const { [key]: { currentPage, firstIndex, number, pageNumber } } = state;
-  const previousPage = (firstIndex - number > 0) ? currentPage - 1 : 1;
-  console.log(previousPage);
-  const nextFirstIndex = (previousPage === 1) ? 0 : firstIndex - number;
-  const boardListed = {
-    currentPage: previousPage,
-    firstIndex: ((nextFirstIndex < 0) ? 0 : nextFirstIndex),
-    lastIndex: (previousPage === 1) ? number : firstIndex,
-    number,
-    pageNumber,
-  };
-  setState({ libraryState: boardListed });
-};
-
-const nextListOfBoard = (key) => {
-  const state = getState();
-  const { [key]: { lastIndex }, numberOfBoard } = state;
-  if (lastIndex !== numberOfBoard) {
-    calculateNextIndex(state, key);
-    clearAndListBoard();
-  }
-};
-
-const previousListOfBoard = (key) => {
-  const state = getState();
-  const { [key]: { firstIndex } } = state;
-  if (firstIndex) {
-    calculatePreviousIndex(state, key);
-    clearAndListBoard();
-  }
-};
-
-const adjustList = () => {
-  let { libraryState: { firstIndex, lastIndex, pageNumber } } = getState();
-  const [number, numberOfBoard, pages] = numberOfBoardThatWillBeListed();
-  if (numberOfBoard) {
-    if (pages !== pageNumber) {
-      let newlastIndex = lastIndex;
-      const currentPage = Math.round((firstIndex + 1) / number);
-      if (lastIndex === numberOfBoard) firstIndex = lastIndex - number;
-      else newlastIndex = firstIndex + number;
-      const newState = {
-        libraryState: {
-          currentPage: (currentPage < 1) ? 1 : currentPage,
-          firstIndex,
-          lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
-          number,
-          pageNumber: pages,
-        },
-        numberOfBoard,
-      };
-      setState(newState);
-      clearAndListBoard();
-    }
-  }
-};
-
-// library listing
 // -------------------------------------------------------------------------------------------------------------------------------
 // library filtering
 
@@ -423,14 +349,14 @@ const paletteContainerEvents = ({ target: { classList, id } }) => {
 const exchangeBoardInLibrary = ({ id }) => {
   const { attributes: { name: { value } } } = boardsList;
   if (value === 'library') {
-    if (id === 'next-list') nextListOfBoard('libraryState');
-    if (id === 'previous-list') previousListOfBoard('libraryState');
+    if (id === 'next-list') renderLibrary.nextListOfBoard();
+    if (id === 'previous-list') renderLibrary.previousListOfBoard();
   }
 };
 
 const libraryContainerEvent = ({ target, target: { name } }) => {
-  // if (name === 'remove-preview') removeSavedBoard(target);
-  // if (name === 'edit-board') AddPixelBoard(target);
+  if (name === 'remove-preview') removeSavedBoard(target);
+  if (name === 'edit-board') addPixelBoard(target);
   // if (name === 'delete-preview') deleteTrashItem(target);
   // if (name === 'restore-board') restoreTrashBoard(target);
   exchangeBoardInLibrary(target);
@@ -452,16 +378,14 @@ const events = () => {
   buttonSaveAs.addEventListener('click', () => { saveBoard.saveframe(); });
   libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
-  window.addEventListener('resize', adjustList);
+  window.addEventListener('resize', renderLibrary.resetList);
   // searchBoardInput.addEventListener('input', searchBoard);
 };
 
 window.onload = () => {
   chargeBoard();
   colorAdd();
-  createState();
+  // createState();
   // listBoard();
   events();
 };
-
-renderLibrary.renderList();
