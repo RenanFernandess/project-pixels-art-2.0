@@ -1,3 +1,5 @@
+const boardsList = document.getElementById('boards-list');
+
 class CreatePreview {
   constructor(
     { id, name, size, board },
@@ -67,7 +69,13 @@ class CreatePreview {
       };
     return this.itsTrash
       ? () => { this.callbackDanger(this.id); }
-      : () => { this.callbackDanger(boardInfo); };
+      : () => { this.addPixelBoard(boardInfo); };
+  }
+
+  addPixelBoard(boardInfo) {
+    const { name, board } = boardInfo;
+    pixelBoard.innerHTML = board;
+    inputBoardName.value = name;
   }
 }
 
