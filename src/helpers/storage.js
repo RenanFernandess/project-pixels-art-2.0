@@ -1,10 +1,10 @@
-export default function saveItem(name, item) {
+export default async function saveItem(name, item) {
   localStorage.setItem(name, (JSON.stringify(item)));
 }
 
 export const getSavedItem = (name) => JSON.parse(localStorage.getItem(name));
 
-export function saveItemSessionStorage(name, item) {
+export async function saveItemSessionStorage(name, item) {
   sessionStorage.setItem(name, JSON.stringify(item));
 }
 
