@@ -1,7 +1,11 @@
+import RenderLibrary from './helpers/RenderLibrary.js';
+import { saveBoard } from './helpers/SaveBoard.js';
+import saveItem, { getSavedItem } from './helpers/storage.js';
+
 const paletteContainer = document.getElementById('palette-container');
 // const colorPalette = document.getElementById('color-palette');
 const colors = document.getElementsByClassName('color');
-// const pixelBoard = document.getElementById('pixel-board');
+const pixelBoard = document.getElementById('pixel-board');
 const buttonClear = document.getElementById('clear-board');
 const colorSelector = document.getElementById('box-new-color');
 const inputColor = document.getElementById('new-color');
@@ -10,7 +14,7 @@ const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
 // const inputBoardName = document.getElementById('board-name');
-// const boardsList = document.getElementById('boards-list');
+const boardsList = document.getElementById('boards-list');
 const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
 // const paragraphMessage = document.getElementById('error-mesage');
@@ -62,23 +66,23 @@ const selected = () => document.querySelector('.selected');
 //   console.log('state: ', state);
 // }
 
-function orUpgradeStorage(name) {
-  if (name === 'boardSavedList') {
-    const { libraryState: { currentPage, firstIndex, lastIndex } } = getState();
-    const [number, numberOfBoard, pages] = numberOfBoardThatWillBeListed();
-    setState({
-      libraryState: {
-        currentPage,
-        firstIndex,
-        lastIndex: ((lastIndex > number) ? lastIndex : number),
-        number,
-        pageNumber: pages,
-      },
-      numberOfBoard,
-    });
-    // listBoard(true);
-  }
-}
+// function orUpgradeStorage(name) {
+//   if (name === 'boardSavedList') {
+//     const { libraryState: { currentPage, firstIndex, lastIndex } } = getState();
+//     const [number, numberOfBoard, pages] = numberOfBoardThatWillBeListed();
+//     setState({
+//       libraryState: {
+//         currentPage,
+//         firstIndex,
+//         lastIndex: ((lastIndex > number) ? lastIndex : number),
+//         number,
+//         pageNumber: pages,
+//       },
+//       numberOfBoard,
+//     });
+//     // listBoard(true);
+//   }
+// }
 
 // state
 // --------------------------------------------------------------------------------------------------------------------------
