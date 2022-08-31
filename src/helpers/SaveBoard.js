@@ -71,12 +71,12 @@ export default class SaveBoard {
     saveItemSessionStorage(TRASH, this.trash);
   }
 
-  // restoreBoard(boardId) {
-  //   this.boardSavedList = [...this.boardSavedList, this.trash.find(({ id }) => id === boardId)];
-  //   this.trash = this.trash.filter(({ id }) => boardId !== id);
-  //   saveItem(BOARDSAVEDLIST, this.boardSavedList);
-  //   saveItemSessionStorage(TRASH, this.trash);
-  // }
+  restoreBoard(boardId) {
+    this.boardSavedList = [...this.boardSavedList, this.trash.find(({ id }) => id === boardId)];
+    this.trash = this.trash.filter(({ id }) => boardId !== id);
+    saveItem(BOARDSAVEDLIST, this.boardSavedList);
+    saveItemSessionStorage(TRASH, this.trash);
+  }
 
   getBoardSavedList() {
     return this.boardSavedList;
