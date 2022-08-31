@@ -78,6 +78,11 @@ export default class SaveBoard {
     saveItemSessionStorage(TRASH, this.trash);
   }
 
+  removeTrashBoard(boardId) {
+    this.trash = this.trash.filter(({ id }) => boardId !== id);
+    saveItemSessionStorage(TRASH, this.trash);
+  }
+
   getBoardSavedList() {
     return this.boardSavedList;
   }
