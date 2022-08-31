@@ -1,6 +1,9 @@
-const saveBoard = new SaveBoard();
+import Componente from './Componente.js';
+import { saveBoard } from './SaveBoard.js';
+import CreatePreview from './CreatePreview.js';
 
-class RenderLibrary extends Componente {
+const boardsList = document.getElementById('boards-list');
+export default class RenderLibrary extends Componente {
   constructor() {
     super();
 
@@ -60,8 +63,4 @@ class RenderLibrary extends Componente {
       });
     }
   }
-}
-
-if (typeof module !== 'undefined') {
-  module.exports = { RenderLibrary };
 }
