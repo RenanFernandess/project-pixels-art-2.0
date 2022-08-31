@@ -1,4 +1,6 @@
-class Componente {
+import { getItemSessionStorage } from './storage.js';
+
+export default class Componente {
   constructor() {
     this.state = {};
   }
@@ -90,8 +92,4 @@ class Componente {
       lastIndex: (previousPage === 1) ? number : firstIndex,
     });
   }
-}
-
-if (typeof module !== 'undefined') {
-  module.exports = { Componente };
 }
