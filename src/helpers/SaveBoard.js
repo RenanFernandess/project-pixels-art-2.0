@@ -1,7 +1,6 @@
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
 const paragraphMessage = document.getElementById('error-mesage');
-const boardsList = document.getElementById('boards-list');
 
 class SaveBoard {
   constructor() {
@@ -53,7 +52,7 @@ class SaveBoard {
       this.generateId();
       this.boardSavedList.push(this.currentBoard);
       console.log(this.boardSavedList);
-      // saveItem('boardSavedList', this.boardSavedList);
+      saveItem('boardSavedList', this.boardSavedList);
     } catch (error) {
       paragraphMessage.innerText = error.message;
       console.log(error);
@@ -63,8 +62,7 @@ class SaveBoard {
   removeSavedBoard(boardId) {
     this.trash = this.boardSavedList.find(({ id }) => id === boardId);
     this.boardSavedList = this.boardSavedList.filter(({ id }) => boardId !== id);
-    // saveItem('boardSavedList', this.boardSavedList);
-    boardsList.getElementById(boardId).remove();
+    saveItem('boardSavedList', this.boardSavedList);
   }
 
   getBoardSavedList() {
@@ -81,5 +79,10 @@ class SaveBoard {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { SaveBoard };
+  module.exports = {
+    SaveBoard,
+    inputBoardName,
+    pixelBoard,
+    paragraphMessage,
+  };
 }
