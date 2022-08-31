@@ -1,4 +1,7 @@
-import saveItem, { getSavedItem } from './storage.js';
+import saveItem, { getSavedItem, saveItemSessionStorage, getItemSessionStorage } from './storage.js';
+
+const TRASH = 'trash';
+const BOARDSAVEDLIST = 'boardSavedList';
 
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
@@ -6,8 +9,8 @@ const paragraphMessage = document.getElementById('error-mesage');
 
 export default class SaveBoard {
   constructor() {
-    this.boardSavedList = getSavedItem('boardSavedList') || [];
-    this.trash = [];
+    this.boardSavedList = getSavedItem(BOARDSAVEDLIST) || [];
+    this.trash = getItemSessionStorage(TRASH) || [];
     this.currentBoard = {
       author: '',
       name: '',
@@ -54,7 +57,7 @@ export default class SaveBoard {
       this.generateId();
       this.boardSavedList.push(this.currentBoard);
       console.log(this.boardSavedList);
-      saveItem('boardSavedList', this.boardSavedList);
+      saveItem(BOARDSAVEDLIST, this.boardSavedList);
     } catch (error) {
       paragraphMessage.innerText = error.message;
       console.log(error);
@@ -62,10 +65,18 @@ export default class SaveBoard {
   }
 
   removeSavedBoard(boardId) {
-    this.trash = this.boardSavedList.find(({ id }) => id === boardId);
+    this.trash = [...this.trash, this.boardSavedList.find(({ id }) => id === boardId)];
     this.boardSavedList = this.boardSavedList.filter(({ id }) => boardId !== id);
-    saveItem('boardSavedList', this.boardSavedList);
+    saveItem(BOARDSAVEDLIST, this.boardSavedList);
+    saveItemSessionStorage(TRASH, this.trash);
   }
+
+  // restoreBoard(boardId) {
+  //   this.boardSavedList = [...this.boardSavedList, this.trash.find(({ id }) => id === boardId)];
+  //   this.trash = this.trash.filter(({ id }) => boardId !== id);
+  //   saveItem(BOARDSAVEDLIST, this.boardSavedList);
+  //   saveItemSessionStorage(TRASH, this.trash);
+  // }
 
   getBoardSavedList() {
     return this.boardSavedList;
