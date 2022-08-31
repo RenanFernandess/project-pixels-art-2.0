@@ -1,8 +1,10 @@
+import saveItem, { getSavedItem } from './storage.js';
+
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
 const paragraphMessage = document.getElementById('error-mesage');
 
-class SaveBoard {
+export default class SaveBoard {
   constructor() {
     this.boardSavedList = getSavedItem('boardSavedList') || [];
     this.trash = [];
@@ -78,11 +80,4 @@ class SaveBoard {
   }
 }
 
-if (typeof module !== 'undefined') {
-  module.exports = {
-    SaveBoard,
-    inputBoardName,
-    pixelBoard,
-    paragraphMessage,
-  };
-}
+export const saveBoard = new SaveBoard();
