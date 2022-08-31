@@ -206,13 +206,13 @@ const renderLibrary = new RenderLibrary();
 //   return [...array, board];
 // };
 
-const addPixelBoard = ({ attributes }) => {
-  const id = attributes['data-id'].value;
-  const name = attributes['data-name'].value;
-  const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
-  pixelBoard.innerHTML = board;
-  inputBoardName.value = name;
-};
+// const addPixelBoard = ({ attributes }) => {
+//   const id = attributes['data-id'].value;
+//   const name = attributes['data-name'].value;
+//   const board = document.querySelector(`#${id} div.thumbnail`).innerHTML;
+//   pixelBoard.innerHTML = board;
+//   inputBoardName.value = name;
+// };
 
 // const removePreviewBoard = (id) => {
 //   document.getElementById(id).remove();
@@ -225,10 +225,10 @@ const addPixelBoard = ({ attributes }) => {
 //   setState({ trash: [...trash, board] });
 // };
 
-const removeSavedBoard = ({ attributes }) => {
-  const boardId = attributes['data-id'].value;
-  renderLibrary.removeBoard(boardId);
-};
+// const removeSavedBoard = ({ attributes }) => {
+//   const boardId = attributes['data-id'].value;
+//   renderLibrary.removeBoard(boardId);
+// };
 
 // const removeSavedBoard = ({ attributes }) => {
 //   const boardId = attributes['data-id'].value;
@@ -355,8 +355,8 @@ const exchangeBoardInLibrary = ({ id }) => {
 };
 
 const libraryContainerEvent = ({ target, target: { name } }) => {
-  if (name === 'remove-preview') removeSavedBoard(target);
-  if (name === 'edit-board') addPixelBoard(target);
+  // if (name === 'remove-preview') removeSavedBoard(target);
+  // if (name === 'edit-board') addPixelBoard(target);
   // if (name === 'delete-preview') deleteTrashItem(target);
   // if (name === 'restore-board') restoreTrashBoard(target);
   exchangeBoardInLibrary(target);
