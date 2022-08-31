@@ -1,6 +1,7 @@
-const boardsList = document.getElementById('boards-list');
+const inputBoardName = document.getElementById('board-name');
+const pixelBoard = document.getElementById('pixel-board');
 
-class CreatePreview {
+export default class CreatePreview {
   constructor(
     { id, name, size, board },
     callbackPrinary,
@@ -76,9 +77,6 @@ class CreatePreview {
     const { name, board } = boardInfo;
     pixelBoard.innerHTML = board;
     inputBoardName.value = name;
+    return this.name;
   }
-}
-
-if (typeof module !== 'undefined') {
-  module.exports = { CreatePreview };
 }
