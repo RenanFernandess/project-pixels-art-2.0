@@ -1,18 +1,25 @@
-const boardsList = document.getElementById('boards-list');
+const saveBoard = new SaveBoard();
 
 class RenderLibrary extends Componente {
   constructor() {
     super();
 
     this.resetList = this.resetList.bind(this);
+    this.removeBoard = this.removeBoard.bind(this);
+    this.whenTheClassIsReady = this.whenTheClassIsReady.bind(this);
+    this.nextListOfBoard = this.nextListOfBoard.bind(this);
+    this.previousListOfBoard = this.previousListOfBoard.bind(this);
 
-    this.state = {};
-    this.libraryState = {};
-    this.currentBoard = {};
-    this.saveBoard = new SaveBoard();
-    this.boardSavedList = this.saveBoard.getBoardSavedList();
+    this.state = {
+      boardList: [],
+    };
+    this.whenTheClassIsReady();
+  }
+
+  whenTheClassIsReady() {
+    const boardList = saveBoard.getBoardSavedList();
+    this.setState({ boardList, ...this.numberOfBoardThatWillBeListed(boardsList, boardList) });
     this.createListingState();
-    this.numberOfBoardThatWillBeListed(boardsList, this.boardSavedList);
   }
 
   nextListOfBoard() {
@@ -30,23 +37,28 @@ class RenderLibrary extends Componente {
   }
 
   resetList() {
-    this.checkIfChanged(boardsList, this.boardSavedList);
+    const { boardList } = this.state;
+    this.checkIfChanged(boardsList, boardList);
   }
 
   removeBoard(boardId) {
-    this.saveBoard.removeSavedBoard(boardId);
+    console.log(boardId);
+    saveBoard.removeSavedBoard(boardId);
     boardsList.querySelector(`#${boardId}`).remove();
-    this.boardSavedList = this.saveBoard.getBoardSavedList();
-    this.render();
+    const boardList = saveBoard.getBoardSavedList();
+    this.setState({ boardList });
   }
 
-  render() {
-    const { firstIndex, lastIndex } = this.state;
-
-    boardsList.innerHTML = '';
-    this.boardSavedList.slice(firstIndex, lastIndex).forEach((board) => {
-      boardsList.innerHTML += new CreatePreview(board);
-    });
+  async render() {
+    const { firstIndex, lastIndex, boardList } = this.state;
+    console.log('render: ', this.state);
+    if (boardList.length) {
+      boardsList.innerHTML = '';
+      boardList.slice(firstIndex, lastIndex).forEach((board) => {
+        const preview = new CreatePreview(board, null, this.removeBoard);
+        boardsList.appendChild(preview.renderPreview());
+      });
+    }
   }
 }
 
