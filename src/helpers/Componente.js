@@ -9,7 +9,7 @@ export default class Componente {
 
   async setState(objectOrCallback, callback) {
     if (typeof objectOrCallback === 'function') {
-      objectOrCallback(this.state);
+      this.state = Object.assign(this.state, objectOrCallback(this.state));
     } else this.state = Object.assign(this.state, objectOrCallback);
     console.log('state: ', this.state);
     if (callback) callback();
