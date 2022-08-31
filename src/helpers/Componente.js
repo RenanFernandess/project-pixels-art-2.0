@@ -7,8 +7,10 @@ export default class Componente {
 
   getSavedState() { this.state = getItemSessionStorage('state') || this.state; }
 
-  async setState(object, callback) {
-    this.state = Object.assign(this.state, object);
+  async setState(objectOrCallback, callback) {
+    if (typeof objectOrCallback === 'function') {
+      objectOrCallback(this.state);
+    } else this.state = Object.assign(this.state, objectOrCallback);
     console.log('state: ', this.state);
     if (callback) callback();
     this.render();
