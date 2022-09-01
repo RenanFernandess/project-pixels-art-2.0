@@ -1,5 +1,4 @@
 import Componente from './Componente.js';
-import { saveBoard } from './SaveBoard.js';
 import CreatePreview from './CreatePreview.js';
 import { globalState } from './GlobalState.js';
 
@@ -16,19 +15,23 @@ export default class RenderLibrary extends Componente {
 
     this.state = {
       boardList: [],
+      currentLocation: 'library',
     };
     this.whenTheClassIsReady();
   }
 
   whenTheClassIsReady() {
-    const boardList = globalState.getState(({ library: { boardsList: list } }) => list);
+    const boardList = globalState.getState(({ library: { boardList: list } }) => list);
+    console.log('uai', boardList);
     this.setState({ boardList, ...this.numberOfBoardThatWillBeListed(boardsList, boardList) });
     this.createListingState();
   }
 
   setUpdate() {
-    const boardList = globalState.getState(({ library: { boardsList: list } }) => list);
-    this.setState({ boardList });
+    const state = globalState.getState(
+      ({ library: { boardList, currentLocation } }) => ({ boardList, currentLocation }),
+    );
+    this.setState({ ...state });
   }
 
   nextListOfBoard() {
@@ -51,8 +54,8 @@ export default class RenderLibrary extends Componente {
   }
 
   async render() {
-    const { firstIndex, lastIndex, boardList } = this.state;
-    if (boardList.length) {
+    const { firstIndex, lastIndex, boardList, currentLocation } = this.state;
+    if (boardList.length && currentLocation === 'library') {
       boardsList.innerHTML = '';
       boardList.slice(firstIndex, lastIndex).forEach((board) => {
         const preview = new CreatePreview(board);
