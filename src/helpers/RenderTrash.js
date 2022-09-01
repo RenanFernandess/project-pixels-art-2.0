@@ -1,5 +1,4 @@
 import Componente from './Componente.js';
-import { saveBoard } from './SaveBoard.js';
 import CreatePreview from './CreatePreview.js';
 import { globalState } from './GlobalState.js';
 
@@ -16,7 +15,8 @@ export default class RenderTrash extends Componente {
     this.previousListOfBoard = this.previousListOfBoard.bind(this);
 
     this.state = {
-      trash: [],
+    currentLocation: 'library',
+    trash: [],
     };
     this.whenTheClassIsReady();
   }
@@ -28,8 +28,10 @@ export default class RenderTrash extends Componente {
   }
 
   setUpdate() {
-    const trash = globalState.getState(({ library: { trash: list } }) => list);
-    this.setState({ trash });
+    const state = globalState.getState(
+      ({ library: { trash, currentLocation } }) => ({ trash, currentLocation }),
+    );
+    this.setState({ ...state });
   }
 
   nextListOfBoard() {
@@ -51,17 +53,17 @@ export default class RenderTrash extends Componente {
     this.checkIfChanged(boardsList, trash);
   }
 
-  render() {
-    const { firstIndex, lastIndex } = this.state;
-    const trash = saveBoard.getTrash();
-    console.log('trash');
-    console.log(trash);
-    if (trash.length) {
-      boardsList.innerHTML = '';
-      trash.slice(firstIndex, lastIndex).forEach((board) => {
-        const preview = new CreatePreview(board, true);
-        boardsList.appendChild(preview.renderPreview());
-      });
-    } else boardsList.innerHTML = '<p>Lixeira esta vaisa<p>';
+  async render() {
+    const { firstIndex, lastIndex, currentLocation, trash } = this.state;
+    console.log('trash: ', trash);
+    if (currentLocation === 'trash') {
+      if (trash.length) {
+        boardsList.innerHTML = '';
+        trash.slice(firstIndex, lastIndex).forEach((board) => {
+          const preview = new CreatePreview(board, true);
+          boardsList.appendChild(preview.renderPreview());
+        });
+      } else boardsList.innerHTML = '<p>Lixeira esta vaisa<p>';
+    }
   }
 }
