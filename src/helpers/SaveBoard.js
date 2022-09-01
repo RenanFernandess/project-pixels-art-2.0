@@ -22,7 +22,7 @@ export default class SaveBoard {
       boardNumber: this.boardSavedList.length,
     };
     globalState.pushState({
-      boardsList: this.boardSavedList,
+      boardList: this.boardSavedList,
       trash: this.trash,
     }, KEY);
   }
