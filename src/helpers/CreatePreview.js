@@ -1,13 +1,11 @@
+import { saveBoard } from './SaveBoard.js';
+
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
+const boardsList = document.getElementById('boards-list');
 
 export default class CreatePreview {
-  constructor(
-    { id, name, size, board },
-    callbackPrinary,
-    callbackDanger,
-    itsTrash = false,
-    ) {
+  constructor({ id, name, size, board }, itsTrash = false) {
     this.itsTrash = itsTrash;
     this.id = id;
     this.name = name;
@@ -15,8 +13,6 @@ export default class CreatePreview {
     this.board = board;
     this.dangerButtonClass = 'buttons danger-button';
     this.primaryButtonClass = 'buttons primary-button';
-    this.callbackDanger = callbackDanger;
-    this.callbackPrinary = callbackPrinary;
   }
 
   renderPreview() {
@@ -49,7 +45,7 @@ export default class CreatePreview {
     button.className = this.dangerButtonClass;
     button.name = this.itsTrash ? 'delete-preview' : 'remove-preview';
     button.innerText = this.itsTrash ? 'Apagar' : 'REMOVER';
-    button.addEventListener('click', () => { this.callbackDanger(this.id); });
+    button.addEventListener('click', () => { this.removeBoard(this.id); });
     return button;
   }
 
@@ -69,8 +65,20 @@ export default class CreatePreview {
         board: this.board,
       };
     return this.itsTrash
-      ? () => { this.callbackDanger(this.id); }
+      ? () => { this.restoreBoard(this.id); }
       : () => { this.addPixelBoard(boardInfo); };
+  }
+
+  removeBoard(boardId) {
+    console.log(boardId);
+    if (this.itsTrash) saveBoard.removeTrashBoard(boardId);
+    else saveBoard.removeSavedBoard(boardId);
+    return this.name;
+  }
+
+  restoreBoard(boardId) {
+    saveBoard.restoreBoard(boardId);
+    return this.name;
   }
 
   addPixelBoard(boardInfo) {
