@@ -3,7 +3,7 @@ import { globalState } from './GlobalState.js';
 
 const TRASH = 'trash';
 const BOARDSAVEDLIST = 'boardSavedList';
-const KEY = 'library';
+export const KEY = 'library';
 
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
@@ -54,7 +54,7 @@ export default class SaveBoard {
     this.currentBoard.id = `BOARD${number}${string}S${size[0]}Z${boardNumber}`;
   }
 
-  saveframe() {
+  async saveframe() {
     try {
       this.currentBoard.board = pixelBoard.innerHTML;
       this.takeTheName();
@@ -71,7 +71,7 @@ export default class SaveBoard {
     }
   }
 
-  removeSavedBoard(boardId) {
+  async removeSavedBoard(boardId) {
     this.trash = [...this.trash, this.boardSavedList.find(({ id }) => id === boardId)];
     this.boardSavedList = this.boardSavedList.filter(({ id }) => boardId !== id);
     globalState.pushState({
@@ -82,7 +82,7 @@ export default class SaveBoard {
     saveItemSessionStorage(TRASH, this.trash);
   }
 
-  restoreBoard(boardId) {
+  async restoreBoard(boardId) {
     this.boardSavedList = [...this.boardSavedList, this.trash.find(({ id }) => id === boardId)];
     this.trash = this.trash.filter(({ id }) => boardId !== id);
     globalState.pushState({
@@ -93,7 +93,7 @@ export default class SaveBoard {
     saveItemSessionStorage(TRASH, this.trash);
   }
 
-  removeTrashBoard(boardId) {
+  async removeTrashBoard(boardId) {
     this.trash = this.trash.filter(({ id }) => boardId !== id);
     globalState.pushState({ trash: this.trash }, KEY);
     saveItemSessionStorage(TRASH, this.trash);
