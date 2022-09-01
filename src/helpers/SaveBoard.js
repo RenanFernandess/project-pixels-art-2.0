@@ -98,18 +98,6 @@ export default class SaveBoard {
     globalState.pushState({ trash: this.trash }, KEY);
     saveItemSessionStorage(TRASH, this.trash);
   }
-
-  getBoardSavedList() {
-    return this.boardSavedList;
-  }
-
-  getTrash() {
-    return this.trash;
-  }
-
-  getCurrentBoard() {
-    return this.currentBoard;
-  }
 }
 
 export const saveBoard = new SaveBoard();
