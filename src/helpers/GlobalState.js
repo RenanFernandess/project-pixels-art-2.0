@@ -1,19 +1,20 @@
 export default class GlobalState {
   constructor() {
-    this.state = {
-
-    };
-    this.update = null; 
+    this.state = {};
+    this.updatedState = () => {};
   }
 
-  createState(state, callback) {
+  createState(state = this.state, callback) {
     this.state = state;
-    this.updatedState = callback;
+    if (callback) this.updatedState = callback;
+    console.log('global: ', state);
   }
 
-  pushState(state, key) {
-    const obj = key ? { [key]: state } : state;
+  async pushState(state, key) {
+    const keyObj = this.state[key] ? { [key]: { ...this.state[key], ...state } } : { [key]: state };
+    const obj = key ? keyObj : state;
     this.state = { ...this.state, ...obj };
+    console.log('pushState: ', this.state);
     this.updatedState();
   }
 
