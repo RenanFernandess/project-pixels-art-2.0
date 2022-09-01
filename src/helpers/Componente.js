@@ -99,15 +99,16 @@ export default class Componente {
     });
   }
 
-  orUpdateTheList(container, boardList) {
+  orUpdateTheList(container, list, state = {}) {
     this.setState(({ lastIndex }) => {
-      const state = this.numberOfBoardThatWillBeListed(container, boardList);
-      const { number, numberOfBoard, pagesNumber } = state;
+      const listState = this.numberOfBoardThatWillBeListed(container, list);
+      const { number, numberOfBoard, pagesNumber } = listState;
       return {
         lastIndex: ((lastIndex > number) ? lastIndex : number),
         number,
         pagesNumber,
         numberOfBoard,
+        ...state,
       };
     });
   }
