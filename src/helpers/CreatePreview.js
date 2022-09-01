@@ -2,7 +2,6 @@ import { saveBoard } from './SaveBoard.js';
 
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
-const boardsList = document.getElementById('boards-list');
 
 export default class CreatePreview {
   constructor({ id, name, size, board }, itsTrash = false) {
@@ -70,7 +69,6 @@ export default class CreatePreview {
   }
 
   removeBoard(boardId) {
-    console.log(boardId);
     if (this.itsTrash) saveBoard.removeTrashBoard(boardId);
     else saveBoard.removeSavedBoard(boardId);
     return this.name;
