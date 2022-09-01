@@ -36,7 +36,7 @@ const INITIAL_STATE = {
   library: {
     currentLocation: 'library',
     trash: [],
-    boardsList: [],
+    boardList: [],
   },
 };
 globalState.createState(INITIAL_STATE);
