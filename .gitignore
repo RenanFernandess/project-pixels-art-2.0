@@ -1,2 +1,5 @@
 requisitos.md
 node_modules
+.stylelintrc.json
+.eslintrc.json
+problemas.txt
