@@ -72,27 +72,29 @@ export default class Componente {
   }
 
   calculateNextIndex() {
-    const { currentPage, lastIndex, number, pageNumber, numberOfBoard } = this.state;
-    const nextPage = currentPage + 1;
+    this.setState(({ currentPage, lastIndex, number, pageNumber, numberOfBoard }) => {
+      const nextPage = currentPage + 1;
     let newlastIndex = (nextPage === pageNumber) ? numberOfBoard : lastIndex + number;
     newlastIndex = (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex;
     const firstIndex = (newlastIndex - number);
-    this.setState({
+    return {
       currentPage: nextPage,
       firstIndex: (firstIndex < 0) ? 0 : firstIndex,
       lastIndex: newlastIndex,
+    };
     });
   }
   
   calculatePreviousIndex() {
-    const { currentPage, firstIndex, number } = this.state;
-    const previousPage = (firstIndex - number > 0) ? currentPage - 1 : 1;
+    this.setState(({ currentPage, firstIndex, number }) => {
+      const previousPage = (firstIndex - number > 0) ? currentPage - 1 : 1;
     console.log(previousPage);
     const nextFirstIndex = (previousPage === 1) ? 0 : firstIndex - number;
-    this.setState({
+    return {
       currentPage: previousPage,
       firstIndex: ((nextFirstIndex < 0) ? 0 : nextFirstIndex),
       lastIndex: (previousPage === 1) ? number : firstIndex,
+    };
     });
   }
 }
