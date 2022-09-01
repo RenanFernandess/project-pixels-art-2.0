@@ -43,20 +43,21 @@ export default class Componente {
   }
 
   stateRecalculator({ number, numberOfBoard }) {
-    const { firstIndex, lastIndex } = this.state;
-    const currentPage = Math.round((firstIndex + 1) / number);
-    let newlastIndex = lastIndex;
-    let newFirstIndex = firstIndex;
-    if (lastIndex === numberOfBoard) newFirstIndex = lastIndex - number;
-    else newlastIndex = firstIndex + number;
+    this.setState(({ firstIndex, lastIndex }) => {
+      const currentPage = Math.round((firstIndex + 1) / number);
+      let newlastIndex = lastIndex;
+      let newFirstIndex = firstIndex;
+      if (lastIndex === numberOfBoard) newFirstIndex = lastIndex - number;
+      else newlastIndex = firstIndex + number;
     
-    this.setState({
-      currentPage: (currentPage < 1) ? 1 : currentPage,
-      lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
-      firstIndex: newFirstIndex,
-      number,
-      numberOfBoard,
-      pagesNumber: (Math.round(numberOfBoard / number)),
+      return {
+        currentPage: (currentPage < 1) ? 1 : currentPage,
+        lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
+        firstIndex: newFirstIndex,
+        number,
+        numberOfBoard,
+        pagesNumber: (Math.round(numberOfBoard / number)),
+      };
     });
   }
 
