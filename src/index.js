@@ -1,5 +1,5 @@
 import { globalState } from './helpers/GlobalState.js';
-import { saveBoard } from './helpers/SaveBoard.js';
+import { saveBoard, KEY } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
 import RenderTrash from './helpers/RenderTrash.js';
 import saveItem, { getSavedItem } from './helpers/storage.js';
@@ -131,19 +131,15 @@ const createPixelBoard = () => {
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
 
-const showTrash = () => {
-  const { attributes: { name, name: { value } } } = boardsList;
-  if (value !== 'trash') {
-    name.value = 'trash';
-    renderTrash.render();
+const showTrash = (currentLocation) => {
+  if (currentLocation !== 'trash') {
+    globalState.pushState({ currentLocation: 'trash' }, KEY);
   }
 };
 
-const showLibrary = () => {
-  const { attributes: { name, name: { value } } } = boardsList;
-  if (!value !== 'library') {
-    name.value = 'library';
-    renderLibrary.render();
+const showLibrary = (currentLocation) => {
+  if (currentLocation !== 'library') {
+    globalState.pushState({ currentLocation: 'library' }, KEY);
   }
 };
 
@@ -166,21 +162,22 @@ const paletteContainerEvents = ({ target: { classList, id } }) => {
   if (id === 'news-colors') colorAdd();
 };
 
-const exchangeBoardInLibrary = ({ id }) => {
-  const { attributes: { name: { value } } } = boardsList;
-  if (value === 'library') {
+const exchangeBoardInLibrary = ({ id }, currentLocation) => {
+  if (currentLocation === 'library') {
     if (id === 'next-list') renderLibrary.nextListOfBoard();
     if (id === 'previous-list') renderLibrary.previousListOfBoard();
   }
 };
 
 const libraryContainerEvent = ({ target }) => {
-  exchangeBoardInLibrary(target);
+  const { currentLocation } = globalState.getState(({ library }) => library);
+  exchangeBoardInLibrary(target, currentLocation);
 };
 
 const navOpitionsEvents = ({ target }) => {
-  if (target.id === 'trash') showTrash();
-  if (target.id === 'library') showLibrary();
+  const { currentLocation } = globalState.getState(({ library }) => library);
+  if (target.id === 'trash') showTrash(currentLocation);
+  if (target.id === 'library') showLibrary(currentLocation);
 };
 
 const events = () => {
@@ -190,7 +187,6 @@ const events = () => {
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveCurrentBoard);
   setBoard.addEventListener('click', createPixelBoard);
-  // buttonSaveAs.addEventListener('click', addsTheBoardToTheSavedBoardsList);
   buttonSaveAs.addEventListener('click', () => { saveBoard.saveframe(); });
   libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
