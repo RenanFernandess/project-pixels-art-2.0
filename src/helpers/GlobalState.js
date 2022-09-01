@@ -18,6 +18,7 @@ export default class GlobalState {
     const obj = key ? keyObj : state;
     this.state = { ...this.state, ...obj };
     console.log('pushState: ', this.state);
+    this.updatedState();
   }
 
   getState(callback) {
