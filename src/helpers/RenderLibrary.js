@@ -54,7 +54,6 @@ export default class RenderLibrary extends Componente {
 
   async render() {
     const { firstIndex, lastIndex, boardList } = this.state;
-    console.log('render: ', this.state);
     if (boardList.length) {
       boardsList.innerHTML = '';
       boardList.slice(firstIndex, lastIndex).forEach((board) => {
