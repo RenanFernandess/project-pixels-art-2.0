@@ -11,9 +11,9 @@ export default class Componente {
     if (typeof objectOrCallback === 'function') {
       this.state = Object.assign(this.state, objectOrCallback(this.state));
     } else this.state = Object.assign(this.state, objectOrCallback);
-    console.log('state: ', this.state);
     if (callback) callback();
     this.render();
+    console.log('state: ', this.state);
   }
 
   createListingState() {
@@ -49,25 +49,26 @@ export default class Componente {
     let newFirstIndex = firstIndex;
     if (lastIndex === numberOfBoard) newFirstIndex = lastIndex - number;
     else newlastIndex = firstIndex + number;
-
+    
     this.setState({
       currentPage: (currentPage < 1) ? 1 : currentPage,
       lastIndex: (newlastIndex > numberOfBoard) ? numberOfBoard : newlastIndex,
       firstIndex: newFirstIndex,
       number,
       numberOfBoard,
+      pagesNumber: (Math.round(numberOfBoard / number)),
     });
   }
 
-  checkIfChanged(container, boardList) {
+  async checkIfChanged(container, boardList) {
     const { pagesNumber: previousPages } = this.state;
     const states = this.numberOfBoardThatWillBeListed(container, boardList);
     const { pagesNumber, numberOfBoard } = states;
     if (previousPages !== pagesNumber && numberOfBoard) {
-        console.log('previousPages: ', previousPages);
-        console.log('pagesNumber: ', pagesNumber);
-        this.stateRecalculator(states);
-      }
+      console.log('previousPages: ', previousPages);
+      console.log('pagesNumber: ', pagesNumber);
+      this.stateRecalculator(states);
+    }
   }
 
   calculateNextIndex() {
