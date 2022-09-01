@@ -1,6 +1,7 @@
 import Componente from './Componente.js';
 import { saveBoard } from './SaveBoard.js';
 import CreatePreview from './CreatePreview.js';
+import { globalState } from './GlobalState.js';
 
 const boardsList = document.getElementById('boards-list');
 export default class RenderLibrary extends Componente {
@@ -8,10 +9,10 @@ export default class RenderLibrary extends Componente {
     super();
 
     this.resetList = this.resetList.bind(this);
-    this.removeBoard = this.removeBoard.bind(this);
     this.whenTheClassIsReady = this.whenTheClassIsReady.bind(this);
     this.nextListOfBoard = this.nextListOfBoard.bind(this);
     this.previousListOfBoard = this.previousListOfBoard.bind(this);
+    this.setUpdate = this.setUpdate.bind(this);
 
     this.state = {
       boardList: [],
@@ -20,9 +21,14 @@ export default class RenderLibrary extends Componente {
   }
 
   whenTheClassIsReady() {
-    const boardList = saveBoard.getBoardSavedList();
+    const boardList = globalState.getState(({ library: { boardsList: list } }) => list);
     this.setState({ boardList, ...this.numberOfBoardThatWillBeListed(boardsList, boardList) });
     this.createListingState();
+  }
+
+  setUpdate() {
+    const boardList = globalState.getState(({ library: { boardsList: list } }) => list);
+    this.setState({ boardList });
   }
 
   nextListOfBoard() {
@@ -44,20 +50,12 @@ export default class RenderLibrary extends Componente {
     this.checkIfChanged(boardsList, boardList);
   }
 
-  removeBoard(boardId) {
-    console.log(boardId);
-    saveBoard.removeSavedBoard(boardId);
-    boardsList.querySelector(`#${boardId}`).remove();
-    const boardList = saveBoard.getBoardSavedList();
-    this.setState({ boardList });
-  }
-
   async render() {
     const { firstIndex, lastIndex, boardList } = this.state;
     if (boardList.length) {
       boardsList.innerHTML = '';
       boardList.slice(firstIndex, lastIndex).forEach((board) => {
-        const preview = new CreatePreview(board, null, this.removeBoard);
+        const preview = new CreatePreview(board);
         boardsList.appendChild(preview.renderPreview());
       });
     }
