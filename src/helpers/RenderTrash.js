@@ -1,6 +1,7 @@
 import Componente from './Componente.js';
 import { saveBoard } from './SaveBoard.js';
 import CreatePreview from './CreatePreview.js';
+import { globalState } from './GlobalState.js';
 
 const boardsList = document.getElementById('boards-list');
 
@@ -21,9 +22,14 @@ export default class RenderTrash extends Componente {
   }
 
   whenTheClassIsReady() {
-    const trash = saveBoard.getTrash();
+    const trash = globalState.getState(({ library: { trash: list } }) => list);
     this.setState({ trash, ...this.numberOfBoardThatWillBeListed(boardsList, trash) });
     this.createListingState();
+  }
+
+  setUpdate() {
+    const trash = globalState.getState(({ library: { trash: list } }) => list);
+    this.setState({ trash });
   }
 
   nextListOfBoard() {
@@ -49,15 +55,11 @@ export default class RenderTrash extends Componente {
     console.log(boardId);
     saveBoard.removeTrashBoard(boardId);
     boardsList.querySelector(`#${boardId}`).remove();
-    const trash = saveBoard.getTrash();
-    this.setState({ trash });
   }
 
   restoreBoard(boardId) {
     saveBoard.restoreBoard(boardId);
     boardsList.querySelector(`#${boardId}`).remove();
-    const trash = saveBoard.getTrash();
-    this.setState({ trash });
   }
 
   render() {
