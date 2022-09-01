@@ -28,3 +28,12 @@ export default class GlobalState {
 }
 
 export const globalState = new GlobalState();
+
+const INITIAL_STATE = {
+  library: {
+    currentLocation: 'library',
+    trash: [],
+    boardsList: [],
+  },
+};
+globalState.createState(INITIAL_STATE);
