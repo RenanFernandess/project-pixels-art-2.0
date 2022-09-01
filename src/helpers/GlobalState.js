@@ -4,10 +4,13 @@ export default class GlobalState {
     this.updatedState = () => {};
   }
 
-  createState(state = this.state, callback) {
-    this.state = state;
-    if (callback) this.updatedState = callback;
-    console.log('global: ', state);
+  createState(state, callback) {
+    if (state) this.state = state;
+    if (callback) {
+      this.updatedState = callback;
+      this.updatedState();
+    }
+    console.log('global: ', this.state);
   }
 
   async pushState(state, key) {
@@ -15,7 +18,6 @@ export default class GlobalState {
     const obj = key ? keyObj : state;
     this.state = { ...this.state, ...obj };
     console.log('pushState: ', this.state);
-    this.updatedState();
   }
 
   getState(callback) {
