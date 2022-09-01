@@ -10,7 +10,7 @@ export default class RenderTrash extends Componente {
     super();
 
     this.resetList = this.resetList.bind(this);
-    this.removeBoard = this.removeBoard.bind(this);
+    this.setUpdate = this.setUpdate.bind(this);
     this.whenTheClassIsReady = this.whenTheClassIsReady.bind(this);
     this.nextListOfBoard = this.nextListOfBoard.bind(this);
     this.previousListOfBoard = this.previousListOfBoard.bind(this);
@@ -51,17 +51,6 @@ export default class RenderTrash extends Componente {
     this.checkIfChanged(boardsList, trash);
   }
 
-  removeBoard(boardId) {
-    console.log(boardId);
-    saveBoard.removeTrashBoard(boardId);
-    boardsList.querySelector(`#${boardId}`).remove();
-  }
-
-  restoreBoard(boardId) {
-    saveBoard.restoreBoard(boardId);
-    boardsList.querySelector(`#${boardId}`).remove();
-  }
-
   render() {
     const { firstIndex, lastIndex } = this.state;
     const trash = saveBoard.getTrash();
@@ -70,7 +59,7 @@ export default class RenderTrash extends Componente {
     if (trash.length) {
       boardsList.innerHTML = '';
       trash.slice(firstIndex, lastIndex).forEach((board) => {
-        const preview = new CreatePreview(board, this.restoreBoard, this.removeBoard, true);
+        const preview = new CreatePreview(board, true);
         boardsList.appendChild(preview.renderPreview());
       });
     } else boardsList.innerHTML = '<p>Lixeira esta vaisa<p>';
