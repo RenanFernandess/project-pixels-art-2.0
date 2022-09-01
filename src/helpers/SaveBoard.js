@@ -1,7 +1,9 @@
 import saveItem, { getSavedItem, saveItemSessionStorage, getItemSessionStorage } from './storage.js';
+import { globalState } from './GlobalState.js';
 
 const TRASH = 'trash';
 const BOARDSAVEDLIST = 'boardSavedList';
+const KEY = 'library';
 
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
@@ -19,6 +21,10 @@ export default class SaveBoard {
       board: '',
       boardNumber: this.boardSavedList.length,
     };
+    globalState.pushState({
+      boardsList: this.boardSavedList,
+      trash: this.trash,
+    }, KEY);
   }
 
   getTheBoardSize() {
@@ -57,6 +63,7 @@ export default class SaveBoard {
       this.generateId();
       this.boardSavedList.push(this.currentBoard);
       console.log(this.boardSavedList);
+      globalState.pushState({ boardsList: this.boardSavedList }, KEY);
       saveItem(BOARDSAVEDLIST, this.boardSavedList);
     } catch (error) {
       paragraphMessage.innerText = error.message;
@@ -67,6 +74,10 @@ export default class SaveBoard {
   removeSavedBoard(boardId) {
     this.trash = [...this.trash, this.boardSavedList.find(({ id }) => id === boardId)];
     this.boardSavedList = this.boardSavedList.filter(({ id }) => boardId !== id);
+    globalState.pushState({
+      boardsList: this.boardSavedList,
+      trash: this.trash,
+    }, KEY);
     saveItem(BOARDSAVEDLIST, this.boardSavedList);
     saveItemSessionStorage(TRASH, this.trash);
   }
@@ -74,12 +85,17 @@ export default class SaveBoard {
   restoreBoard(boardId) {
     this.boardSavedList = [...this.boardSavedList, this.trash.find(({ id }) => id === boardId)];
     this.trash = this.trash.filter(({ id }) => boardId !== id);
+    globalState.pushState({
+      boardsList: this.boardSavedList,
+      trash: this.trash,
+    }, KEY);
     saveItem(BOARDSAVEDLIST, this.boardSavedList);
     saveItemSessionStorage(TRASH, this.trash);
   }
 
   removeTrashBoard(boardId) {
     this.trash = this.trash.filter(({ id }) => boardId !== id);
+    globalState.pushState({ trash: this.trash }, KEY);
     saveItemSessionStorage(TRASH, this.trash);
   }
 
