@@ -1,7 +1,8 @@
-import RenderLibrary from './helpers/RenderLibrary.js';
+import { globalState } from './helpers/GlobalState.js';
 import { saveBoard } from './helpers/SaveBoard.js';
-import saveItem, { getSavedItem } from './helpers/storage.js';
+import RenderLibrary from './helpers/RenderLibrary.js';
 import RenderTrash from './helpers/RenderTrash.js';
+import saveItem, { getSavedItem } from './helpers/storage.js';
 
 const paletteContainer = document.getElementById('palette-container');
 // const colorPalette = document.getElementById('color-palette');
@@ -14,15 +15,20 @@ const buttonSave = document.getElementById('save-board');
 const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
 const buttonSaveAs = document.getElementById('save-board-as');
-// const inputBoardName = document.getElementById('board-name');
 const boardsList = document.getElementById('boards-list');
 const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
-// const paragraphMessage = document.getElementById('error-mesage');
 // const searchBoardInput = document.getElementById('search-board');
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // generic functions
+
+const renderTrash = new RenderTrash();
+const renderLibrary = new RenderLibrary();
+globalState.createState(null, () => {
+  renderLibrary.setUpdate();
+  renderTrash.setUpdate();
+});
 
 const selected = () => document.querySelector('.selected');
 
@@ -124,9 +130,6 @@ const createPixelBoard = () => {
 // pixel board opitions
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
-
-const renderLibrary = new RenderLibrary();
-const renderTrash = new RenderTrash();
 
 const showTrash = () => {
   const { attributes: { name, name: { value } } } = boardsList;
