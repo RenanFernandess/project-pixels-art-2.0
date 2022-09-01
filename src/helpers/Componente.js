@@ -98,4 +98,17 @@ export default class Componente {
     };
     });
   }
+
+  orUpdateTheList(container, boardList) {
+    this.setState(({ lastIndex }) => {
+      const state = this.numberOfBoardThatWillBeListed(container, boardList);
+      const { number, numberOfBoard, pagesNumber } = state;
+      return {
+        lastIndex: ((lastIndex > number) ? lastIndex : number),
+        number,
+        pagesNumber,
+        numberOfBoard,
+      };
+    });
+  }
 }
