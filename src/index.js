@@ -14,8 +14,6 @@ const inputColor = document.getElementById('new-color');
 const buttonSave = document.getElementById('save-board');
 const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
-const buttonSaveAs = document.getElementById('save-board-as');
-const boardsList = document.getElementById('boards-list');
 const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
 // const searchBoardInput = document.getElementById('search-board');
@@ -33,28 +31,6 @@ globalState.createState(null, () => {
 const selected = () => document.querySelector('.selected');
 
 // generic functions
-// -------------------------------------------------------------------------------------------------------------------------
-// state
-
-// function orUpgradeStorage(name) {
-//   if (name === 'boardSavedList') {
-//     const { libraryState: { currentPage, firstIndex, lastIndex } } = getState();
-//     const [number, numberOfBoard, pages] = numberOfBoardThatWillBeListed();
-//     setState({
-//       libraryState: {
-//         currentPage,
-//         firstIndex,
-//         lastIndex: ((lastIndex > number) ? lastIndex : number),
-//         number,
-//         pageNumber: pages,
-//       },
-//       numberOfBoard,
-//     });
-//     // listBoard(true);
-//   }
-// }
-
-// state
 // --------------------------------------------------------------------------------------------------------------------------
 // color palet
 
@@ -187,7 +163,6 @@ const events = () => {
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveCurrentBoard);
   setBoard.addEventListener('click', createPixelBoard);
-  buttonSaveAs.addEventListener('click', () => { saveBoard.saveframe(); });
   libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
   window.addEventListener('resize', renderLibrary.resetList);
