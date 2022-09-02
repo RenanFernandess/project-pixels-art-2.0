@@ -11,7 +11,7 @@ export default class Componente {
     if (typeof objectOrCallback === 'function') {
       this.state = Object.assign(this.state, objectOrCallback(this.state));
     } else this.state = Object.assign(this.state, objectOrCallback);
-    if (callback) callback();
+    if (callback) callback(this.state);
     this.render();
     console.log('state: ', this.state);
   }
