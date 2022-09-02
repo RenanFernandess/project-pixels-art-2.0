@@ -31,7 +31,7 @@ export default class RenderLibrary extends Componente {
     const state = globalState.getState(
       ({ library: { boardList, currentLocation } }) => ({ boardList, currentLocation }),
     );
-    this.setState({ ...state });
+    this.orUpdateTheList(boardsList, state.boardList, state);
   }
 
   nextListOfBoard() {

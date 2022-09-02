@@ -31,7 +31,7 @@ export default class RenderTrash extends Componente {
     const state = globalState.getState(
       ({ library: { trash, currentLocation } }) => ({ trash, currentLocation }),
     );
-    this.setState({ ...state });
+    this.orUpdateTheList(boardsList, state.trash, state);
   }
 
   nextListOfBoard() {
