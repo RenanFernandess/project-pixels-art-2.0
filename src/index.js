@@ -1,5 +1,5 @@
 import { globalState } from './helpers/GlobalState.js';
-import { saveBoard, KEY } from './helpers/SaveBoard.js';
+import { KEY } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
 import RenderTrash from './helpers/RenderTrash.js';
 import saveItem, { getSavedItem } from './helpers/storage.js';
