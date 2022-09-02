@@ -100,11 +100,14 @@ export default class Componente {
   }
 
   orUpdateTheList(container, list, state = {}) {
-    this.setState(({ lastIndex }) => {
+    this.setState(({ firstIndex }) => {
       const listState = this.numberOfBoardThatWillBeListed(container, list);
       const { number, numberOfBoard, pagesNumber } = listState;
+      let lastIndex = (firstIndex + number);
+      lastIndex = (lastIndex > numberOfBoard) ? numberOfBoard : lastIndex;
       return {
-        lastIndex: ((lastIndex > number) ? lastIndex : number),
+        firstIndex: (lastIndex - number),
+        lastIndex,
         number,
         pagesNumber,
         numberOfBoard,
