@@ -10,3 +10,9 @@ export default function createButton({
   button.innerText = text;
   return button;
 }
+
+export function createDiv({ id, className }) {
+  const div = document.createElement('div');
+  div.className = className;
+  if (id) div.id = id;
+}
