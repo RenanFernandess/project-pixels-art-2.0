@@ -1,9 +1,12 @@
-export default function createButton(text, id, className, name) {
+export default function createButton({
+  text = 'xablau', id, className = 'buttons', name, callback, typeEvent = 'click',
+  }) {
   const button = document.createElement('button');
   button.type = 'button';
-  button.id = id;
+  if (id) button.id = id;
   button.className = className;
-  button.name = name;
+  if (name) button.name = name;
+  if (callback) button.addEventListener(typeEvent, callback);
   button.innerText = text;
   return button;
 }
