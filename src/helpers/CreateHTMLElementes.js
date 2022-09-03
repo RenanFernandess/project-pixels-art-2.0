@@ -1,5 +1,5 @@
 export default function createButton({
-  text = 'xablau', id, className = 'buttons', name, callback, typeEvent = 'click',
+  text = '', id, className = 'buttons', name, callback, typeEvent = 'click',
   }) {
   const button = document.createElement('button');
   button.type = 'button';
