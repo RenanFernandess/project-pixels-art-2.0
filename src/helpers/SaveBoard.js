@@ -4,7 +4,7 @@ import Componente from './Componente.js';
 
 const TRASH = 'trash';
 const BOARDSAVEDLIST = 'boardSavedList';
-export const KEY = 'library';
+export const LIBRARY = 'library';
 
 const inputBoardSize = document.getElementById('board-size');
 const inputBoardName = document.getElementById('board-name');
@@ -20,6 +20,7 @@ export default class SaveBoard extends Componente {
       author: '',
       board: '',
       boardNumber: 0,
+      favorited: false,
       id: '',
       date: {},
       name: '',
@@ -44,7 +45,7 @@ export default class SaveBoard extends Componente {
     globalState.pushState({
       boardList: this.boardSavedList,
       trash: this.trash,
-    }, KEY);
+    }, LIBRARY);
     this.render();
   }
 
@@ -80,13 +81,13 @@ export default class SaveBoard extends Componente {
     return { size, board, boardNumber, id };
   }
 
-  addNewBoard({ author, board, boardNumber, id, date, name, size }) {
+  addNewBoard({ author, board, boardNumber, date, favorited, id, name, size }) {
       const newList = [
         ...this.boardSavedList,
-        { author, board, date, id, name, boardNumber, size: `${size}/${size}` },
+        { author, board, boardNumber, date, favorited, id, name, size: `${size}/${size}` },
       ];
       this.boardSavedList = newList;
-      globalState.pushState({ boardList: newList }, KEY);
+      globalState.pushState({ boardList: newList }, LIBRARY);
       saveItem(BOARDSAVEDLIST, newList);
       this.setState({ nameRepeated: newList.some(({ name: boardName }) => name === boardName) });
   }
@@ -112,7 +113,7 @@ export default class SaveBoard extends Componente {
     globalState.pushState({
       boardList: this.boardSavedList,
       trash: this.trash,
-    }, KEY);
+    }, LIBRARY);
     saveItem(BOARDSAVEDLIST, this.boardSavedList);
     saveItemSessionStorage(TRASH, this.trash);
   }
@@ -123,14 +124,14 @@ export default class SaveBoard extends Componente {
     globalState.pushState({
       boardList: this.boardSavedList,
       trash: this.trash,
-    }, KEY);
+    }, LIBRARY);
     saveItem(BOARDSAVEDLIST, this.boardSavedList);
     saveItemSessionStorage(TRASH, this.trash);
   }
 
   async removeTrashBoard(boardId) {
     this.trash = this.trash.filter(({ id }) => boardId !== id);
-    globalState.pushState({ trash: this.trash }, KEY);
+    globalState.pushState({ trash: this.trash }, LIBRARY);
     saveItemSessionStorage(TRASH, this.trash);
   }
 

@@ -1,5 +1,5 @@
 import { globalState } from './helpers/GlobalState.js';
-import { KEY } from './helpers/SaveBoard.js';
+import { LIBRARY } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
 import saveItem, { getSavedItem } from './helpers/storage.js';
 
@@ -108,7 +108,7 @@ const showTrash = (currentLocation) => {
   if (currentLocation !== 'trash') {
     globalState.pushState(
       { currentLocation: 'Lixeira', currentList: 'trash', favorites: false }, 
-      KEY,
+      LIBRARY,
     );
   }
 };
@@ -117,7 +117,7 @@ const showLibrary = (currentLocation) => {
   if (currentLocation !== 'library') {
     globalState.pushState(
       { currentLocation: 'Biblioteca', currentList: 'boardList', favorites: false },
-      KEY,
+      LIBRARY,
     );
   }
 };
@@ -126,7 +126,7 @@ const showFavorites = (currentLocation) => {
   if (currentLocation !== 'favorites') {
     globalState.pushState(
       { currentLocation: 'Favoritos', currentList: 'boardList', favorites: true },
-      KEY,
+      LIBRARY,
     );
   }
 };
