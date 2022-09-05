@@ -1,19 +1,15 @@
 import { globalState } from './helpers/GlobalState.js';
 import { LIBRARY } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
-import saveItem, { getSavedItem } from './helpers/storage.js';
 
 const paletteContainer = document.getElementById('palette-container');
-// const colorPalette = document.getElementById('color-palette');
 const colors = document.getElementsByClassName('color');
 const pixelBoard = document.getElementById('pixel-board');
 const buttonClear = document.getElementById('clear-board');
 const colorSelector = document.getElementById('box-new-color');
 const inputColor = document.getElementById('new-color');
-const buttonSave = document.getElementById('save-board');
 const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
-// const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -66,16 +62,6 @@ const colored = ({ target: { classList, style } }) => {
 const clearBoard = () => {
   const pixels = document.querySelectorAll('div#pixel-board .pixel');
   [...pixels].forEach(({ style }) => { style.backgroundColor = 'white'; });
-};
-
-const saveCurrentBoard = () => {
-  const board = pixelBoard.innerHTML;
-  saveItem('board', board);
-};
-
-const chargeBoard = () => {
-  const board = getSavedItem('board');
-  if (board) pixelBoard.innerHTML = board;
 };
 
 const createPixelDiv = async (value) => {
@@ -152,13 +138,11 @@ const events = () => {
   pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
   inputColor.addEventListener('input', selectNewColor);
-  buttonSave.addEventListener('click', saveCurrentBoard);
   setBoard.addEventListener('click', createPixelBoard);
   navOpitions.addEventListener('click', navOpitionsEvents);
 };
 
 window.onload = () => {
-  chargeBoard();
   colorAdd();
   events();
 };
