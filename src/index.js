@@ -1,7 +1,6 @@
 import { globalState } from './helpers/GlobalState.js';
 import { KEY } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
-import RenderTrash from './helpers/RenderTrash.js';
 import saveItem, { getSavedItem } from './helpers/storage.js';
 
 const paletteContainer = document.getElementById('palette-container');
@@ -14,19 +13,11 @@ const inputColor = document.getElementById('new-color');
 const buttonSave = document.getElementById('save-board');
 const inputBoardSize = document.getElementById('board-size');
 const setBoard = document.getElementById('generate-board');
-const libraryContainer = document.getElementById('library-container');
+// const libraryContainer = document.getElementById('library-container');
 const navOpitions = document.getElementById('nav-opitions');
-// const searchBoardInput = document.getElementById('search-board');
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // generic functions
-
-const renderTrash = new RenderTrash();
-const renderLibrary = new RenderLibrary();
-globalState.createState(null, () => {
-  renderLibrary.setUpdate();
-  renderTrash.setUpdate();
-});
 
 const selected = () => document.querySelector('.selected');
 
@@ -107,53 +98,53 @@ const createPixelBoard = () => {
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
 
+const renderLibrary = new RenderLibrary();
+
+globalState.createState(null, () => {
+  renderLibrary.setUpdate();
+});
+
 const showTrash = (currentLocation) => {
   if (currentLocation !== 'trash') {
-    globalState.pushState({ currentLocation: 'trash' }, KEY);
+    globalState.pushState(
+      { currentLocation: 'Lixeira', currentList: 'trash', favorites: false }, 
+      KEY,
+    );
   }
 };
 
 const showLibrary = (currentLocation) => {
   if (currentLocation !== 'library') {
-    globalState.pushState({ currentLocation: 'library' }, KEY);
+    globalState.pushState(
+      { currentLocation: 'Biblioteca', currentList: 'boardList', favorites: false },
+      KEY,
+    );
   }
 };
 
-// library render
-// -------------------------------------------------------------------------------------------------------------------------------
-// library filtering
-
-// const searchBoard = ({ target: { value } }) => {
-//   console.log('ok');
-// };
-
-// const filterBoardList = () => { };
-
-// library filtering
-// -------------------------------------------------------------------------------------------------------------------------------
-// events
-
-const paletteContainerEvents = ({ target: { classList, id } }) => {
-  selectColor(classList);
-  if (id === 'news-colors') colorAdd();
-};
-
-const exchangeBoardInLibrary = ({ id }, currentLocation) => {
-  if (currentLocation === 'library') {
-    if (id === 'next-list') renderLibrary.nextListOfBoard();
-    if (id === 'previous-list') renderLibrary.previousListOfBoard();
+const showFavorites = (currentLocation) => {
+  if (currentLocation !== 'favorites') {
+    globalState.pushState(
+      { currentLocation: 'Favoritos', currentList: 'boardList', favorites: true },
+      KEY,
+    );
   }
-};
-
-const libraryContainerEvent = ({ target }) => {
-  const { currentLocation } = globalState.getState(({ library }) => library);
-  exchangeBoardInLibrary(target, currentLocation);
 };
 
 const navOpitionsEvents = ({ target }) => {
   const { currentLocation } = globalState.getState(({ library }) => library);
   if (target.id === 'trash') showTrash(currentLocation);
   if (target.id === 'library') showLibrary(currentLocation);
+  if (target.id === 'favorites') showFavorites(currentLocation);
+};
+
+// library render
+// -------------------------------------------------------------------------------------------------------------------------------
+// events
+
+const paletteContainerEvents = ({ target: { classList, id } }) => {
+  selectColor(classList);
+  if (id === 'news-colors') colorAdd();
 };
 
 const events = () => {
@@ -163,10 +154,7 @@ const events = () => {
   inputColor.addEventListener('input', selectNewColor);
   buttonSave.addEventListener('click', saveCurrentBoard);
   setBoard.addEventListener('click', createPixelBoard);
-  libraryContainer.addEventListener('click', libraryContainerEvent);
   navOpitions.addEventListener('click', navOpitionsEvents);
-  window.addEventListener('resize', renderLibrary.resetList);
-  // searchBoardInput.addEventListener('input', searchBoard);
 };
 
 window.onload = () => {
