@@ -16,10 +16,11 @@ export default class RenderLibrary extends Componente {
     this.nextListOfBoard = this.nextListOfBoard.bind(this);
     this.previousListOfBoard = this.previousListOfBoard.bind(this);
     this.setUpdate = this.setUpdate.bind(this);
-    this.inputChange = this.inputChange.bind(this);
+    this.searchBoard = this.searchBoard.bind(this);
 
     this.state = {
       boardList: [],
+      favorites: false,
       list: [],
       search: '',
       trash: [],
@@ -64,8 +65,13 @@ export default class RenderLibrary extends Componente {
     this.checkIfChanged(boardsList, list);
   }
 
-  inputChange({ target: { name, value } }) {
-    this.setState({ [name]: value });
+  searchBoard({ target: { value } }) {
+    this.setState({ search: value }, (state) => {
+      const { search, currentList } = state;
+      const list = state[currentList]
+      .filter(({ name, id }) => name.includes(search) || search === id || !search);
+        this.orUpdateTheList(boardsList, list, { list });
+    });
   }
 
   async render() {
@@ -74,11 +80,10 @@ export default class RenderLibrary extends Componente {
         window.addEventListener('resize', this.resetList);
         buttonNext.addEventListener('click', this.nextListOfBoard);
         buttonPrevious.addEventListener('click', this.previousListOfBoard);
-        searchBoardInput.addEventListener('input', this.inputChange);
+        searchBoardInput.addEventListener('input', this.searchBoard);
         searchBoardInput.value = search;
         boardsList.innerHTML = '';
-        list.filter(({ name, id }) => name.includes(search) || search === id || !search)
-          .slice(firstIndex, lastIndex).forEach((board) => {
+          list.slice(firstIndex, lastIndex).forEach((board) => {
           const preview = new CreatePreview(board, currentList === 'trash');
           boardsList.appendChild(preview.renderPreview());
         });
