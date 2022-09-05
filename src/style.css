@@ -3,13 +3,33 @@
 
   --main-background-color: rgb(35, 38, 41);
 
+  --main-text-color: rgb(200, 200, 200);
+
   --containers-background-color: rgb(60, 64, 68);
 
   --items-background-color: rgb(46, 50, 54);
 
+  --items-background-color-hover: rgb(56, 61, 65);
+
   --main-border-color: rgb(62, 62, 62);
 
   --nav-attributes-color: rgb(35, 38, 41);
+
+}
+
+::-webkit-scrollbar {
+  background-color: unset;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--items-background-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--items-background-color-hover);
 }
 
 * {
@@ -21,7 +41,8 @@
 
 body {
   background-color: var(--main-background-color);
-  color: rgb(200, 200, 200);
+  color: var(--main-text-color);
+  font-size: 16px;
 }
 
 header {
@@ -60,15 +81,18 @@ main {
   justify-content: center;
 }
 
+.column {
+  flex-direction: column;
+  gap: 5px;
+}
+
 .display-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 
 .nav {
-  border-bottom: 1px solid var(--nav-attributes-color);
   padding: 0 20px;
-  margin: 0 20px;
 }
 
 .nav-list {
@@ -94,17 +118,63 @@ main {
   color: rgb(21, 21, 21);
 }
 
+.input-text {
+  border: none;
+  border-radius: 5px;
+  color: var(--main-text-color);
+  font-size: 1rem;
+  font-weight: 600;
+  outline: 0;
+  padding: 6px 10px;
+  width: 30vw;
+}
+
 .buttons {
   border-radius: 5px;
   color: black;
+  cursor: pointer;
   font-weight: 900;
   flex: 1 1 auto;
   height: 30px;
   min-width: 80px;
   max-width: 130px;
   padding: 0 10px;
-  cursor: pointer;
   transition: 5ms;
+}
+
+.buttons:active {
+  transform: scale(1.04);
+}
+
+.long-button {
+  background-color: unset;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  height: 250px;
+  position: relative;
+  transition: 8ms;
+  width: 30px;
+}
+
+.rigthArrow::after, .rigthArrow::before{
+  border-right: 2px solid var(--main-text-color);
+  content: '';
+  display: block;
+  height: 40px;
+  width: 1px;
+}
+
+.rigthArrow::after {
+  transform: rotate(25deg);
+}
+
+.rigthArrow::before {
+  transform: rotate(155deg) translateX();
+}
+
+.long-button:hover {
+  background-color: rgb(97, 101, 105);
 }
 
 .options {
@@ -157,8 +227,7 @@ main {
 
 .selected {
   box-shadow: 2px 2px 8px rgb(26, 26, 26);
-  height: 41px;
-  width: 41px;
+  transform: scale(1.03);
 }
 
 .preview {
@@ -178,7 +247,7 @@ main {
 }
 
 .preview:hover {
-  background-color: rgb(56, 61, 65);
+  background-color: var(--items-background-color-hover);
 }
 
 #color-palette {
@@ -206,6 +275,23 @@ main {
   width: 100%;
 }
 
+#board-title {
+  height: 80px;
+  width: 100%;
+}
+
+#board-name {
+  background-color: var(--containers-background-color);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#error-mesage {
+  color: rgb(255, 89, 89);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 #palette-container {
   flex-flow: row wrap;
   gap: 20px;
@@ -215,16 +301,38 @@ main {
   gap: 10px;
 }
 
+#library-header {
+  align-items: center;
+  border-bottom: 1px solid var(--nav-attributes-color);
+  justify-content:flex-start;
+  gap: 100px;
+  margin: 0 20px;
+}
+
+#search-board {
+  background-color: var(--items-background-color);
+  color: var(--main-text-color);
+}
+
+/* #library-container {
+} */
+
 #boards-list {
+  flex: 1 800px;
   gap: 10px;
-  justify-content: start;
+  justify-content: center;
+  max-width: 95%;
+  min-height: 280px;
   overflow-x: auto;
-  max-width: 100%;
   padding: 15px;
 }
 
 @media screen and ( min-width: 1000px ) {
   .container {
     padding: 20px;
+  }
+
+  #boards-list {
+    justify-content: start;
   }
 }
