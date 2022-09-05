@@ -35,8 +35,9 @@ export const globalState = new GlobalState();
 const INITIAL_STATE = {
   library: {
     boardList: [],
-    currentLocation: 'library',
+    currentLocation: 'Biblioteca',
     currentList: 'boardList',
+    favorites: false,
     trash: [],
   },
 };
