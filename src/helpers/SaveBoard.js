@@ -32,7 +32,7 @@ export default class SaveBoard extends Componente {
   }
 
   binds() {
-    this.takeTheName = this.takeTheName.bind(this);
+    this.inputChange = this.inputChange.bind(this);
     this.saveBoard = this.saveBoard.bind(this);
     this.validateName = this.validateName.bind(this);
     this.generateId = this.generateId.bind(this);
@@ -48,7 +48,7 @@ export default class SaveBoard extends Componente {
     this.render();
   }
 
-  takeTheName({ target: { value, name } }) {
+  inputChange({ target: { value, name } }) {
     this.setState({
         [name]: value,
         nameRepeated: (name === 'name') && this.checksThatTheNameIsNotRepeated(value),
@@ -136,9 +136,9 @@ export default class SaveBoard extends Componente {
 
   render() {
     const { name, size } = this.state;
-    inputBoardName.addEventListener('input', this.takeTheName);
+    inputBoardName.addEventListener('input', this.inputChange);
     inputBoardName.value = name;
-    inputBoardSize.addEventListener('input', this.takeTheName);
+    inputBoardSize.addEventListener('input', this.inputChange);
     inputBoardSize.value = size;
     buttonSaveAs.addEventListener('click', this.saveBoard);
   }
