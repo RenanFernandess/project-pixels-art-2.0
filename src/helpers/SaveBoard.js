@@ -5,12 +5,14 @@ import Componente from './Componente.js';
 const TRASH = 'trash';
 const BOARDSAVEDLIST = 'boardSavedList';
 export const LIBRARY = 'library';
+const BOARD = 'board';
 
 const inputBoardSize = document.getElementById('board-size');
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
 const paragraphMessage = document.getElementById('error-mesage');
 const buttonSaveAs = document.getElementById('save-board-as');
+const buttonSave = document.getElementById('save-board');
 
 export default class SaveBoard extends Componente {
   constructor() {
@@ -39,6 +41,8 @@ export default class SaveBoard extends Componente {
     this.generateId = this.generateId.bind(this);
     this.updateBoardInfos = this.updateBoardInfos.bind(this);
     this.addNewBoard = this.addNewBoard.bind(this);
+    this.saveCurrentBoard = this.saveCurrentBoard.bind(this);
+    this.loadSavedBoard = this.loadSavedBoard.bind(this);
   }
 
   whenTheClassIsReady() {
@@ -47,6 +51,20 @@ export default class SaveBoard extends Componente {
       trash: this.trash,
     }, LIBRARY);
     this.render();
+    this.loadSavedBoard();
+  }
+
+  // loadSavedBoard() {
+  //   const savedBoard = getSavedItem(BOARD);
+  //   pixelBoard.innerHTML = savedBoard.board;
+  //   this.setState({ ...savedBoard });
+  // }
+
+  saveCurrentBoard() {
+    this.setState({ board: pixelBoard.innerHTML, size: pixelBoard.childElementCount },
+      ({ author, board, boardNumber, date, favorited, id, name, size }) => {
+      saveItem(BOARD, { author, board, boardNumber, date, favorited, id, name, size });
+    });
   }
 
   inputChange({ target: { value, name } }) {
@@ -142,6 +160,7 @@ export default class SaveBoard extends Componente {
     inputBoardSize.addEventListener('input', this.inputChange);
     inputBoardSize.value = size;
     buttonSaveAs.addEventListener('click', this.saveBoard);
+    buttonSave.addEventListener('click', this.saveCurrentBoard);
   }
 }
 
