@@ -1,6 +1,7 @@
-export default function createButton({
-  text = '', id, className = 'buttons', name, callback, typeEvent = 'click',
-  }) {
+export default function createButton(
+  { text = '', id, className = 'buttons', name, typeEvent = 'click' },
+  callback,
+  ) {
   const button = document.createElement('button');
   button.type = 'button';
   if (id) button.id = id;
@@ -11,9 +12,10 @@ export default function createButton({
   return button;
 }
 
-export function createDiv({ id, className }) {
+export function createDiv({ id, className, typeEvent = 'click' }, callback) {
   const div = document.createElement('div');
   div.className = className;
   if (id) div.id = id;
+  if (callback) div.addEventListener(typeEvent, callback);
   return div;
 }
