@@ -54,11 +54,11 @@ export default class SaveBoard extends Componente {
     this.loadSavedBoard();
   }
 
-  // loadSavedBoard() {
-  //   const savedBoard = getSavedItem(BOARD);
-  //   pixelBoard.innerHTML = savedBoard.board;
-  //   this.setState({ ...savedBoard });
-  // }
+  loadSavedBoard() {
+    const savedBoard = getSavedItem(BOARD);
+    pixelBoard.innerHTML = savedBoard.board;
+    this.setState({ ...savedBoard });
+  }
 
   saveCurrentBoard() {
     this.setState({ board: pixelBoard.innerHTML, size: pixelBoard.childElementCount },
