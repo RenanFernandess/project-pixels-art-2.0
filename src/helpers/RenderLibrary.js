@@ -3,6 +3,9 @@ import CreatePreview from './CreatePreview.js';
 import { globalState } from './GlobalState.js';
 
 const boardsList = document.getElementById('boards-list');
+const buttonNext = document.getElementById('next-list');
+const buttonPrevious = document.getElementById('previous-list');
+
 export default class RenderLibrary extends Componente {
   constructor() {
     super();
@@ -16,22 +19,27 @@ export default class RenderLibrary extends Componente {
     this.state = {
       boardList: [],
       currentLocation: 'library',
+      currentList: 'boardList',
+      trash: [],
     };
     this.whenTheClassIsReady();
   }
 
   whenTheClassIsReady() {
-    const boardList = globalState.getState(({ library: { boardList: list } }) => list);
-    console.log('uai', boardList);
-    this.setState({ boardList, ...this.numberOfBoardThatWillBeListed(boardsList, boardList) });
+    const state = globalState.getState(({ library }) => library);
+    const { currentList } = state;
+    console.log('uai', state[currentList]);
+    this.setState({
+      ...state,
+      ...this.numberOfBoardThatWillBeListed(boardsList, state[currentList]),
+    });
     this.createListingState();
   }
 
   setUpdate() {
-    const state = globalState.getState(
-      ({ library: { boardList, currentLocation } }) => ({ boardList, currentLocation }),
-    );
-    this.orUpdateTheList(boardsList, state.boardList, state);
+    const state = globalState.getState(({ library }) => library);
+    const { currentList } = state;
+    this.orUpdateTheList(boardsList, state[currentList], state);
   }
 
   nextListOfBoard() {
@@ -54,13 +62,16 @@ export default class RenderLibrary extends Componente {
   }
 
   async render() {
-    const { firstIndex, lastIndex, boardList, currentLocation } = this.state;
-    if (boardList.length && currentLocation === 'library') {
-      boardsList.innerHTML = '';
-      boardList.slice(firstIndex, lastIndex).forEach((board) => {
-        const preview = new CreatePreview(board);
-        boardsList.appendChild(preview.renderPreview());
-      });
-    }
+    const { firstIndex, lastIndex, currentList } = this.state;
+      if (this.state[currentList].length) {
+        window.addEventListener('resize', this.resetList);
+        buttonNext.addEventListener('click', this.nextListOfBoard);
+        buttonPrevious.addEventListener('click', this.previousListOfBoard);
+        boardsList.innerHTML = '';
+        this.state[currentList].slice(firstIndex, lastIndex).forEach((board) => {
+          const preview = new CreatePreview(board, currentList === 'trash');
+          boardsList.appendChild(preview.renderPreview());
+        });
+      } else boardsList.innerHTML = '<p>vaisa<p>';
   }
 }
