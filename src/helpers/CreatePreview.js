@@ -1,7 +1,33 @@
 import { saveBoard } from './SaveBoard.js';
+import createButton from './CreateHTMLElementes.js';
+import { globalState } from './GlobalState.js';
 
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
+
+const removeButton = {
+  text: 'Remover',
+  className: 'buttons danger-button',
+  name: 'remove-preview',
+};
+
+const deleteButton = {
+  text: 'Apagar',
+  className: 'buttons danger-button',
+  name: 'delete-preview',
+};
+
+const editButton = {
+  text: 'Editar',
+  className: 'buttons primary-button',
+  name: 'edit-board',
+};
+
+const restoreButton = {
+  text: 'Restaurar',
+  className: 'buttons primary-button',
+  name: 'restore-board',
+};
 
 export default class CreatePreview {
   constructor({ id, name, size, board }, itsTrash = false) {
@@ -10,8 +36,7 @@ export default class CreatePreview {
     this.name = name;
     this.size = size;
     this.board = board;
-    this.dangerButtonClass = 'buttons danger-button';
-    this.primaryButtonClass = 'buttons primary-button';
+    this.boardInfo = { id, name, size, board };
   }
 
   renderPreview() {
@@ -34,38 +59,17 @@ export default class CreatePreview {
   createButtonsArea() {
     const div = document.createElement('div');
     div.className = 'display options';
-    div.appendChild(this.primaryButtons());
-    div.appendChild(this.dangerButtons());
+    div.appendChild(
+      this.itsTrash
+      ? createButton(restoreButton, () => { this.restoreBoard(this.id); })
+      : createButton(editButton, () => { this.editPixelBoard(this.boardInfo); }),
+    );
+    div.appendChild(
+      this.itsTrash
+      ? createButton(deleteButton, () => { this.removeBoard(this.id); })
+      : createButton(removeButton, () => { this.removeBoard(this.id); }),
+    );
     return div;
-  }
-
-  dangerButtons() {
-    const button = document.createElement('button');
-    button.className = this.dangerButtonClass;
-    button.name = this.itsTrash ? 'delete-preview' : 'remove-preview';
-    button.innerText = this.itsTrash ? 'Apagar' : 'REMOVER';
-    button.addEventListener('click', () => { this.removeBoard(this.id); });
-    return button;
-  }
-
-  primaryButtons() {
-    const button = document.createElement('button');
-    button.className = this.primaryButtonClass;
-    button.name = this.itsTrash ? 'restore-board' : 'edit-board';
-    button.innerText = this.itsTrash ? 'Restaurar' : 'EDITAR';
-    button.addEventListener('click', this.filterParameter());
-    return button;
-  }
-
-  filterParameter() {
-      const boardInfo = {
-        id: this.id,
-        name: this.name,
-        board: this.board,
-      };
-    return this.itsTrash
-      ? () => { this.restoreBoard(this.id); }
-      : () => { this.addPixelBoard(boardInfo); };
   }
 
   removeBoard(boardId) {
@@ -79,7 +83,7 @@ export default class CreatePreview {
     return this.name;
   }
 
-  addPixelBoard(boardInfo) {
+  editPixelBoard(boardInfo) {
     const { name, board } = boardInfo;
     pixelBoard.innerHTML = board;
     inputBoardName.value = name;
