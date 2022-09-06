@@ -40,5 +40,8 @@ const INITIAL_STATE = {
     favorites: false,
     trash: [],
   },
+  pixelBoard: {
+    editBoardId: '',
+  },
 };
 globalState.createState(INITIAL_STATE);
