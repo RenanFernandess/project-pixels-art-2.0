@@ -42,6 +42,16 @@ const INITIAL_STATE = {
   },
   pixelBoard: {
     editBoardId: '',
+    currentBoard: {
+      author: '',
+      board: '',
+      boardNumber: 0,
+      date: {},
+      favorited: false,
+      id: '',
+      name: '',
+      size: '',
+    },
   },
 };
 globalState.createState(INITIAL_STATE);
