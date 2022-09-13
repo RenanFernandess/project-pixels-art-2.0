@@ -2,6 +2,8 @@ import { saveBoard } from './SaveBoard.js';
 import createButton from './CreateHTMLElementes.js';
 import { globalState } from './GlobalState.js';
 
+const PIXELBOARD = 'pixelBoard';
+
 const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
 
@@ -36,7 +38,6 @@ export default class CreatePreview {
     this.name = name;
     this.size = size;
     this.board = board;
-    this.boardInfo = { id, name, size, board };
   }
 
   renderPreview() {
@@ -61,32 +62,14 @@ export default class CreatePreview {
     div.className = 'display options';
     div.appendChild(
       this.itsTrash
-      ? createButton(restoreButton, () => { this.restoreBoard(this.id); })
-      : createButton(editButton, () => { this.editPixelBoard(this.boardInfo); }),
+      ? createButton(restoreButton, () => { saveBoard.restoreBoard(this.id); })
+      : createButton(editButton, () => { saveBoard.editBoard(this.id); }),
     );
     div.appendChild(
       this.itsTrash
-      ? createButton(deleteButton, () => { this.removeBoard(this.id); })
-      : createButton(removeButton, () => { this.removeBoard(this.id); }),
+      ? createButton(deleteButton, () => { saveBoard.removeTrashBoard(this.id); })
+      : createButton(removeButton, () => { saveBoard.removeSavedBoard(this.id); }),
     );
     return div;
-  }
-
-  removeBoard(boardId) {
-    if (this.itsTrash) saveBoard.removeTrashBoard(boardId);
-    else saveBoard.removeSavedBoard(boardId);
-    return this.name;
-  }
-
-  restoreBoard(boardId) {
-    saveBoard.restoreBoard(boardId);
-    return this.name;
-  }
-
-  editPixelBoard(boardInfo) {
-    const { name, board } = boardInfo;
-    pixelBoard.innerHTML = board;
-    inputBoardName.value = name;
-    return this.name;
   }
 }
