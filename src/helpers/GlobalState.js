@@ -41,7 +41,7 @@ const INITIAL_STATE = {
     trash: [],
   },
   pixelBoard: {
-    editBoardId: '',
+    boardNameRepeated: '',
     currentBoard: {
       author: '',
       board: '',
@@ -52,6 +52,8 @@ const INITIAL_STATE = {
       name: '',
       size: '',
     },
+    editBoardId: '',
+    saveBoard: false,
   },
 };
 globalState.createState(INITIAL_STATE);
