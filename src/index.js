@@ -54,12 +54,6 @@ const selectNewColor = ({ target: { value } }) => {
 // ------------------------------------------------------------------------------------------------------------------------------
 // pixel board opitions
 
-// const colored = ({ target: { classList, style } }) => {
-//   if (classList.contains('pixel')) {
-//     style.backgroundColor = selected().style.backgroundColor;
-// }
-// };
-
 const clearBoard = () => {
   const pixels = document.querySelectorAll('div#pixel-board .pixel');
   [...pixels].forEach(({ style }) => { style.backgroundColor = 'white'; });
