@@ -83,6 +83,7 @@ main {
 
 .column {
   flex-direction: column;
+  justify-content: start;
   gap: 5px;
 }
 
