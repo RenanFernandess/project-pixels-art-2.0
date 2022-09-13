@@ -4,7 +4,6 @@ import { globalState } from './GlobalState.js';
 
 const PIXELBOARD = 'pixelBoard';
 
-const inputBoardName = document.getElementById('board-name');
 const pixelBoard = document.getElementById('pixel-board');
 
 const removeButton = {
