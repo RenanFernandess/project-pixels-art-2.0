@@ -1,6 +1,7 @@
 import { globalState } from './helpers/GlobalState.js';
-import { LIBRARY } from './helpers/SaveBoard.js';
+import { LIBRARY, saveBoard } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
+import PixelBoard from './helpers/PixelBoard.js';
 
 const paletteContainer = document.getElementById('palette-container');
 const colors = document.getElementsByClassName('color');
@@ -53,11 +54,11 @@ const selectNewColor = ({ target: { value } }) => {
 // ------------------------------------------------------------------------------------------------------------------------------
 // pixel board opitions
 
-const colored = ({ target: { classList, style } }) => {
-  if (classList.contains('pixel')) {
-    style.backgroundColor = selected().style.backgroundColor; 
-}
-};
+// const colored = ({ target: { classList, style } }) => {
+//   if (classList.contains('pixel')) {
+//     style.backgroundColor = selected().style.backgroundColor;
+// }
+// };
 
 const clearBoard = () => {
   const pixels = document.querySelectorAll('div#pixel-board .pixel');
@@ -84,10 +85,13 @@ const createPixelBoard = () => {
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
 
+const pixelBoardRender = new PixelBoard();
 const renderLibrary = new RenderLibrary();
 
 globalState.createState(null, () => {
   renderLibrary.setUpdate();
+  saveBoard.setUpdate();
+  pixelBoardRender.setUpdate();
 });
 
 const showTrash = (currentLocation) => {
@@ -135,7 +139,7 @@ const paletteContainerEvents = ({ target: { classList, id } }) => {
 
 const events = () => {
   paletteContainer.addEventListener('click', paletteContainerEvents);
-  pixelBoard.addEventListener('click', colored);
+  // pixelBoard.addEventListener('click', colored);
   buttonClear.addEventListener('click', clearBoard);
   inputColor.addEventListener('input', selectNewColor);
   setBoard.addEventListener('click', createPixelBoard);
