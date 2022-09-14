@@ -1,17 +1,17 @@
 import Componente from './Componente.js';
 import { globalState } from './GlobalState.js';
 import saveItem, { getSavedItem } from './storage.js';
-import { BOARD } from './SaveBoard.js';
+import {
+  BOARD,
+  BUTTON_SAVE,
+  BUTTON_SAVE_AS,
+  INPUT_BOARD_NAME,
+  INPUT_BOARD_SIZE,
+  PIXELBOARD,
+  PIXEL_BOARD,
+} from '../services/constants.js';
 
-const PIXELBOARD = 'pixelBoard';
-
-const inputBoardSize = document.getElementById('board-size');
-const inputBoardName = document.getElementById('board-name');
 // const buttonClear = document.getElementById('clear-board');
-const pixelBoard = document.getElementById('pixel-board');
-const buttonSave = document.getElementById('save-board');
-const buttonSaveAs = document.getElementById('save-board-as');
-const paragraphMessage = document.getElementById('error-mesage');
 
 export default class PixelBoard extends Componente {
   constructor() {
@@ -60,7 +60,10 @@ export default class PixelBoard extends Componente {
   }
 
   saveBoard() {
-    const currentBoard = this.state;
+    const {
+      author, board, boardNumber, date, favorited, id, name, size,
+    } = this.state;
+    const currentBoard = { author, board, boardNumber, date, favorited, id, name, size };
     globalState.pushState({ currentBoard, saveBoard: true }, PIXELBOARD);
   }
 
@@ -78,20 +81,19 @@ export default class PixelBoard extends Componente {
       const selectedColor = document.querySelector('.selected').style.backgroundColor;
       const targetStyle = style;
       targetStyle.backgroundColor = selectedColor;
-      this.setState({ board: pixelBoard.innerHTML });
+      this.setState({ board: PIXEL_BOARD.innerHTML });
     }
   }
 
   render() {
     const { name, size, board } = this.state;
-    inputBoardName.addEventListener('input', this.inputChange);
-    inputBoardName.value = name;
-    inputBoardSize.addEventListener('input', this.inputChange);
-    inputBoardSize.value = size;
-    buttonSave.addEventListener('click', this.saveCurrentBoard);
-    pixelBoard.addEventListener('click', this.boardChenge);
-    pixelBoard.innerHTML = board;
-    // buttonClear.addEventListener('click', this.clearBoard);
-    buttonSaveAs.addEventListener('click', this.saveBoard);
+    INPUT_BOARD_NAME.addEventListener('input', this.inputChange);
+    INPUT_BOARD_NAME.value = name;
+    INPUT_BOARD_SIZE.addEventListener('input', this.inputChange);
+    INPUT_BOARD_SIZE.value = size;
+    BUTTON_SAVE.addEventListener('click', this.saveCurrentBoard);
+    PIXEL_BOARD.addEventListener('click', this.boardChenge);
+    PIXEL_BOARD.innerHTML = board;
+    BUTTON_SAVE_AS.addEventListener('click', this.saveBoard);
   }
 }
