@@ -3,15 +3,14 @@ import saveItem, {
 } from './storage.js';
 import { globalState } from './GlobalState.js';
 import Componente from './Componente.js';
-
-const TRASH = 'trash';
-const BOARDSAVEDLIST = 'boardSavedList';
-export const LIBRARY = 'library';
-export const BOARD = 'board';
-const PIXELBOARD = 'pixelBoard';
-
-const pixelBoardElement = document.getElementById('pixel-board');
-const paragraphMessage = document.getElementById('error-mesage');
+import {
+  BOARDSAVEDLIST,
+  LIBRARY,
+  PIXELBOARD,
+  PIXEL_BOARD,
+  TRASH,
+  WARNING_MESSAGE_PARAGRAPH,
+} from '../services/constants.js';
 
 export default class SaveBoard extends Componente {
   constructor() {
@@ -22,7 +21,7 @@ export default class SaveBoard extends Componente {
       editing: false,
       editBoardIndex: 0,
       boardNameRepeated: false,
-      size: pixelBoardElement.childElementCount,
+      size: PIXEL_BOARD.childElementCount,
     };
     this.boardSavedList = getSavedItem(BOARDSAVEDLIST) || [];
     this.trash = getItemSessionStorage(TRASH) || [];
@@ -59,8 +58,8 @@ export default class SaveBoard extends Componente {
   addWarningMessage() {
     const { boardNameRepeated } = this.state;
     if (boardNameRepeated) {
-      paragraphMessage.innerText = `'${boardNameRepeated}' já está sendo usado!`;
-    } else paragraphMessage.innerText = '';
+      WARNING_MESSAGE_PARAGRAPH.innerText = `'${boardNameRepeated}' já está sendo usado!`;
+    } else WARNING_MESSAGE_PARAGRAPH.innerText = '';
   }
 
   saveBoard() {
@@ -68,7 +67,7 @@ export default class SaveBoard extends Componente {
       this.validateName();
       this.addNewBoard();
     } catch (error) {
-      paragraphMessage.innerText = error.message;
+      WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
       console.log(error);
     }
   }
