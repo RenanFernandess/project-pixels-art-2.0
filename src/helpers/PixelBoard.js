@@ -3,13 +3,17 @@ import { globalState } from './GlobalState.js';
 import saveItem, { getSavedItem } from './storage.js';
 import {
   BOARD,
+  BUTTON_CLEAR,
   BUTTON_SAVE,
   BUTTON_SAVE_AS,
+  BUTTON_SET_BOARD,
   INPUT_BOARD_NAME,
   INPUT_BOARD_SIZE,
   PIXELBOARD,
   PIXEL_BOARD,
+  RGB_COLOR_REGEXP,
 } from '../services/constants.js';
+import { concatHTML } from './CreateHTMLElementes.js';
 
 // const buttonClear = document.getElementById('clear-board');
 
@@ -40,6 +44,8 @@ export default class PixelBoard extends Componente {
     this.saveCurrentBoard = this.saveCurrentBoard.bind(this);
     this.saveBoard = this.saveBoard.bind(this);
     this.setUpdate = this.setUpdate.bind(this);
+    this.createPixelBoard = this.createPixelBoard.bind(this);
+    this.clearBoard = this.clearBoard.bind(this);
   }
 
   whenTheClassIsReady() {
@@ -64,16 +70,23 @@ export default class PixelBoard extends Componente {
       author, board, boardNumber, date, favorited, id, name, size,
     } = this.state;
     const currentBoard = { author, board, boardNumber, date, favorited, id, name, size };
-    globalState.pushState({ currentBoard, saveBoard: true }, PIXELBOARD);
+    globalState.pushState({
+      currentBoard,
+      saveBoard: true,
+      boardNameRepeated: this.checkNameIsRepeated(name) }, PIXELBOARD);
   }
 
   inputChange({ target: { value, name } }) {
-    this.setState({ [name]: value }, ({ boardNameList }) => {
+    this.setState({ [name]: value }, () => {
       if (name === 'name') {
-        const boardNameRepeated = boardNameList.find((boardName) => boardName === value);
-        globalState.pushState({ boardNameRepeated }, PIXELBOARD);
+        globalState.pushState({ boardNameRepeated: this.checkNameIsRepeated(value) }, PIXELBOARD);
       }
     });
+  }
+
+  checkNameIsRepeated(name) {
+    const { boardNameList } = this.state;
+    return boardNameList.find((boardName) => boardName === name);
   }
 
   boardChenge({ target: { classList, style } }) {
@@ -85,15 +98,29 @@ export default class PixelBoard extends Componente {
     }
   }
 
+  clearBoard() {
+    this.setState(({ board }) => ({ board: board.replace(RGB_COLOR_REGEXP, 'white') }));
+  }
+
+  createPixelBoard() {
+    this.setState(({ size }) => {
+      const sizeNumber = Number(size);
+      const pixels = concatHTML(Array(sizeNumber).fill('<div class="pixel"></div>'));
+      return { board: concatHTML(Array(sizeNumber).fill(`<div class="display">${pixels}</div>`)) };
+    });
+  }
+
   render() {
     const { name, size, board } = this.state;
     INPUT_BOARD_NAME.addEventListener('input', this.inputChange);
     INPUT_BOARD_NAME.value = name;
     INPUT_BOARD_SIZE.addEventListener('input', this.inputChange);
     INPUT_BOARD_SIZE.value = size;
-    BUTTON_SAVE.addEventListener('click', this.saveCurrentBoard);
     PIXEL_BOARD.addEventListener('click', this.boardChenge);
     PIXEL_BOARD.innerHTML = board;
+    BUTTON_CLEAR.addEventListener('click', this.clearBoard);
+    BUTTON_SAVE.addEventListener('click', this.saveCurrentBoard);
     BUTTON_SAVE_AS.addEventListener('click', this.saveBoard);
+    BUTTON_SET_BOARD.addEventListener('click', this.createPixelBoard);
   }
 }
