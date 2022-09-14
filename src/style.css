@@ -294,8 +294,7 @@ main {
 }
 
 #warning-message {
-  color: rgb(255, 249, 89);
-  text-shadow: 0 0 1px black;;
+  color: rgb(255, 229, 34);
   font-size: 1rem;
   font-weight: 600;
 }
