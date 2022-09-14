@@ -66,7 +66,9 @@ export default class SaveBoard extends Componente {
     try {
       this.validateName();
       this.addNewBoard();
+      WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
     } catch (error) {
+      WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
       WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
       console.log(error);
     }
