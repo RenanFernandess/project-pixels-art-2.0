@@ -1,3 +1,5 @@
+export const concatHTML = (Array) => Array.reduce((HTML, element) => `${HTML} ${element}`);
+
 export default function createButton(
   { text = '', id, className = 'buttons', name, typeEvent = 'click' },
   callback,
