@@ -287,13 +287,13 @@ main {
   text-align: center;
 }
 
-#error-mesage {
+.error-mesage {
   color: rgb(255, 89, 89);
   font-size: 1rem;
   font-weight: 600;
 }
 
-#warning-message {
+.warning-message {
   color: rgb(255, 229, 34);
   font-size: 1rem;
   font-weight: 600;
