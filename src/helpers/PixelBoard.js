@@ -32,6 +32,7 @@ export default class PixelBoard extends Componente {
       name: '',
       size: '',
       boardNameList: [],
+      editingBoard: false,
     };
     this.whenTheClassIsReady();
   }
@@ -55,8 +56,15 @@ export default class PixelBoard extends Componente {
   }
 
   setUpdate() {
-    const list = globalState.getState(({ library: { boardList } }) => boardList);
-    this.setState({ boardNameList: list.map(({ name }) => name) });
+    const state = globalState.getState(({
+      library: { boardList }, pixelBoard: { editingBoardInfo },
+    }) => ({ boardList, editingBoardInfo }));
+    const { boardList, editingBoardInfo } = state;
+    this.setState({ boardNameList: boardList.map(({ name }) => name) });
+    if (editingBoardInfo.name) {
+      const { size } = editingBoardInfo;
+      this.setState({ ...editingBoardInfo, size: size[0], editingBoard: true });
+    }
   }
 
   loadSavedBoard() { this.setState({ ...getSavedItem(BOARD) }); }
