@@ -1,8 +1,7 @@
 import { saveBoard } from './SaveBoard.js';
 import createButton from './CreateHTMLElementes.js';
 import { globalState } from './GlobalState.js';
-
-const PIXELBOARD = 'pixelBoard';
+import { PIXELBOARD } from '../services/constants.js';
 
 const removeButton = {
   text: 'Remover',
