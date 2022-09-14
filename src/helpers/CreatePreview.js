@@ -72,6 +72,6 @@ export default class CreatePreview {
   }
 
   editBoard() {
-    globalState.pushState({ editingBoard: this.board }, PIXELBOARD);
+    globalState.pushState({ editingBoardInfo: this.board }, PIXELBOARD);
   }
 }

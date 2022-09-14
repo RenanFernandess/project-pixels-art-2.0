@@ -52,7 +52,7 @@ const INITIAL_STATE = {
       name: '',
       size: '',
     },
-    editingBoard: {},
+    editingBoardInfo: {},
     saveBoard: false,
   },
 };
