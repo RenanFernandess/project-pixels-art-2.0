@@ -1,4 +1,6 @@
-import saveItem, { getSavedItem, saveItemSessionStorage, getItemSessionStorage } from './storage.js';
+import saveItem, {
+  getSavedItem, saveItemSessionStorage, getItemSessionStorage,
+} from './storage.js';
 import { globalState } from './GlobalState.js';
 import Componente from './Componente.js';
 
@@ -46,11 +48,19 @@ export default class SaveBoard extends Componente {
     const state = globalState.getState(({ pixelBoard }) => pixelBoard);
     const { currentBoard, saveBoard, boardNameRepeated } = state;
     this.setState({ currentBoard, boardNameRepeated }, () => {
+      this.addWarningMessage();
       if (saveBoard) {
         globalState.pushState({ saveBoard: false }, PIXELBOARD);
         this.saveBoard();
       }
     });
+  }
+
+  addWarningMessage() {
+    const { boardNameRepeated } = this.state;
+    if (boardNameRepeated) {
+      paragraphMessage.innerText = `'${boardNameRepeated}' já está sendo usado!`;
+    } else paragraphMessage.innerText = '';
   }
 
   saveBoard() {
