@@ -68,10 +68,7 @@ export default class PixelBoard extends Componente {
     this.setState({ [name]: value }, ({ boardNameList }) => {
       if (name === 'name') {
         const boardNameRepeated = boardNameList.find((boardName) => boardName === value);
-        if (boardNameRepeated) {
-          paragraphMessage.innerText = `'${boardNameRepeated}' já está sendo usado!`;
-          globalState.pushState({ boardNameRepeated }, PIXELBOARD);
-        } else paragraphMessage.innerText = '';
+        globalState.pushState({ boardNameRepeated }, PIXELBOARD);
       }
     });
   }
