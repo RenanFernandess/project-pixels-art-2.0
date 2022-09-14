@@ -293,6 +293,12 @@ main {
   font-weight: 600;
 }
 
+#warning-message {
+  color: rgb(255, 249, 89);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 #palette-container {
   flex-flow: row wrap;
   gap: 20px;
