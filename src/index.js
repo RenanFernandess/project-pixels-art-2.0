@@ -1,17 +1,18 @@
 import { globalState } from './helpers/GlobalState.js';
-import { LIBRARY, saveBoard } from './helpers/SaveBoard.js';
+import { saveBoard } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
 import PixelBoard from './helpers/PixelBoard.js';
-
-const paletteContainer = document.getElementById('palette-container');
-const colors = document.getElementsByClassName('color');
-const pixelBoard = document.getElementById('pixel-board');
-const buttonClear = document.getElementById('clear-board');
-const colorSelector = document.getElementById('box-new-color');
-const inputColor = document.getElementById('new-color');
-const inputBoardSize = document.getElementById('board-size');
-const setBoard = document.getElementById('generate-board');
-const navOpitions = document.getElementById('nav-opitions');
+import {
+  BUTTON_CLEAR,
+  BUTTON_SET_BOARD,
+  COLORS_DIV,
+  INPUT_BOARD_SIZE,
+  INPUT_COLOR,
+  INPUT_COLOR_CONTAINER,
+  LIBRARY, NAV_OPITIONS,
+  PALETTE_CONTAINER,
+  PIXEL_BOARD,
+} from './services/constants.js';
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // generic functions
@@ -27,7 +28,7 @@ const colorGenerator = () => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-const colorAdd = () => [...colors].map(({ style }) => {
+const colorAdd = () => [...COLORS_DIV].map(({ style }) => {
   if (style.backgroundColor !== 'black') style.backgroundColor = colorGenerator();
 });
 
@@ -38,7 +39,7 @@ const selectColor = (classList) => {
   }
 };
 
-const colorSelectorAddcolor = (value) => { colorSelector.style.background = value; };
+const colorSelectorAddcolor = (value) => { INPUT_COLOR_CONTAINER.style.background = value; };
 
 const selectedAddNewColor = (value) => {
   const { style } = selected();
@@ -64,12 +65,12 @@ const createPixelDiv = async (value) => {
   element.classList.add('display');
   element.innerHTML = Array(value).fill('<div class="pixel"></div>')
     .reduce((HTML, element) => HTML += element);
-  pixelBoard.appendChild(element);
+  PIXEL_BOARD.appendChild(element);
 };
 
 const createPixelBoard = () => {
-  pixelBoard.innerHTML = '';
-  const value = Number(inputBoardSize.value);
+  PIXEL_BOARD.innerHTML = '';
+  const value = Number(INPUT_BOARD_SIZE.value);
   for (let index = 1; index <= value; index += 1) {
     createPixelDiv(value);
   }
@@ -132,12 +133,11 @@ const paletteContainerEvents = ({ target: { classList, id } }) => {
 };
 
 const events = () => {
-  paletteContainer.addEventListener('click', paletteContainerEvents);
-  // pixelBoard.addEventListener('click', colored);
-  buttonClear.addEventListener('click', clearBoard);
-  inputColor.addEventListener('input', selectNewColor);
-  setBoard.addEventListener('click', createPixelBoard);
-  navOpitions.addEventListener('click', navOpitionsEvents);
+  PALETTE_CONTAINER.addEventListener('click', paletteContainerEvents);
+  BUTTON_CLEAR.addEventListener('click', clearBoard);
+  INPUT_COLOR.addEventListener('input', selectNewColor);
+  BUTTON_SET_BOARD.addEventListener('click', createPixelBoard);
+  NAV_OPITIONS.addEventListener('click', navOpitionsEvents);
 };
 
 window.onload = () => {
