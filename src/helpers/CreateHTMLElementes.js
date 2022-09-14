@@ -12,9 +12,10 @@ export default function createButton(
   return button;
 }
 
-export function createDiv({ id, className, typeEvent = 'click' }, callback) {
+export function createDiv({ id, className, typeEvent = 'click', HTML = '' }, callback) {
   const div = document.createElement('div');
   div.className = className;
+  div.innerHTML = HTML;
   if (id) div.id = id;
   if (callback) div.addEventListener(typeEvent, callback);
   return div;
