@@ -3,15 +3,11 @@ import { saveBoard } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
 import PixelBoard from './helpers/PixelBoard.js';
 import {
-  BUTTON_CLEAR,
-  BUTTON_SET_BOARD,
   COLORS_DIV,
-  INPUT_BOARD_SIZE,
   INPUT_COLOR,
   INPUT_COLOR_CONTAINER,
   LIBRARY, NAV_OPITIONS,
   PALETTE_CONTAINER,
-  PIXEL_BOARD,
 } from './services/constants.js';
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -52,31 +48,6 @@ const selectNewColor = ({ target: { value } }) => {
 };
 
 // color palet
-// ------------------------------------------------------------------------------------------------------------------------------
-// pixel board opitions
-
-const clearBoard = () => {
-  const pixels = document.querySelectorAll('div#pixel-board .pixel');
-  [...pixels].forEach(({ style }) => { style.backgroundColor = 'white'; });
-};
-
-const createPixelDiv = async (value) => {
-  const element = document.createElement('div');
-  element.classList.add('display');
-  element.innerHTML = Array(value).fill('<div class="pixel"></div>')
-    .reduce((HTML, element) => HTML += element);
-  PIXEL_BOARD.appendChild(element);
-};
-
-const createPixelBoard = () => {
-  PIXEL_BOARD.innerHTML = '';
-  const value = Number(INPUT_BOARD_SIZE.value);
-  for (let index = 1; index <= value; index += 1) {
-    createPixelDiv(value);
-  }
-};
-
-// pixel board opitions
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
 
@@ -134,9 +105,7 @@ const paletteContainerEvents = ({ target: { classList, id } }) => {
 
 const events = () => {
   PALETTE_CONTAINER.addEventListener('click', paletteContainerEvents);
-  BUTTON_CLEAR.addEventListener('click', clearBoard);
   INPUT_COLOR.addEventListener('input', selectNewColor);
-  BUTTON_SET_BOARD.addEventListener('click', createPixelBoard);
   NAV_OPITIONS.addEventListener('click', navOpitionsEvents);
 };
 
