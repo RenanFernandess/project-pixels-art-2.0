@@ -4,8 +4,6 @@ import { globalState } from './GlobalState.js';
 
 const PIXELBOARD = 'pixelBoard';
 
-const pixelBoard = document.getElementById('pixel-board');
-
 const removeButton = {
   text: 'Remover',
   className: 'buttons danger-button',
@@ -31,17 +29,17 @@ const restoreButton = {
 };
 
 export default class CreatePreview {
-  constructor({ id, name, size, board }, itsTrash = false) {
+  constructor(board, itsTrash = false) {
     this.itsTrash = itsTrash;
-    this.id = id;
-    this.name = name;
-    this.size = size;
-    this.board = board;
+    this.board = {
+      ...board,
+    };
   }
 
   renderPreview() {
+    const { id } = this.board;
     const section = document.createElement('section');
-    section.id = this.id;
+    section.id = id;
     section.className = 'preview display';
     section.innerHTML = this.elements();
     section.appendChild(this.createButtonsArea());
@@ -49,26 +47,32 @@ export default class CreatePreview {
   }
 
   elements() {
+    const { name, size, board } = this.board;
     return (`
-      <div class="thumbnail">${this.board}</div>
-      <p><strong>${this.name}</strong></p>
-      <p>Tamanho: ${this.size}</p>
+      <div class="thumbnail">${board}</div>
+      <p><strong>${name}</strong></p>
+      <p>Tamanho: ${size}</p>
     `);
   }
 
   createButtonsArea() {
+    const { id } = this.board;
     const div = document.createElement('div');
     div.className = 'display options';
     div.appendChild(
       this.itsTrash
-      ? createButton(restoreButton, () => { saveBoard.restoreBoard(this.id); })
-      : createButton(editButton, () => { saveBoard.editBoard(this.id); }),
+      ? createButton(restoreButton, () => { saveBoard.restoreBoard(id); })
+      : createButton(editButton, () => { this.editBoard(); }),
     );
     div.appendChild(
       this.itsTrash
-      ? createButton(deleteButton, () => { saveBoard.removeTrashBoard(this.id); })
-      : createButton(removeButton, () => { saveBoard.removeSavedBoard(this.id); }),
+      ? createButton(deleteButton, () => { saveBoard.removeTrashBoard(id); })
+      : createButton(removeButton, () => { saveBoard.removeSavedBoard(id); }),
     );
     return div;
+  }
+
+  editBoard() {
+    globalState.pushState({ editingBoard: this.board }, PIXELBOARD);
   }
 }
