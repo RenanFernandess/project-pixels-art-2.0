@@ -46,11 +46,8 @@ export default class SaveBoard extends Componente {
     });
   }
 
-  setUpdate() {
-    this.setState({
-      boardNameRepeated: globalState.getState(({
-        pixelBoard: { boardNameRepeated } }) => boardNameRepeated),
-      }, this.addWarningMessage);
+  setUpdate({ boardNameRepeated }) {
+    this.setState({ boardNameRepeated }, this.addWarningMessage);
   }
 
   addWarningMessage() {
