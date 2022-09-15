@@ -129,11 +129,11 @@ export default class SaveBoard extends Componente {
   }
 
   saveEdit() {
-    this.setState(({ boardSavedList, currentBoard, currentBoard: { id } }) => {
+    this.setState(({ boardSavedList, currentBoard, currentBoard: { id, size } }) => {
       const list = boardSavedList;
       const editBoardIndex = list
         .reduce((indexItem, { id: itemId }, ind) => ((itemId === id) ? ind : indexItem), 0);
-      list[editBoardIndex] = currentBoard;
+      list[editBoardIndex] = { ...currentBoard, size: `${size}/${size}` };
       return { boardSavedList: list };
     }, this.saveAndUpdateGlobalState);
   }
