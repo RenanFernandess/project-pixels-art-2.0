@@ -8,6 +8,7 @@ import {
   INPUT_COLOR_CONTAINER,
   LIBRARY, NAV_OPITIONS,
   PALETTE_CONTAINER,
+  PIXELBOARD,
 } from './services/constants.js';
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -54,10 +55,10 @@ const selectNewColor = ({ target: { value } }) => {
 const pixelBoardRender = new PixelBoard();
 const renderLibrary = new RenderLibrary();
 
-globalState.createState(null, () => {
-  renderLibrary.setUpdate();
-  saveBoard.setUpdate();
-  pixelBoardRender.setUpdate();
+globalState.createState(null, ({ library, pixelBoard }, changedKey) => {
+  if (changedKey === LIBRARY) renderLibrary.setUpdate(library);
+  if (changedKey === PIXELBOARD) saveBoard.setUpdate(pixelBoard);
+  pixelBoardRender.setUpdate({ ...library, ...pixelBoard });
 });
 
 const showTrash = (currentLocation) => {
