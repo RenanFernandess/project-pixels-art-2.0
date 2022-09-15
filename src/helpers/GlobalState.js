@@ -42,18 +42,7 @@ const INITIAL_STATE = {
   },
   pixelBoard: {
     boardNameRepeated: '',
-    currentBoard: {
-      author: '',
-      board: '',
-      boardNumber: 0,
-      date: {},
-      favorited: false,
-      id: '',
-      name: '',
-      size: '',
-    },
     editingBoardInfo: {},
-    saveBoard: false,
   },
 };
 globalState.createState(INITIAL_STATE);
