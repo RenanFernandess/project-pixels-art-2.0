@@ -6,7 +6,6 @@ import Componente from './Componente.js';
 import {
   BOARDSAVEDLIST,
   LIBRARY,
-  PIXELBOARD,
   TRASH,
   WARNING_MESSAGE_PARAGRAPH,
 } from '../services/constants.js';
@@ -27,7 +26,7 @@ export default class SaveBoard extends Componente {
   binds() {
     this.validateName = this.validateName.bind(this);
     this.generateId = this.generateId.bind(this);
-    this.addNewBoard = this.addNewBoard.bind(this);
+    this.addNewBoardToList = this.addNewBoardToList.bind(this);
     this.setUpdate = this.setUpdate.bind(this);
     this.removeSavedBoard = this.removeSavedBoard.bind(this);
     this.removeTrashBoard = this.removeTrashBoard.bind(this);
@@ -35,6 +34,7 @@ export default class SaveBoard extends Componente {
     this.saveAndUpdateGlobalState = this.saveAndUpdateGlobalState.bind(this);
     this.saveEdit = this.saveEdit.bind(this);
     this.validateBoardEdit = this.validateBoardEdit.bind(this);
+    this.addWarningMessage = this.addWarningMessage.bind(this);
   }
 
   whenTheClassIsReady() {
@@ -47,15 +47,10 @@ export default class SaveBoard extends Componente {
   }
 
   setUpdate() {
-    const state = globalState.getState(({ pixelBoard }) => pixelBoard);
-    const { currentBoard, saveBoard, boardNameRepeated } = state;
-    this.setState({ currentBoard, boardNameRepeated }, () => {
-      this.addWarningMessage();
-      if (saveBoard) {
-        globalState.pushState({ saveBoard: false }, PIXELBOARD);
-        this.saveBoard();
-      }
-    });
+    this.setState({
+      boardNameRepeated: globalState.getState(({
+        pixelBoard: { boardNameRepeated } }) => boardNameRepeated),
+      }, this.addWarningMessage);
   }
 
   addWarningMessage() {
@@ -65,37 +60,40 @@ export default class SaveBoard extends Componente {
     } else WARNING_MESSAGE_PARAGRAPH.innerText = '';
   }
 
-  saveBoard() {
-    try {
-      this.validateName();
-      this.addNewBoard();
-      WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
-    } catch (error) {
-      WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
-      WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
-      console.log(error);
-    }
+  saveBoardToList(boardInfo) {
+    this.setState({ currentBoard: boardInfo }, () => {
+      try {
+        this.validateName();
+        this.addNewBoardToList();
+        WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
+      } catch (error) {
+        WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
+        WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
+        console.log(error);
+      }
+    });
   }
 
-  addNewBoard() {
-      const { currentBoard, currentBoard: { size, name }, boardSavedList } = this.state;
-      const boardNumber = boardSavedList.length;
-      const id = this.generateId();
-      const newList = [
+  addNewBoardToList() {
+    this.setState(({ boardSavedList, currentBoard, currentBoard: { size, name } }) => {
+      const boardList = [
         ...boardSavedList,
-        { ...currentBoard, boardNumber, id, size: `${size}/${size}` },
-      ];
-      this.setState({
-        boardNameRepeated: newList.some(({ name: boardName }) => name === boardName),
-        boardSavedList: newList,
-      });
-      globalState.pushState({ boardList: newList }, LIBRARY);
-      saveItem(BOARDSAVEDLIST, newList);
+        { ...currentBoard,
+          boardNumber: boardSavedList.length,
+          size: `${size}/${size}`,
+          id: this.generateId() }];
+      return {
+        boardNameRepeated: boardList.some(({ name: boardName }) => name === boardName),
+        boardSavedList: boardList,
+      };
+    }, ({ boardSavedList }) => {
+      globalState.pushState({ boardList: boardSavedList }, LIBRARY);
+      saveItem(BOARDSAVEDLIST, boardSavedList);
+    });
   }
 
-  validateName(boardName) {
-    const { currentBoard: { name: nameFrame }, boardNameRepeated } = this.state;
-    const name = boardName || nameFrame;
+  validateName() {
+    const { currentBoard: { name }, boardNameRepeated } = this.state;
     if (boardNameRepeated) throw new Error(`'${name}' já está sendo usado!!`);
     if (name === '' || /^(\s+)$/g.test(name)) {
       throw new Error('Digite o nome do quadro para proceguir!');
@@ -117,23 +115,25 @@ export default class SaveBoard extends Componente {
   }
 
   validateBoardEdit(boardInfo) {
-    try {
-      this.validateName(boardInfo.name);
-      this.saveEdit(boardInfo);
-      WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
-    } catch (error) {
-      WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
-      WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
-      console.log(error);
-    }
+    this.setState({ currentBoard: boardInfo }, () => {
+      try {
+        this.validateName();
+        this.saveEdit();
+        WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
+      } catch (error) {
+        WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
+        WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
+        console.log(error);
+      }
+    });
   }
 
-  saveEdit(boardInfo) {
-    this.setState(({ boardSavedList }) => {
+  saveEdit() {
+    this.setState(({ boardSavedList, currentBoard, currentBoard: { id } }) => {
       const list = boardSavedList;
       const editBoardIndex = list
-        .reduce((indexItem, item, ind) => ((item.id === boardInfo.id) ? ind : indexItem), 0);
-      list[editBoardIndex] = boardInfo;
+        .reduce((indexItem, { id: itemId }, ind) => ((itemId === id) ? ind : indexItem), 0);
+      list[editBoardIndex] = currentBoard;
       return { boardSavedList: list };
     }, this.saveAndUpdateGlobalState);
   }
