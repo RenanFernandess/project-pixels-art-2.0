@@ -33,6 +33,8 @@ export default class SaveBoard extends Componente {
     this.removeTrashBoard = this.removeTrashBoard.bind(this);
     this.restoreBoard = this.restoreBoard.bind(this);
     this.saveAndUpdateGlobalState = this.saveAndUpdateGlobalState.bind(this);
+    this.saveEdit = this.saveEdit.bind(this);
+    this.validateBoardEdit = this.validateBoardEdit.bind(this);
   }
 
   whenTheClassIsReady() {
@@ -91,8 +93,9 @@ export default class SaveBoard extends Componente {
       saveItem(BOARDSAVEDLIST, newList);
   }
 
-  validateName() {
-    const { currentBoard: { name }, boardNameRepeated } = this.state;
+  validateName(boardName) {
+    const { currentBoard: { name: nameFrame }, boardNameRepeated } = this.state;
+    const name = boardName || nameFrame;
     if (boardNameRepeated) throw new Error(`'${name}' já está sendo usado!!`);
     if (name === '' || /^(\s+)$/g.test(name)) {
       throw new Error('Digite o nome do quadro para proceguir!');
@@ -113,13 +116,27 @@ export default class SaveBoard extends Componente {
     }), this.saveAndUpdateGlobalState);
   }
 
-  // editBoard(boardInfo) {
-  //   this.setState(({ boardSavedList }) => {
-  //     const editBoardIndex = boardSavedList
-  //     .reduce((indexItem, item, ind) => ((item.id === boardInfo.id) ? ind : indexItem), 0);
-  //     console.log(editBoardIndex);
-  //   });
-  // }
+  validateBoardEdit(boardInfo) {
+    try {
+      this.validateName(boardInfo.name);
+      this.saveEdit(boardInfo);
+      WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
+    } catch (error) {
+      WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
+      WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
+      console.log(error);
+    }
+  }
+
+  saveEdit(boardInfo) {
+    this.setState(({ boardSavedList }) => {
+      const list = boardSavedList;
+      const editBoardIndex = list
+        .reduce((indexItem, item, ind) => ((item.id === boardInfo.id) ? ind : indexItem), 0);
+      list[editBoardIndex] = boardInfo;
+      return { boardSavedList: list };
+    }, this.saveAndUpdateGlobalState);
+  }
 
   restoreBoard(boardId) {
     this.setState(({ boardSavedList, trash }) => ({

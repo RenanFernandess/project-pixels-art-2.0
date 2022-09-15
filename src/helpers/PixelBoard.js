@@ -14,6 +14,7 @@ import {
   RGB_COLOR_REGEXP,
 } from '../services/constants.js';
 import { concatHTML } from './CreateHTMLElementes.js';
+import { saveBoard } from './SaveBoard.js';
 
 // const buttonClear = document.getElementById('clear-board');
 
@@ -64,13 +65,21 @@ export default class PixelBoard extends Componente {
     if (editingBoardInfo.name) {
       const { size } = editingBoardInfo;
       this.setState({ ...editingBoardInfo, size: size[0], editingBoard: true });
+      globalState.pushState({ editingBoardInfo: {} }, PIXELBOARD);
     }
   }
 
   loadSavedBoard() { this.setState({ ...getSavedItem(BOARD) }); }
 
   saveCurrentBoard() {
-    saveItem(BOARD, this.state);
+    const {
+      author, board, boardNumber, date, favorited, id, name, size, editingBoard,
+    } = this.state;
+    if (editingBoard) {
+      const currentBoard = { author, board, boardNumber, date, favorited, id, name, size };
+      saveBoard.validateBoardEdit(currentBoard);
+      this.setState({ editingBoard: false });
+    } else saveItem(BOARD, this.state);
   }
 
   saveBoard() {
