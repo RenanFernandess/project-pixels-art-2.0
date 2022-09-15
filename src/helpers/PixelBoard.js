@@ -88,9 +88,8 @@ export default class PixelBoard extends Componente {
     } = this.state;
     const currentBoard = { author, board, boardNumber, date, favorited, id, name, size };
     globalState.pushState({
-      currentBoard,
-      saveBoard: true,
       boardNameRepeated: this.checkNameIsRepeated(name) }, PIXELBOARD);
+    saveBoard.saveBoardToList(currentBoard);
   }
 
   inputChange({ target: { value, name } }) {
