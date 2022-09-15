@@ -34,6 +34,7 @@ export default class PixelBoard extends Componente {
       size: '',
       boardNameList: [],
       editingBoard: false,
+      history: { current: 0, a: [] },
     };
     this.whenTheClassIsReady();
   }
@@ -56,11 +57,7 @@ export default class PixelBoard extends Componente {
     this.setState({ boardNameList: list.map(({ name }) => name) });
   }
 
-  setUpdate() {
-    const state = globalState.getState(({
-      library: { boardList }, pixelBoard: { editingBoardInfo },
-    }) => ({ boardList, editingBoardInfo }));
-    const { boardList, editingBoardInfo } = state;
+  setUpdate({ boardList, editingBoardInfo }) {
     this.setState({ boardNameList: boardList.map(({ name }) => name) });
     if (editingBoardInfo.name) {
       const { size } = editingBoardInfo;
@@ -127,7 +124,7 @@ export default class PixelBoard extends Componente {
   }
 
   render() {
-    const { name, size, board } = this.state;
+    const { name, size, board, editingBoard } = this.state;
     INPUT_BOARD_NAME.addEventListener('input', this.inputChange);
     INPUT_BOARD_NAME.value = name;
     INPUT_BOARD_SIZE.addEventListener('input', this.inputChange);
@@ -136,6 +133,7 @@ export default class PixelBoard extends Componente {
     PIXEL_BOARD.innerHTML = board;
     BUTTON_CLEAR.addEventListener('click', this.clearBoard);
     BUTTON_SAVE.addEventListener('click', this.saveCurrentBoard);
+    BUTTON_SAVE.innerText = editingBoard ? 'Salvar edição' : 'Salvar';
     BUTTON_SAVE_AS.addEventListener('click', this.saveBoard);
     BUTTON_SET_BOARD.addEventListener('click', this.createPixelBoard);
   }
