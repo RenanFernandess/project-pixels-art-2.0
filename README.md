@@ -1,37 +1,39 @@
+<a name="readme-top"></a>
 # project-pixels-art-2.0
-Um projeto que realizei na Trybe que decidir ir alem do que foi pedido para me aprofunda no conteudo.
 
-#### Aprendizados:
+## Sobre o Projeto
+
+![Pixel Art Screen Shot](./projectImage.png)
+
+Um projeto que realizei na [Trybe](https://github.com/tryber), decidir ir além do que foi pedido para conhecer mais sobre JavaScript, DOM, CSS e HTML.
+
+### Aprendizados:
   1. Class javaScript
   2. Salvar objetos e arrays no local storage
   3. Unidade de medidas modernas CSS (Ex: rem, em, vw)
   4. Transform CSS
   5. CSS Custom properties (Variables)
   6. SessionStorage
+  
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Ferramentas que utilizei:
+## Construido Com
+
  1. **HTML5**
-    - Input
-    - Semantic HTML
-    - etc...
  2. **CSS**
-    - Display Flax and Grid
-    - Media queries
-    - Custom properties (Variables)
-    - etc...
  3. **JavaScript**
-    - Class
-    - Function
-    - Higher Order Functions
-    - Regular expressions
-    - Destructuring
-    - Conditional (ternary) operator
-    - etc...
  4. **DOM**
-    - LocalStorage
-    - SessionStorage
-    - addEventListener
-    - getElementBy
-    - querySelector
-    - etc...
-    
+ 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+ 
+## Uso
+
+![Pixel Art Gif](./projectGif.gif)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Contato
+
+Renan Fernandes - [Linkedin](https://www.linkedin.com/in/orenanfernandes/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
