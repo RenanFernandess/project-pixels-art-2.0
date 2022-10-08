@@ -36,4 +36,6 @@ Um projeto que realizei na [Trybe](https://github.com/tryber), decidir ir além 
 
 Renan Fernandes - [Linkedin](https://www.linkedin.com/in/orenanfernandes/)
 
+Link do Projeto: [GitHub](https://github.com/RenanFernandess/project-pixels-art-2.0)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
