@@ -130,7 +130,7 @@ export default class PixelBoard extends Componente {
     INPUT_BOARD_SIZE.addEventListener('input', this.inputChange);
     INPUT_BOARD_SIZE.value = size;
     PIXEL_BOARD.addEventListener('click', this.boardChenge);
-    PIXEL_BOARD.innerHTML = board;
+    if (board) PIXEL_BOARD.innerHTML = board;
     BUTTON_CLEAR.addEventListener('click', this.clearBoard);
     BUTTON_SAVE.addEventListener('click', this.saveCurrentBoard);
     BUTTON_SAVE.innerText = editingBoard ? 'Salvar edição' : 'Salvar';
