@@ -37,7 +37,7 @@ export default class PixelBoard extends Componente {
       boardNameList: [],
       editingBoard: false,
     };
-    this.history = { current: 0, historic: [] };
+    this.history = { currentItem: null, currentIndex: 0, historic: [] };
     this.whenTheClassIsReady();
   }
 
@@ -51,6 +51,8 @@ export default class PixelBoard extends Componente {
     this.setUpdate = this.setUpdate.bind(this);
     this.createPixelBoard = this.createPixelBoard.bind(this);
     this.clearBoard = this.clearBoard.bind(this);
+    this.advanceHistoryItem = this.advanceHistoryItem.bind(this);
+    this.backHistoryItem = this.backHistoryItem.bind(this);
   }
 
   whenTheClassIsReady() {
@@ -109,7 +111,10 @@ export default class PixelBoard extends Componente {
       const selectedColor = document.querySelector('.selected').style.backgroundColor;
       const targetStyle = style;
       targetStyle.backgroundColor = selectedColor;
-      this.setState({ board: PIXEL_BOARD.innerHTML });
+      const board = PIXEL_BOARD.innerHTML;
+      this.setState({ board });
+      this.setHistory(board)
+      console.log(this.history);
     }
   }
 
@@ -125,6 +130,18 @@ export default class PixelBoard extends Componente {
     });
   }
 
+  advanceHistoryItem() {
+    this.setState({
+      board: this.nextHistoricalItem(),
+    }, () => { console.log(this.history); });
+  }
+
+  backHistoryItem() {
+    this.setState({
+      board: this.previousHistoricalItem(),
+    }, () => { console.log(this.history); });
+  }
+
   render() {
     const { name, size, board, editingBoard } = this.state;
     INPUT_BOARD_NAME.addEventListener('input', this.inputChange);
@@ -138,5 +155,7 @@ export default class PixelBoard extends Componente {
     BUTTON_SAVE.innerText = editingBoard ? 'Salvar edição' : 'Salvar';
     BUTTON_SAVE_AS.addEventListener('click', this.saveBoard);
     BUTTON_SET_BOARD.addEventListener('click', this.createPixelBoard);
+    BUTTON_ADVANCE.addEventListener('click', this.advanceHistoryItem);
+    BUTTON_COME_BACK.addEventListener('click', this.backHistoryItem);
   }
 }
