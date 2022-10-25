@@ -126,5 +126,30 @@ export default class Componente {
     }
   }
 
+  nextHistoricalItem() {
+    const { historic, currentIndex } = this.history;
+    if ( currentIndex < historic.length ) {
+      const nextItem = historic[currentIndex + 1];
+      this.history = {
+        currentItem: nextItem,
+        currentIndex: nextItem,
+        historic,
+      }
+      return nextItem;
+    }
+  }
+
+  previousHistoricalItem() {
+    const { historic, currentIndex } = this.history;
+    if (currentIndex === 0) {
+      const prevItem = historic[currentIndex - 1];
+      this.history = {
+        currentItem: prevItem,
+        currentIndex: nextItem,
+        historic,
+      }
+      return prevItem;
+    }
+  }
 
 }
