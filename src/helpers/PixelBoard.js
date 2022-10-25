@@ -7,6 +7,8 @@ import {
   BUTTON_SAVE,
   BUTTON_SAVE_AS,
   BUTTON_SET_BOARD,
+  BUTTON_COME_BACK,
+  BUTTON_ADVANCE,
   INPUT_BOARD_NAME,
   INPUT_BOARD_SIZE,
   PIXELBOARD,
@@ -34,8 +36,8 @@ export default class PixelBoard extends Componente {
       size: '',
       boardNameList: [],
       editingBoard: false,
-      history: { current: 0, a: [] },
     };
+    this.history = { current: 0, historic: [] };
     this.whenTheClassIsReady();
   }
 
