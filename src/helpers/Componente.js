@@ -3,7 +3,7 @@ import { getItemSessionStorage } from './storage.js';
 export default class Componente {
   constructor() {
     this.state = {};
-    this.history = { current: 0, historic: [] };
+    this.history = { currentItem: null, currentIndex: 0, historic: [] };
   }
 
   getSavedState() { this.state = getItemSessionStorage('state') || this.state; }
@@ -120,8 +120,11 @@ export default class Componente {
     const { historic } = this.history;
     const updatedHistory = [...historic, item];
     this.history = {
-      current: updatedHistory.length - 1,
+      currentItem: item,
+      currentIndex: updatedHistory.length - 1,
       historic: updatedHistory,
     }
   }
+
+
 }
