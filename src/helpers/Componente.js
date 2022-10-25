@@ -129,10 +129,11 @@ export default class Componente {
   nextHistoricalItem() {
     const { historic, currentIndex } = this.history;
     if ( currentIndex < historic.length ) {
-      const nextItem = historic[currentIndex + 1];
+      const nextIndex = currentIndex + 1;
+      const nextItem = historic[nextIndex];
       this.history = {
         currentItem: nextItem,
-        currentIndex: nextItem,
+        currentIndex: nextIndex,
         historic,
       }
       return nextItem;
@@ -141,11 +142,12 @@ export default class Componente {
 
   previousHistoricalItem() {
     const { historic, currentIndex } = this.history;
-    if (currentIndex === 0) {
-      const prevItem = historic[currentIndex - 1];
+    if (currentIndex > 0) {
+      const prevIndex = currentIndex - 1
+      const prevItem = historic[prevIndex];
       this.history = {
         currentItem: prevItem,
-        currentIndex: nextItem,
+        currentIndex: prevIndex,
         historic,
       }
       return prevItem;
