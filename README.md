@@ -15,27 +15,31 @@ Um projeto que realizei na [Trybe](https://github.com/tryber), decidir ir além 
   5. CSS Custom properties (Variables)
   6. SessionStorage
   
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Construido Com
 
- 1. **HTML5**
- 2. **CSS**
- 3. **JavaScript**
- 4. **DOM**
+ * **HTML5**
+ * **CSS**
+ * **JavaScript**
+ * **DOM**
  
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
  
 ## Uso
 
 ![Pixel Art Gif](./projectGif.gif)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Contato
 
-Renan Fernandes - [Linkedin](https://www.linkedin.com/in/orenanfernandes/)
+* Renan Fernandes - [Linkedin](https://www.linkedin.com/in/orenanfernandes/) - renzinestuods@gmail.com
 
-Link do Projeto: [GitHub](https://github.com/RenanFernandess/project-pixels-art-2.0)
+<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Agradecimentos
+
+* [Trybe](https://www.betrybe.com/)
+
+<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
