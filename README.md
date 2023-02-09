@@ -5,7 +5,7 @@
 
 ![Pixel Art Screen Shot](./projectImage.png)
 
-Um projeto que realizei na [Trybe](https://github.com/tryber), decidir ir além do que foi pedido para conhecer mais sobre JavaScript, DOM, CSS e HTML.
+Este projeto foi baseado no projeto '[pixels-art](https://github.com/RenanFernandess/trybe-project-pixels-art)' que realizei na [Trybe](https://github.com/tryber) durante o período de fundamentos do desenvolvimento web. Meu objetivo com este projeto inicialmente era refatorar o '[pixels-art](https://github.com/RenanFernandess/trybe-project-pixels-art)' e ir um pouco além do que foi pedido para exercitar e aprender mais sobre JavaScript, DOM, HTML e CSS, mas quando começou o período de desenvolvimento front-end fiquei muito curioso em entender como o React e Redux funcionam com isso decidi replicar algumas funcionalidades neste projeto Pixels-art-2.0.
 
 ### Aprendizados:
   1. Class javaScript
@@ -23,6 +23,10 @@ Um projeto que realizei na [Trybe](https://github.com/tryber), decidir ir além 
  * **CSS**
  * **JavaScript**
  * **DOM**
+ 
+<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
+
+## Começando
  
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
  
