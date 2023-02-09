@@ -19,7 +19,7 @@ Um projeto que realizei na [Trybe](https://github.com/tryber), decidir ir além 
 
 ## Construido Com
 
- * **HTML5**
+ * **HTML**
  * **CSS**
  * **JavaScript**
  * **DOM**
