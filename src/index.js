@@ -1,20 +1,15 @@
 import { globalState } from './helpers/GlobalState.js';
-import { KEY } from './helpers/SaveBoard.js';
+import { saveBoard } from './helpers/SaveBoard.js';
 import RenderLibrary from './helpers/RenderLibrary.js';
-import saveItem, { getSavedItem } from './helpers/storage.js';
-
-const paletteContainer = document.getElementById('palette-container');
-// const colorPalette = document.getElementById('color-palette');
-const colors = document.getElementsByClassName('color');
-const pixelBoard = document.getElementById('pixel-board');
-const buttonClear = document.getElementById('clear-board');
-const colorSelector = document.getElementById('box-new-color');
-const inputColor = document.getElementById('new-color');
-const buttonSave = document.getElementById('save-board');
-const inputBoardSize = document.getElementById('board-size');
-const setBoard = document.getElementById('generate-board');
-// const libraryContainer = document.getElementById('library-container');
-const navOpitions = document.getElementById('nav-opitions');
+import PixelBoard from './helpers/PixelBoard.js';
+import {
+  COLORS_DIV,
+  INPUT_COLOR,
+  INPUT_COLOR_CONTAINER,
+  LIBRARY, NAV_OPITIONS,
+  PALETTE_CONTAINER,
+  PIXELBOARD,
+} from './services/constants.js';
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // generic functions
@@ -30,7 +25,7 @@ const colorGenerator = () => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-const colorAdd = () => [...colors].map(({ style }) => {
+const colorAdd = () => [...COLORS_DIV].map(({ style }) => {
   if (style.backgroundColor !== 'black') style.backgroundColor = colorGenerator();
 });
 
@@ -41,7 +36,7 @@ const selectColor = (classList) => {
   }
 };
 
-const colorSelectorAddcolor = (value) => { colorSelector.style.background = value; };
+const colorSelectorAddcolor = (value) => { INPUT_COLOR_CONTAINER.style.background = value; };
 
 const selectedAddNewColor = (value) => {
   const { style } = selected();
@@ -54,61 +49,23 @@ const selectNewColor = ({ target: { value } }) => {
 };
 
 // color palet
-// ------------------------------------------------------------------------------------------------------------------------------
-// pixel board opitions
-
-const colored = ({ target: { classList, style } }) => {
-  if (classList.contains('pixel')) {
-    style.backgroundColor = selected().style.backgroundColor; 
-}
-};
-
-const clearBoard = () => {
-  const pixels = document.querySelectorAll('div#pixel-board .pixel');
-  [...pixels].forEach(({ style }) => { style.backgroundColor = 'white'; });
-};
-
-const saveCurrentBoard = () => {
-  const board = pixelBoard.innerHTML;
-  saveItem('board', board);
-};
-
-const chargeBoard = () => {
-  const board = getSavedItem('board');
-  if (board) pixelBoard.innerHTML = board;
-};
-
-const createPixelDiv = async (value) => {
-  const element = document.createElement('div');
-  element.classList.add('display');
-  element.innerHTML = Array(value).fill('<div class="pixel"></div>')
-    .reduce((HTML, element) => HTML += element);
-  pixelBoard.appendChild(element);
-};
-
-const createPixelBoard = () => {
-  pixelBoard.innerHTML = '';
-  const value = Number(inputBoardSize.value);
-  for (let index = 1; index <= value; index += 1) {
-    createPixelDiv(value);
-  }
-};
-
-// pixel board opitions
 // -------------------------------------------------------------------------------------------------------------------------
 // library render
 
+const pixelBoardRender = new PixelBoard();
 const renderLibrary = new RenderLibrary();
 
-globalState.createState(null, () => {
-  renderLibrary.setUpdate();
+globalState.createState(null, ({ library, pixelBoard }, changedKey) => {
+  if (changedKey === LIBRARY) renderLibrary.setUpdate(library);
+  if (changedKey === PIXELBOARD) saveBoard.setUpdate(pixelBoard);
+  pixelBoardRender.setUpdate({ ...library, ...pixelBoard });
 });
 
 const showTrash = (currentLocation) => {
   if (currentLocation !== 'trash') {
     globalState.pushState(
       { currentLocation: 'Lixeira', currentList: 'trash', favorites: false }, 
-      KEY,
+      LIBRARY,
     );
   }
 };
@@ -117,7 +74,7 @@ const showLibrary = (currentLocation) => {
   if (currentLocation !== 'library') {
     globalState.pushState(
       { currentLocation: 'Biblioteca', currentList: 'boardList', favorites: false },
-      KEY,
+      LIBRARY,
     );
   }
 };
@@ -126,7 +83,7 @@ const showFavorites = (currentLocation) => {
   if (currentLocation !== 'favorites') {
     globalState.pushState(
       { currentLocation: 'Favoritos', currentList: 'boardList', favorites: true },
-      KEY,
+      LIBRARY,
     );
   }
 };
@@ -148,17 +105,12 @@ const paletteContainerEvents = ({ target: { classList, id } }) => {
 };
 
 const events = () => {
-  paletteContainer.addEventListener('click', paletteContainerEvents);
-  pixelBoard.addEventListener('click', colored);
-  buttonClear.addEventListener('click', clearBoard);
-  inputColor.addEventListener('input', selectNewColor);
-  buttonSave.addEventListener('click', saveCurrentBoard);
-  setBoard.addEventListener('click', createPixelBoard);
-  navOpitions.addEventListener('click', navOpitionsEvents);
+  PALETTE_CONTAINER.addEventListener('click', paletteContainerEvents);
+  INPUT_COLOR.addEventListener('input', selectNewColor);
+  NAV_OPITIONS.addEventListener('click', navOpitionsEvents);
 };
 
 window.onload = () => {
-  chargeBoard();
   colorAdd();
   events();
 };

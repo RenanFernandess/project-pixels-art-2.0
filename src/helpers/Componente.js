@@ -3,6 +3,7 @@ import { getItemSessionStorage } from './storage.js';
 export default class Componente {
   constructor() {
     this.state = {};
+    this.history = { currentItem: null, currentIndex: 0, historic: [] };
   }
 
   getSavedState() { this.state = getItemSessionStorage('state') || this.state; }
@@ -114,4 +115,45 @@ export default class Componente {
       };
     });
   }
+
+  setHistory(item) {
+    const { historic } = this.history;
+    const updatedHistory = [...historic, item];
+    this.history = {
+      currentItem: item,
+      currentIndex: updatedHistory.length - 1,
+      historic: updatedHistory,
+    }
+  }
+
+  nextHistoricalItem() {
+    const { historic, currentIndex, currentItem } = this.history;
+    if ( currentIndex < (historic.length - 1) ) {
+      const nextIndex = currentIndex + 1;
+      const nextItem = historic[nextIndex];
+      this.history = {
+        currentItem: nextItem,
+        currentIndex: nextIndex,
+        historic,
+      }
+      return nextItem;
+    }
+    return currentItem;
+  }
+
+  previousHistoricalItem() {
+    const { historic, currentIndex, currentItem } = this.history;
+    if (currentIndex > 0) {
+      const prevIndex = currentIndex - 1
+      const prevItem = historic[prevIndex];
+      this.history = {
+        currentItem: prevItem,
+        currentIndex: prevIndex,
+        historic,
+      }
+      return prevItem;
+    }
+    return currentItem;
+  }
+
 }

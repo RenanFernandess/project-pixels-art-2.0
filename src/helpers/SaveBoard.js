@@ -1,146 +1,166 @@
-import saveItem, { getSavedItem, saveItemSessionStorage, getItemSessionStorage } from './storage.js';
+import saveItem, {
+  getSavedItem, saveItemSessionStorage, getItemSessionStorage,
+} from './storage.js';
 import { globalState } from './GlobalState.js';
 import Componente from './Componente.js';
-
-const TRASH = 'trash';
-const BOARDSAVEDLIST = 'boardSavedList';
-export const KEY = 'library';
-
-const inputBoardSize = document.getElementById('board-size');
-const inputBoardName = document.getElementById('board-name');
-const pixelBoard = document.getElementById('pixel-board');
-const paragraphMessage = document.getElementById('error-mesage');
-const buttonSaveAs = document.getElementById('save-board-as');
+import {
+  BOARDSAVEDLIST,
+  LIBRARY,
+  TRASH,
+  WARNING_MESSAGE_PARAGRAPH,
+} from '../services/constants.js';
 
 export default class SaveBoard extends Componente {
   constructor() {
     super();
     this.binds();
     this.state = {
-      author: '',
-      board: '',
-      boardNumber: 0,
-      id: '',
-      date: {},
-      name: '',
-      size: pixelBoard.childElementCount,
-      nameRepeated: false,
+      currentBoard: {},
+      boardNameRepeated: false,
+      boardSavedList: [],
+      trash: [],
     };
-    this.boardSavedList = getSavedItem(BOARDSAVEDLIST) || [];
-    this.trash = getItemSessionStorage(TRASH) || [];
     this.whenTheClassIsReady();
   }
 
   binds() {
-    this.takeTheName = this.takeTheName.bind(this);
-    this.saveBoard = this.saveBoard.bind(this);
     this.validateName = this.validateName.bind(this);
     this.generateId = this.generateId.bind(this);
-    this.updateBoardInfos = this.updateBoardInfos.bind(this);
-    this.addNewBoard = this.addNewBoard.bind(this);
+    this.addNewBoardToList = this.addNewBoardToList.bind(this);
+    this.setUpdate = this.setUpdate.bind(this);
+    this.removeSavedBoard = this.removeSavedBoard.bind(this);
+    this.removeTrashBoard = this.removeTrashBoard.bind(this);
+    this.restoreBoard = this.restoreBoard.bind(this);
+    this.saveAndUpdateGlobalState = this.saveAndUpdateGlobalState.bind(this);
+    this.saveEdit = this.saveEdit.bind(this);
+    this.validateBoardEdit = this.validateBoardEdit.bind(this);
+    this.addWarningMessage = this.addWarningMessage.bind(this);
   }
 
   whenTheClassIsReady() {
-    globalState.pushState({
-      boardList: this.boardSavedList,
-      trash: this.trash,
-    }, KEY);
-    this.render();
-  }
-
-  takeTheName({ target: { value, name } }) {
     this.setState({
-        [name]: value,
-        nameRepeated: (name === 'name') && this.checksThatTheNameIsNotRepeated(value),
-      });
+      boardSavedList: getSavedItem(BOARDSAVEDLIST) || [],
+      trash: getItemSessionStorage(TRASH) || [],
+    }, ({ boardSavedList, trash }) => {
+      globalState.pushState({ boardList: boardSavedList, trash }, LIBRARY);
+    });
   }
 
-  checksThatTheNameIsNotRepeated(boardName) {
-    const result = this.boardSavedList.some(({ name }) => name === boardName);
-    if (result) paragraphMessage.innerText = `'${boardName}' já está sendo usado!`;
-    else paragraphMessage.innerText = '';
-    return result;
+  setUpdate({ boardNameRepeated }) {
+    this.setState({ boardNameRepeated }, this.addWarningMessage);
   }
 
-  saveBoard() {
-    try {
-    this.validateName();
-    this.setState(this.updateBoardInfos, this.addNewBoard);
-    } catch (error) {
-      paragraphMessage.innerText = error.message;
-      console.log(error);
-    }
+  addWarningMessage() {
+    const { boardNameRepeated } = this.state;
+    if (boardNameRepeated) {
+      WARNING_MESSAGE_PARAGRAPH.innerText = `'${boardNameRepeated}' já está sendo usado!`;
+    } else WARNING_MESSAGE_PARAGRAPH.innerText = '';
   }
 
-  updateBoardInfos() {
-    const size = pixelBoard.childElementCount;
-    const board = pixelBoard.innerHTML;
-    const boardNumber = this.boardSavedList.length;
-    const id = this.generateId();
-    return { size, board, boardNumber, id };
+  saveBoardToList(boardInfo) {
+    this.setState({ currentBoard: boardInfo }, () => {
+      try {
+        this.validateName();
+        this.addNewBoardToList();
+        WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
+      } catch (error) {
+        WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
+        WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
+        console.log(error);
+      }
+    });
   }
 
-  addNewBoard({ author, board, boardNumber, id, date, name, size }) {
-      const newList = [
-        ...this.boardSavedList,
-        { author, board, date, id, name, boardNumber, size: `${size}/${size}` },
-      ];
-      this.boardSavedList = newList;
-      globalState.pushState({ boardList: newList }, KEY);
-      saveItem(BOARDSAVEDLIST, newList);
-      this.setState({ nameRepeated: newList.some(({ name: boardName }) => name === boardName) });
+  addNewBoardToList() {
+    this.setState(({ boardSavedList, currentBoard, currentBoard: { size, name } }) => {
+      const boardList = [
+        ...boardSavedList,
+        { ...currentBoard,
+          boardNumber: boardSavedList.length,
+          size: `${size}/${size}`,
+          id: this.generateId() }];
+      return {
+        boardNameRepeated: boardList.some(({ name: boardName }) => name === boardName),
+        boardSavedList: boardList,
+      };
+    }, ({ boardSavedList }) => {
+      globalState.pushState({ boardList: boardSavedList }, LIBRARY);
+      saveItem(BOARDSAVEDLIST, boardSavedList);
+    });
   }
 
   validateName() {
-    const { name, nameRepeated } = this.state;
-    if (nameRepeated) throw new Error(`'${name}' já está sendo usado!!`);
+    const { currentBoard: { name }, boardNameRepeated } = this.state;
+    if (boardNameRepeated) throw new Error(`'${name}' já está sendo usado!!`);
     if (name === '' || /^(\s+)$/g.test(name)) {
       throw new Error('Digite o nome do quadro para proceguir!');
     }
   }
 
   generateId() {
-    const { name, boardNumber, size } = this.state;
+    const { currentBoard: { name, boardNumber, size } } = this.state;
     const number = Math.round(Math.random() * 999);
     const string = name.replace(/\s+/g, '').substr(0, 4).toUpperCase();
     return `BOARD${number}${string}S${size}Z${boardNumber}`;
   }
 
-  async removeSavedBoard(boardId) {
-    this.trash = [...this.trash, this.boardSavedList.find(({ id }) => id === boardId)];
-    this.boardSavedList = this.boardSavedList.filter(({ id }) => boardId !== id);
-    globalState.pushState({
-      boardList: this.boardSavedList,
-      trash: this.trash,
-    }, KEY);
-    saveItem(BOARDSAVEDLIST, this.boardSavedList);
-    saveItemSessionStorage(TRASH, this.trash);
+  removeSavedBoard(boardId) {
+    this.setState(({ boardSavedList, trash }) => ({
+        boardSavedList: boardSavedList.filter(({ id }) => boardId !== id),
+        trash: [...trash, boardSavedList.find(({ id }) => id === boardId)],
+    }), this.saveAndUpdateGlobalState);
   }
 
-  async restoreBoard(boardId) {
-    this.boardSavedList = [...this.boardSavedList, this.trash.find(({ id }) => id === boardId)];
-    this.trash = this.trash.filter(({ id }) => boardId !== id);
-    globalState.pushState({
-      boardList: this.boardSavedList,
-      trash: this.trash,
-    }, KEY);
-    saveItem(BOARDSAVEDLIST, this.boardSavedList);
-    saveItemSessionStorage(TRASH, this.trash);
+  validateBoardEdit(boardInfo) {
+    this.setState({ currentBoard: boardInfo }, () => {
+      try {
+        this.validateName();
+        this.saveEdit();
+        WARNING_MESSAGE_PARAGRAPH.className = 'warning-message';
+      } catch (error) {
+        WARNING_MESSAGE_PARAGRAPH.className = 'error-mesage';
+        WARNING_MESSAGE_PARAGRAPH.innerText = error.message;
+        console.log(error);
+      }
+    });
   }
 
-  async removeTrashBoard(boardId) {
-    this.trash = this.trash.filter(({ id }) => boardId !== id);
-    globalState.pushState({ trash: this.trash }, KEY);
-    saveItemSessionStorage(TRASH, this.trash);
+  saveEdit() {
+    this.setState(({ boardSavedList, currentBoard, currentBoard: { id, size } }) => {
+      const list = boardSavedList;
+      const editBoardIndex = list
+        .reduce((indexItem, { id: itemId }, ind) => ((itemId === id) ? ind : indexItem), 0);
+      list[editBoardIndex] = { ...currentBoard, size: `${size}/${size}` };
+      return { boardSavedList: list };
+    }, this.saveAndUpdateGlobalState);
+  }
+
+  restoreBoard(boardId) {
+    this.setState(({ boardSavedList, trash }) => ({
+      boardSavedList: [...boardSavedList, trash.find(({ id }) => id === boardId)],
+      trash: trash.filter(({ id }) => boardId !== id),
+    }), this.saveAndUpdateGlobalState);
+  }
+
+  saveAndUpdateGlobalState() {
+    const { boardSavedList, trash } = this.state;
+    globalState.pushState({ boardList: boardSavedList, trash }, LIBRARY);
+    saveItem(BOARDSAVEDLIST, boardSavedList);
+    saveItemSessionStorage(TRASH, trash);
+  }
+
+  removeTrashBoard(boardId) {
+    this.setState(({ trash }) => ({
+      trash: trash.filter(({ id }) => boardId !== id),
+    }),
+    ({ trash }) => {
+      globalState.pushState({ trash }, LIBRARY);
+      saveItemSessionStorage(TRASH, trash);
+    });
   }
 
   render() {
-    const { name, size } = this.state;
-    inputBoardName.addEventListener('input', this.takeTheName);
-    inputBoardName.value = name;
-    inputBoardSize.addEventListener('input', this.takeTheName);
-    inputBoardSize.value = size;
-    buttonSaveAs.addEventListener('click', this.saveBoard);
+    return this.state;
   }
 }
 

@@ -41,17 +41,19 @@
         <input type="number" max="50" min="5" maxlength="2" value="5" name="size" id="board-size">
         <button id="generate-board">VQV</button>
       </div>
-      <button class="buttons danger-button" id="clear-board">LIMPAR</button>
-      <button class="buttons success-button" id="save-board">SALVAR</button>
+      <button class="buttons danger-button" id="clear-board">Limpar</button>
+      <button class="buttons success-button" id="save-board">Salvar</button>
+      <button class="buttons success-button" id="save-board-as">Salvar na lista</button>
       <div>
-        <button class="buttons success-button" id="save-board-as">SALVAR COMO</button>
+        <button class="buttons primary-button" id="come-back">Voltar</button>
+        <button class="buttons primary-button" id="advance">Avançar</button>
       </div>
     </section>
     <section class="container display column">
       <div class="display column" id="board-title">
         <input class="input-text" type="text" name="name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro"
         id="board-name">
-        <p id="error-mesage"></p>
+        <p id="warning-message" class="warning-message"></p>
       </div>
       <div id="pixel-board">
         <div class="display">
@@ -109,9 +111,8 @@
       <div class="display" id="library-container">
         <button class="long-button" type="button" id="previous-list"></button>
         <div class="display" name="library" id="boards-list">
-          
         </div>
-        <button class="long-button rigthArrow" type="button" id="next-list"></button>
+        <button class="long-button" type="button" id="next-list"></button>
       </div>
     </section>
   </main>

@@ -39,8 +39,7 @@ export default class RenderLibrary extends Componente {
     this.createListingState();
   }
 
-  setUpdate() {
-    const state = globalState.getState(({ library }) => library);
+  setUpdate(state) {
     const { currentList, favorites } = state;
     const list = state[currentList].filter(({ favorited }) => favorited || !favorites);
     this.orUpdateTheList(boardsList, list, { ...state, list });

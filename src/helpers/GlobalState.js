@@ -1,6 +1,7 @@
 export default class GlobalState {
   constructor() {
     this.state = {};
+    this.changedKey = '';
     this.updatedState = () => {};
   }
 
@@ -8,7 +9,7 @@ export default class GlobalState {
     if (state) this.state = state;
     if (callback) {
       this.updatedState = callback;
-      this.updatedState();
+      this.updatedState(this.state, this.changedKey);
     }
     console.log('global: ', this.state);
   }
@@ -18,7 +19,8 @@ export default class GlobalState {
     const obj = key ? keyObj : state;
     this.state = { ...this.state, ...obj };
     console.log('pushState: ', this.state);
-    this.updatedState();
+    this.changedKey = key;
+    this.updatedState(this.state, this.changedKey);
   }
 
   getState(callback) {
@@ -39,6 +41,10 @@ const INITIAL_STATE = {
     currentList: 'boardList',
     favorites: false,
     trash: [],
+  },
+  pixelBoard: {
+    boardNameRepeated: '',
+    editingBoardInfo: {},
   },
 };
 globalState.createState(INITIAL_STATE);

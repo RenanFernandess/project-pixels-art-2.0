@@ -83,6 +83,7 @@ main {
 
 .column {
   flex-direction: column;
+  justify-content: start;
   gap: 5px;
 }
 
@@ -120,7 +121,7 @@ main {
 
 .input-text {
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   color: var(--main-text-color);
   font-size: 1rem;
   font-weight: 600;
@@ -130,14 +131,15 @@ main {
 }
 
 .buttons {
-  border-radius: 5px;
+  border-radius: 6px;
   color: black;
   cursor: pointer;
-  font-weight: 900;
-  flex: 1 1 auto;
-  height: 30px;
-  min-width: 80px;
-  max-width: 130px;
+  font-size: 1rem;
+  font-weight: 800;
+  flex: 1 1 150;
+  height: 2rem;
+  max-width: 10rem;
+  min-width: 5rem;
   padding: 0 10px;
   transition: 5ms;
 }
@@ -155,22 +157,6 @@ main {
   position: relative;
   transition: 8ms;
   width: 30px;
-}
-
-.rigthArrow::after, .rigthArrow::before{
-  border-right: 2px solid var(--main-text-color);
-  content: '';
-  display: block;
-  height: 40px;
-  width: 1px;
-}
-
-.rigthArrow::after {
-  transform: rotate(25deg);
-}
-
-.rigthArrow::before {
-  transform: rotate(155deg) translateX();
 }
 
 .long-button:hover {
@@ -286,8 +272,14 @@ main {
   text-align: center;
 }
 
-#error-mesage {
+.error-mesage {
   color: rgb(255, 89, 89);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.warning-message {
+  color: rgb(255, 229, 34);
   font-size: 1rem;
   font-weight: 600;
 }
