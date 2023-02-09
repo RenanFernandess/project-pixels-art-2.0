@@ -59,6 +59,7 @@ export default class PixelBoard extends Componente {
     this.loadSavedBoard();
     const list = globalState.getState(({ library: { boardList } }) => boardList);
     this.setState({ boardNameList: list.map(({ name }) => name) });
+    this.setHistory(PIXEL_BOARD.innerHTML);
   }
 
   setUpdate({ boardList, editingBoardInfo }) {
@@ -113,7 +114,7 @@ export default class PixelBoard extends Componente {
       targetStyle.backgroundColor = selectedColor;
       const board = PIXEL_BOARD.innerHTML;
       this.setState({ board });
-      this.setHistory(board)
+      this.setHistory(board);
       console.log(this.history);
     }
   }
