@@ -29,10 +29,9 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 
 ## Construido Com
 
- * **HTML5**
- * **CSS3**
- * **JavaScript (ES6)**
- * **DOM**
+ * [<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />](https://www.w3schools.com/html/)
+ * [<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />](https://www.w3schools.com/css/)
+ * [<img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
  
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
