@@ -12,7 +12,7 @@ Uma das partes que eu mais gostei de desenvolver neste projeto foi a biblioteca 
 ### Se eu fosse fazer este projeto hoje, o que faria de diferente?
 Faria muita coisa diferente no código e na estrutura do projeto, mas o principal seria:
  * Fazer tests
- * Utilizar o typeScript em vez do javaScript (Fica mais fácil de entender o código)
+ * Utilizar o typeScript em vez do javaScript
  * Fazer com o paradigma funcional
  * Planejar melhor a estrutura do projeto, fazendo uma melhor organização de pastas, arquivos e funcionalidades
 
