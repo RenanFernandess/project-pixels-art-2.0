@@ -38,8 +38,25 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 
 ## Começando
 
-### Para rodar o projeto localmente
-Caso use VScode, você pode  instalar a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) através deste [link](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+### Instalação
+
+  1. Clonar o repositorio
+
+    git clone git@github.com:RenanFernandess/project-pixels-art-2.0.git
+
+  2. Entrar na pasta project-pixels-art-2.0
+  
+    cd ./project-pixels-art-2.0
+    
+  3. Instalar pacotes NPM
+  
+    npm install
+
+### Executando aplicação
+
+
+  **Live Server:** Caso use VScode, você pode utilizar a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) para abrir o projeto no seu navegador, para instalá-la acesse este [link](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+
 
   
  
