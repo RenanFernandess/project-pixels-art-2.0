@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 # project-pixels-art-2.0
 
-![Pixel Art Screen Shot](./projectImage.png)
+![Pixel Art Screen Shot](./images/projectImage.png)
 
 ## Sobre o Projeto
 
