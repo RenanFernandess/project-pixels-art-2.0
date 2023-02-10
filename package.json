@@ -1,0 +1,24 @@
+{
+  "name": "project-pixels-art-2.0",
+  "version": "1.0.0",
+  "description": "<a name=\"readme-top\"></a> # project-pixels-art-2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./src -a 127.0.0.1 -o -c-1 -s"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RenanFernandess/project-pixels-art-2.0.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RenanFernandess/project-pixels-art-2.0/issues"
+  },
+  "homepage": "https://github.com/RenanFernandess/project-pixels-art-2.0#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
