@@ -52,10 +52,13 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
   
     npm install
 
-### Executando aplicação
+### Executando
+  
+  1. iniciar o aplicativo
+    
+    npm start
 
-
-  **Live Server:** Caso use VScode, você pode utilizar a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) para abrir o projeto no seu navegador, para instalá-la acesse este [link](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+ > **Live Server:** Caso use VScode, você pode utilizar a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) para abrir o projeto no seu navegador, para instalá-la acesse este [link](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
 
   
