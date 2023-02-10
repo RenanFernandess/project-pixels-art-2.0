@@ -31,7 +31,7 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 
  * **HTML**
  * **CSS**
- * **JavaScript**
+ * **JavaScript (ES6)**
  * **DOM**
  
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
