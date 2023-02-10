@@ -29,14 +29,19 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 
 ## Construido Com
 
- * **HTML**
- * **CSS**
+ * **HTML5**
+ * **CSS3**
  * **JavaScript (ES6)**
  * **DOM**
  
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Começando
+
+### Para rodar o projeto localmente
+Caso use VScode, você pode  instalar a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) através deste [link](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+
+  
  
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
  
