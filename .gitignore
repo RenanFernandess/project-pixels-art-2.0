@@ -1,5 +1,6 @@
-requisitos.md
+.vscode
 node_modules
 .stylelintrc.json
 .eslintrc.json
 problemas.txt
+.env
