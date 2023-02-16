@@ -58,6 +58,10 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
     
     npm start
 
+   após o start por padrão você será redirecionado para uma página do seu navegador com a seguinte URL:
+   
+    http://127.0.0.1:8080/
+
  > **Live Server:** Caso use VScode, você pode utilizar a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) para abrir o projeto no seu navegador, para instalá-la acesse este [link](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
 
