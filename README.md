@@ -82,6 +82,8 @@ Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras 
 
 ![Pixel Art library](./images/saving_board.gif)
 
+Para salvar um quadro na biblioteca você precisa dar um nome a ele, para adicionar o nome clique sobre a mensagem "Digite o nome do quadro" e digite o nome, quando terminar é só clicar no botão "Salvar na lista".
+
 ### Editando um quadro
 
 ![Pixel Art library](./images/editing.gif)
