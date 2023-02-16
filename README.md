@@ -68,6 +68,9 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 ## Uso
  ### Paleta de cores
 ![Pixel Art library](./images/color_pallet.gif)
+Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras cores é possível alterar as cores da paleta clicando no botão "Novas cores" ou selecionar a cor que desejar no input de cores.
+
+> Obs: por padrão a primeira cor da paleta sempre vai ser preta
 
 ### Quadro de pixels
 ![Pixel Art library](./images/pixel_board.gif)
