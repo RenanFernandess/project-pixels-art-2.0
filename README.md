@@ -92,7 +92,7 @@ Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras 
  * É possível editar um quadro ao clicar sobre o botão "Editar".
  * Na lixeira você pode restaurar um quadro devolvendo ele para biblioteca clicando sobre o botão "Restaurar" ou deletar clicando sobre o botão "Apagar".
 
-> Ao fechar a página a lixeira será limpada apagando todos os quadros contido nela (Session Storage)
+> Ao fechar a página a lixeira será limpada apagando todos os quadros contidos nela (Session Storage)
 
 ### Salvando um quadro
 
@@ -105,6 +105,8 @@ Para salvar um quadro na biblioteca você precisa dar um nome a ele, para adicio
 ### Editando um quadro
 
 ![Pixel Art library](./images/editing.gif)
+
+Para editar um quadro é muito simples, basta clicar no botão "Editar" no preview do quadro no qual você deseja  fazer alguma alteração, é possível modificar o quadro e também o nome, após terminar as alterações basta clicar no botão "Salvar edição".
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
