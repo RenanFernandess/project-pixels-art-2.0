@@ -28,6 +28,7 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Construido Com
+> Este projeto foi construido sem utilizar nenhum framework ou dependecia.
 
  * [<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />](https://www.w3schools.com/html/)
  * [<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />](https://www.w3schools.com/css/)
