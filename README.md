@@ -65,8 +65,22 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
  
 ## Uso
+ ### Paleta de cores
+![Pixel Art library](./images/color_pallet.gif)
 
-![Pixel Art Gif](./projectGif.gif)
+### Quadro de pixels
+![Pixel Art library](./images/pixel_board.gif)
+
+### Biblioteca
+![Pixel Art library](./images/library.gif)
+
+### Salvando um quadro
+
+![Pixel Art library](./images/saving_board.gif)
+
+### Editando um quadro
+
+![Pixel Art library](./images/editing.gif)
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
