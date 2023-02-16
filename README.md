@@ -75,6 +75,12 @@ Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras 
 ### Quadro de pixels
 ![Pixel Art library](./images/pixel_board.gif)
 
+  * É possível voltar e avançar as alterações feitas ao quadro clicando sobre o botão "Voltar" ou "Avançar"
+  * É possível limpar o quadro clicando sobre o botão "Limpar"
+  * É possível alterar o tamanho do quadro selecionando o tamanho desejado no input numérico com um valor entre 5 a 50, depois clicando no botão "VQV" para confirmar
+  * Você pode dar um nome ao seu quadro clicando sobre a mensagem "Digite o nome do quadro" após isso é só digitar o nome desejado
+  * Você pode salvar o quadro para continuar onde parou após fechar a página, para fazer isto só precisa clicar no botão salvar
+
 ### Biblioteca
 ![Pixel Art library](./images/library.gif)
 
