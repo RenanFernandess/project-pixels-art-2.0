@@ -70,7 +70,7 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
 ![Pixel Art library](./images/color_pallet.gif)
 Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras cores é possível alterar as cores da paleta clicando no botão "Novas cores" ou selecionar a cor que desejar no input de cores.
 
-> Obs: por padrão a primeira cor da paleta sempre vai ser preta
+> Por padrão a primeira cor da paleta sempre vai ser preta
 
 ### Quadro de pixels
 ![Pixel Art library](./images/pixel_board.gif)
@@ -81,6 +81,8 @@ Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras 
   * Você pode dar um nome ao seu quadro clicando sobre a mensagem "Digite o nome do quadro" após isso é só digitar o nome desejado
   * Você pode salvar o quadro para continuar onde parou após fechar a página, para fazer isto só precisa clicar no botão salvar
 
+ >A cada caracter digitada para o dome ao quadro é realizado uma checagem na lista de quadros para verificar não está repetindo o nome, caso repita aparecerá a mensagem "(nome do quadro) já está sendo usado"
+
 ### Biblioteca
 ![Pixel Art library](./images/library.gif)
 
@@ -89,6 +91,8 @@ Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras 
 ![Pixel Art library](./images/saving_board.gif)
 
 Para salvar um quadro na biblioteca você precisa dar um nome a ele, para adicionar o nome clique sobre a mensagem "Digite o nome do quadro" e digite o nome, quando terminar é só clicar no botão "Salvar na lista".
+
+>A cada caracter digitada para o dome ao quadro é realizado uma checagem na lista de quadros para verificar não está repetindo o nome, caso repita aparecerá a mensagem "(nome do quadro) já está sendo usado"
 
 ### Editando um quadro
 
