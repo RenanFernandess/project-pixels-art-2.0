@@ -123,5 +123,6 @@ Para editar um quadro é muito simples, basta clicar no botão "Editar" no previ
 ## Agradecimentos
 
 * [Trybe](https://www.betrybe.com/)
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
