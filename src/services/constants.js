@@ -4,7 +4,7 @@ export const LIBRARY = 'library';
 export const PIXELBOARD = 'pixelBoard';
 export const TRASH = 'trash';
 
-export const RGB_COLOR_REGEXP = /rgb\((\d+[,] \d+[,] \d+)\)/g;
+export const RGB_COLOR_REGEXP = /background-color: (\w+|rgb\((\d+[,] \d+[,] \d+)\));/gm
 
 export const BUTTON_CLEAR = document.getElementById('clear-board');
 export const BUTTON_SAVE = document.getElementById('save-board');
