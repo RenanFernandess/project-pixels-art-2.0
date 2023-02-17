@@ -89,6 +89,7 @@ Você pode selecionar uma cor na paleta ao clicar sobre ela, caso queira outras 
 
 ### Biblioteca
 ![Pixel Art library](./images/library.gif)
+![Pixel Art library](./images/responsive-library.gif)
 
  * A Quantidade de previews de quadros é gerado de forma dinâmica de acordo com o tamanho da tela, caso a quantidade de previews exceda o valor máximo, serão divididos em páginas, para avançar uma página basta clicar no botão do canto direito e para voltar clicar no botão do canto esquerdo.
  * Você pode fazer a busca de um ou mais quadros pelo nome completo ou caractere inicial.
