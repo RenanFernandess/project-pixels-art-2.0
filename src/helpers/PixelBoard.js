@@ -66,7 +66,6 @@ export default class PixelBoard extends Componente {
     this.setState({ boardNameList: boardList.map(({ name }) => name) });
     if (editingBoardInfo.name) {
       const { size, board } = editingBoardInfo;
-      console.log("Cade o log----------------------------: ", board);
       this.history.historic = [];
       this.setHistory(board);
       this.setState({ ...editingBoardInfo, size: size[0], editingBoard: true });
