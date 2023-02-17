@@ -120,7 +120,7 @@ export default class PixelBoard extends Componente {
   }
 
   clearBoard() {
-    this.setState(({ board }) => ({ board: board.replace(RGB_COLOR_REGEXP, 'white') }));
+    this.setState(({ board }) => ({ board: board.replace(RGB_COLOR_REGEXP, 'background-color: white;') }));
   }
 
   createPixelBoard() {
