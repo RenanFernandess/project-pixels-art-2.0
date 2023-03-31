@@ -1,9 +1,32 @@
 <a name="readme-top"></a>
 # project-pixels-art-2.0
 
-![Pixel Art Screen Shot](./images/project.gif)
+
+<details>
+  <summary>Índice</summary>
+  <ol>
+    <li>
+      <a href="#sobre-o-projeto">Sobre o Projeto</a>
+      <ul>
+        <li><a href="#construido-com">Construido Com</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#começando">Começando</a>
+      <ul>
+        <li><a href="#instalação">Instalação</a></li>
+        <li><a href="#executando">Executando</a></li>
+      </ul>
+    </li>
+    <li><a href="#uso">Uso</a></li>
+    <li><a href="#contato">Contato</a></li>
+    <li><a href="#agradecimentos">Agradecimentos</a></li>
+  </ol>
+</details>
 
 ## Sobre o Projeto
+
+![Pixel Art Screen Shot](./images/project.gif)
 
 Este projeto foi baseado no projeto '[pixels-art](https://github.com/RenanFernandess/trybe-project-pixels-art)' que realizei na [Trybe](https://github.com/tryber) durante o período de fundamentos do desenvolvimento web. Meu objetivo com este projeto inicialmente era refatorar o '[pixels-art](https://github.com/RenanFernandess/trybe-project-pixels-art)' e ir um pouco além do que foi pedido para exercitar e aprender mais sobre JavaScript, DOM, HTML e CSS, mas quando começou o período de desenvolvimento front-end fiquei muito curioso em entender como o [React](https://pt-br.reactjs.org/) e [Redux](https://redux.js.org/) funcionam com isso decidi replicar algumas funcionalidades neste projeto [Pixels-art-2.0](https://github.com/RenanFernandess/project-pixels-art-2.0).
 
@@ -27,7 +50,7 @@ Faria muita coisa diferente no código e na estrutura do projeto, mas o principa
   
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
-## Construido Com
+### Construido Com
 > Este projeto foi construido sem utilizar nenhum framework ou dependecia.
 
  * [<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />](https://www.w3schools.com/html/)
