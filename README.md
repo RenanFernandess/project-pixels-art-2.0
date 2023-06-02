@@ -146,7 +146,6 @@ Para editar um quadro é muito simples, basta clicar no botão "Editar" no previ
 
 ## Agradecimentos
 
-* [Trybe](https://www.betrybe.com/)
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 * [http-server](https://github.com/http-party/http-server)
 
