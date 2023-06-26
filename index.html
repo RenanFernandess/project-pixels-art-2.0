@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Pixels Artis</title>
+</head>
+
+<body>
+  <header class="display">
+    <h1 id="title">Paleta de Cores</h1>
+  </header>
+  <main>
+    <section class="container">
+      <div id="palette-container" class="display">
+        <div class="display-grid" id="color-palette">
+          <div class="color selected" style="background-color: black"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+          <div class="color"></div>
+        </div>
+        <button class="buttons primary-button" id="news-colors">NOVAS CORES</button>
+        <div id="box-new-color">
+          <input class="color-input" type="color" name="color-selector" id="new-color" />
+        </div>
+      </div>
+    </section>
+    <section id="options" class="container display">
+      <div class="display">
+        <input type="number" max="50" min="5" maxlength="2" value="5" name="size" id="board-size">
+        <button id="generate-board">VQV</button>
+      </div>
+      <button class="buttons danger-button" id="clear-board">Limpar</button>
+      <button class="buttons success-button" id="save-board">Salvar</button>
+      <button class="buttons success-button" id="save-board-as">Salvar na lista</button>
+      <div>
+        <button class="buttons primary-button" id="come-back">Voltar</button>
+        <button class="buttons primary-button" id="advance">Avançar</button>
+      </div>
+    </section>
+    <section class="container display column">
+      <div class="display column" id="board-title">
+        <input class="input-text" type="text" name="name" maxlength="20" minlength="1" placeholder="Digite o nome do quadro"
+        id="board-name">
+        <p id="warning-message" class="warning-message"></p>
+      </div>
+      <div id="pixel-board">
+        <div class="display">
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+        </div>
+        <div class="display">
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+        </div>
+        <div class="display">
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+        </div>
+        <div class="display">
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+        </div>
+        <div class="display">
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+          <div class="pixel"></div>
+        </div>
+      </div>
+    </section>
+    <section class="container">
+      <div class="display" id="library-header">
+        <nav id="nav-opitions" class="nav">
+          <ul class="nav-list">
+            <li id="library">Biblioteca</li>
+            <hr>
+            <li id="favorites">Favoritos</li>
+            <hr>
+            <li id="trash">Lixeira</li>
+          </ul>
+        </nav>
+        <div>
+          <input class="input-text" type="text" name="search" id="search-board" placeholder="Pesquisar quadro">
+        </div>
+      </div>
+      <div class="display" id="library-container">
+        <button class="long-button" type="button" id="previous-list"></button>
+        <div class="display" name="library" id="boards-list">
+        </div>
+        <button class="long-button" type="button" id="next-list"></button>
+      </div>
+    </section>
+  </main>
+  <footer></footer>
+  <script type="module" src="./index.js" defer></script>
+</body>
+
+</html>

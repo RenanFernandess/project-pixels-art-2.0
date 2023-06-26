@@ -1,0 +1,330 @@
+:root {
+  --main-color: rgb(97, 174, 157);
+
+  --main-background-color: rgb(35, 38, 41);
+
+  --main-text-color: rgb(200, 200, 200);
+
+  --containers-background-color: rgb(60, 64, 68);
+
+  --items-background-color: rgb(46, 50, 54);
+
+  --items-background-color-hover: rgb(56, 61, 65);
+
+  --main-border-color: rgb(62, 62, 62);
+
+  --nav-attributes-color: rgb(35, 38, 41);
+
+}
+
+::-webkit-scrollbar {
+  background-color: unset;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--items-background-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--items-background-color-hover);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--main-background-color);
+  color: var(--main-text-color);
+  font-size: 16px;
+}
+
+header {
+  background-color: var(--main-color);
+  height: 70px;
+}
+
+header h1 {
+  color: rgb(23, 23, 23);
+  font-size: 40px;
+}
+
+main {
+  display: grid;
+  gap: 20px;
+  padding: 40px;
+}
+
+.thumbnail div > div.pixel {
+  height: 15px;
+  width: 15px;
+}
+
+.container {
+  background-color: var(--containers-background-color);
+  border: 1px solid var(--main-border-color);
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 100vw;
+  min-width: 200px;
+}
+
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.column {
+  flex-direction: column;
+  justify-content: start;
+  gap: 5px;
+}
+
+.display-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.nav {
+  padding: 0 20px;
+}
+
+.nav-list {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: start;
+  list-style: none;
+}
+
+.nav-list hr {
+  width: 1px;
+  height: 25px;
+  border: 1px solid var(--nav-attributes-color);
+}
+
+.nav-list li {
+  padding: 10px 5px;
+  transition: 7ms;
+}
+
+.nav-list li:hover {
+  color: rgb(21, 21, 21);
+}
+
+.input-text {
+  border: none;
+  border-radius: 6px;
+  color: var(--main-text-color);
+  font-size: 1rem;
+  font-weight: 600;
+  outline: 0;
+  padding: 6px 10px;
+  width: 30vw;
+}
+
+.buttons {
+  border-radius: 6px;
+  color: black;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+  flex: 1 1 150;
+  height: 2rem;
+  max-width: 10rem;
+  min-width: 5rem;
+  padding: 0 10px;
+  transition: 5ms;
+}
+
+.buttons:active {
+  transform: scale(1.04);
+}
+
+.long-button {
+  background-color: unset;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  height: 250px;
+  position: relative;
+  transition: 8ms;
+  width: 30px;
+}
+
+.long-button:hover {
+  background-color: rgb(97, 101, 105);
+}
+
+.options {
+  gap: 5px;
+}
+
+.danger-button {
+  background-color: red;
+  border: 1px solid rgb(221, 0, 0);
+}
+
+.danger-button:hover {
+  background-color: rgb(255, 70, 70);
+}
+
+.success-button {
+  background-color: rgb(0, 205, 0);
+  border: 1px solid rgb(0, 200, 0);
+}
+
+.success-button:hover {
+  background-color: rgb(76, 225, 76);
+}
+
+.primary-button {
+  background-color: rgb(0, 102, 255);
+  border: 1px solid rgb(0, 94, 255);
+}
+
+.primary-button:hover {
+  background-color: rgb(0, 149, 255);
+}
+
+.pixel, .color {
+  background-color: white;
+  border: 1px solid black;
+  height: 40px;
+  width: 40px;
+}
+
+#pixel-board .pixel, .color, .color-input {
+  cursor: pointer;
+}
+
+.color {
+  border-radius: 5px;
+  transition: 5ms;
+}
+
+
+.selected {
+  box-shadow: 2px 2px 8px rgb(26, 26, 26);
+  transform: scale(1.03);
+}
+
+.preview {
+  background-color: var(--items-background-color);
+  box-shadow: 2px 2px 5px rgb(35, 35, 35);
+  border: 1px solid rgb(40, 40, 40);
+  border-radius: 5px;
+  flex: 1 1 200px;
+  flex-flow: column;
+  gap: 10px;
+  max-height: 260px;
+  max-width: 300px;
+  min-height: 250px;
+  min-width: 200px;
+  padding: 10px;
+  transition: 5ms;
+}
+
+.preview:hover {
+  background-color: var(--items-background-color-hover);
+}
+
+#color-palette {
+  background-color: rgb(127, 128, 129);
+  border-radius: 10px;
+  border: 1px solid rgb(73, 73, 73);
+  gap: 4px;
+  padding: 10px;
+}
+
+#box-new-color {
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 40px;
+  width: 40px;
+  position: relative;
+}
+
+#new-color {
+  border: none;
+  border-radius: 10px;
+  height: 100%;
+  opacity: 0;
+  width: 100%;
+}
+
+#board-title {
+  height: 80px;
+  width: 100%;
+}
+
+#board-name {
+  background-color: var(--containers-background-color);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.error-mesage {
+  color: rgb(255, 89, 89);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.warning-message {
+  color: rgb(255, 229, 34);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#palette-container {
+  flex-flow: row wrap;
+  gap: 20px;
+}
+
+#options {
+  gap: 10px;
+}
+
+#library-header {
+  align-items: center;
+  border-bottom: 1px solid var(--nav-attributes-color);
+  justify-content:flex-start;
+  gap: 100px;
+  margin: 0 20px;
+}
+
+#search-board {
+  background-color: var(--items-background-color);
+  color: var(--main-text-color);
+}
+
+/* #library-container {
+} */
+
+#boards-list {
+  flex: 1 800px;
+  gap: 10px;
+  justify-content: center;
+  max-width: 95%;
+  min-height: 280px;
+  overflow-x: auto;
+  padding: 15px;
+}
+
+@media screen and ( min-width: 1000px ) {
+  .container {
+    padding: 20px;
+  }
+
+  #boards-list {
+    justify-content: start;
+  }
+}
